@@ -1,0 +1,84 @@
+add_newline = true
+
+prompt_order = [
+    "username",
+    "hostname",
+    "directory",
+    "kubernetes",
+    "git_branch",
+    "git_commit",
+    "git_state",
+    "git_status",
+    "hg_branch",
+    "docker_context",
+    "package",
+    "dotnet",
+    "elixir",
+    "elm",
+    "golang",
+    "haskell",
+    "java",
+    "julia",
+    "nodejs",
+    "php",
+    "python",
+    "ruby",
+    "rust",
+    "terraform",
+    "nix_shell",
+    "conda",
+    "memory_usage",
+    "aws",
+    "env_var",
+    "crystal",
+    "cmd_duration",
+    "custom",
+    "jobs",
+    "line_break",
+    "battery",
+    "time",
+    "character",
+]
+
+[aws]
+style = "bold blue"
+displayed_items = "profile"
+
+[cmd_duration]
+min_time = 1000
+prefix = ""
+
+[directory]
+fish_style_pwd_dir_length = 1
+truncation_length = 2
+truncate_to_repo = false
+style = "blue"
+
+[golang]
+symbol = "go: "
+style = "underline blue"
+
+[java]
+symbol = "java: "
+style = "underline red"
+
+[python]
+symbol = "py: "
+pyenv_version_name = true
+
+[rust]
+symbol = "rust: "
+style = "underline red"
+
+[package]
+disabled = true
+
+[jobs]
+symbol = "+ "
+threshold = 0
+
+[kubernetes]
+symbol = "k8s: "
+style = "underline green"
+disabled = false
+
