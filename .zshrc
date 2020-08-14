@@ -112,6 +112,10 @@ export DOTBARE_DIR="$HOME/.config"
 export DOTBARE_FZF_DEFAULT_OPTS="--preview-window=right:70%"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-export PATH=$PATH:/usr/local/bin:$HOME/.cargo/bin
 
+# path configuration
+export PATH=$PATH:/usr/local/bin:$HOME/.cargo/bin
+export PATH="$HOME/.jenv/bin:$PATH"
+
+command -v jenv &> /dev/null && eval "$(jenv init -)"
 command -v starship &> /dev/null && eval "$(starship init zsh)"

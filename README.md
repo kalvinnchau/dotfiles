@@ -47,5 +47,30 @@ brew install kubectx
 brew install aws-iam-authenticator
 ```
 
+## other stuff
+### jvm
+
+Use `jenv` to mange all the version fun
+
+```bash
+brew install jenv
+
+# java intalls the latest
+brew install java java11
+
+# if you still need java8
+brew tap AdoptOpenJDK/openjdk
+brew cask install adoptopenjdk8
+
+mkdir -p "$HOME/.jenv/versions/"
+
+jenv add $(/usr/libexec/java_home)
+jenv add /Library/Java/JavaVirtualMachines/openjdk-11.jdk/Contents/Home
+jenv add /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
+
+jenv global <set version>
+```
+
+
 ## todo
 - [ ] script installation of step 4+
