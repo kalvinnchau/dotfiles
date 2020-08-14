@@ -96,4 +96,6 @@ export FZF_DEFAULT_OPTS='--height 100%'
 export DOTBARE_DIR="$HOME/.config"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-export PATH=$PATH:/usr/local/bin
+export PATH=$PATH:/usr/local/bin:$HOME/.cargo/bin
+
+command -v starship &> /dev/null && eval "$(starship init zsh)"

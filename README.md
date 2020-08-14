@@ -26,3 +26,16 @@ export DOTBARE_DIR="$HOME/.config"
 dotbare finit -u https://github.com/kalvinnchau/dotfiles.git
 ```
 
+4. install rust
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+cargo install ripgrep
+cargo install --locked bat
+cargo install fd-find
+cargo install du-dust
+cargo install starship
+cargo install git-delta
+```
+
+## todo 
+- [ ] script installation of step 4+
