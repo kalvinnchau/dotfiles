@@ -27,6 +27,8 @@ zinit wait lucid light-mode for \
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+autoload -U compinit && compinit
+
 ##
 # zsh settings
 ##
