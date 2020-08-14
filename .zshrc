@@ -116,6 +116,7 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 # path configuration
 export PATH=$PATH:/usr/local/bin:$HOME/.cargo/bin
 export PATH="$HOME/.jenv/bin:$PATH"
+export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
 
 command -v jenv &> /dev/null && eval "$(jenv init -)"
 command -v starship &> /dev/null && eval "$(starship init zsh)"
