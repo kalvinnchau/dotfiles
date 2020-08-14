@@ -26,7 +26,7 @@ export DOTBARE_DIR="$HOME/.config"
 dotbare finit -u https://github.com/kalvinnchau/dotfiles.git
 ```
 
-4. install rust
+4. install rust, cargo and some tools
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 cargo install ripgrep
@@ -37,5 +37,15 @@ cargo install starship
 cargo install git-delta
 ```
 
-## todo 
+5. brew packages
+```bash
+brew tap weaveworks/tap
+brew install kubectl
+brew install eksctl
+brew install helm
+brew install kubectx
+brew install aws-iam-authenticator
+```
+
+## todo
 - [ ] script installation of step 4+

@@ -73,14 +73,19 @@ alias vi=nvim
 alias vim=nvim
 # List all files colorized in long format
 alias ll='ls -lha'
-alias rr="rsync -rvzP"
 alias ssh="ssh -oStrictHostKeyChecking=no -oCheckHostIP=no -oConnectionAttempts=5 -oConnectTimeout=8 -oServerAliveInterval=5 -oTCPKeepAlive=no -Y"
 alias cfg=dotbare
+# kubernetes aliases
+alias k=kubectl
+alias kctx=kubectx
+alias kns=kubens
 
 
 ##
 # export environment variables
 ##
+export EDITOR=nvim
+
 export HISTCONTROL=ignoredups,ignorespace
 export HISTFILESIZE=50000
 export HISTSIZE=${HISTFILESIZE}
@@ -89,11 +94,12 @@ export HISTSIZE=${HISTFILESIZE}
 export PIP_REQUIRE_VIRTUALENV=true
 export PIP_DOWNLOAD_CACHE=$HOME/.pip/cache
 
-export EDITOR=nvim
-
 export NVIM_TUI_ENABLE_TRUE_COLOR=1
 export FZF_DEFAULT_OPTS='--height 100%'
+
+# dotbare settings
 export DOTBARE_DIR="$HOME/.config"
+export DOTBARE_FZF_DEFAULT_OPTS="--preview-window=right:70%"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 export PATH=$PATH:/usr/local/bin:$HOME/.cargo/bin

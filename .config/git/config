@@ -1,0 +1,44 @@
+[push]
+    default = simple
+
+[merge]
+    path = nvim
+
+[core]
+    editor = nvim
+    pager = delta
+
+[rerere]
+    enabled = 1
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    features = side-by-side line-numbers decorations
+    whitespace-error-style = 22 reverse
+
+[delta "decorations"]
+    commit-decoration-style = bold yellow box ul
+    file-style = bold yellow ul
+    file-decoration-style = none
+
+[alias]
+    f   = fetch
+    s   = status
+    d   = difftool
+    pi  = pull --rebase=interactive
+    bl  = branch -ra
+    up  = !git pull --rebase --prune $@ && git submodule update --init --recursive
+    st  = status -sb
+    la  = "!git config -l | grep alias | cut -c 7-"
+    ls  = log --pretty=format:"%C(green)%h\\ %C(yellow)[%ad]%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
+    ll  = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+    lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+    lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+    lg = !"git lg1"
+    recent = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format="%(refname:short)"
+    recap = !"git log --all --oneline --no-merges --author=$(git config user.email)"
+    open = !open $(git remote get-url origin | sed -E 's/.*@([[:alnum:]\\.-]*):([[:alnum:]-]*)\\/([[:alnum:]-]*)(\\.git)?/https:\\/\\/\\1\\/\\2\\/\\3/')
+    search = "!f(){ git branch -a | sed -e 's/[ \\*]*//' | grep -v -e '\\->' | xargs git grep $@; };f "
+
