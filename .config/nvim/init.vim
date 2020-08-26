@@ -271,9 +271,3 @@ nvim_lsp.sumneko_lua.setup{on_attach = completion.on_attach}
 nvim_lsp.rust_analyzer.setup{on_attach = completion.on_attach}
 nvim_lsp.metals.setup{on_attach = completion.on_attach}
 EOF
-
-""" old ncm2 completion settings
-"nvim_lsp.gopls.setup{on_init = ncm2.register_lsp_source}
-"nvim_lsp.sumneko_lua.setup{on_init = ncm2.register_lsp_source}
-"nvim_lsp.rust_analyzer.setup{on_init = ncm2.register_lsp_source}
-"nvim_lsp.metals.setup{on_init = ncm2.register_lsp_source}

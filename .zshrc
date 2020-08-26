@@ -22,9 +22,12 @@ zinit light-mode for \
 ### End of Zinit's installer chunk
 
 zinit wait lucid light-mode for \
-    kazhala/dotbare
+    kazhala/dotbare \
+    zdharma/fast-syntax-highlighting
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 autoload -U compinit && compinit
 
@@ -117,6 +120,7 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 export PATH=$PATH:/usr/local/bin:$HOME/.cargo/bin
 export PATH="$HOME/.jenv/bin:$PATH"
 export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
+export PATH=$PATH:"$HOME/.local/bin"
 
 command -v jenv &> /dev/null && eval "$(jenv init -)"
 command -v starship &> /dev/null && eval "$(starship init zsh)"
