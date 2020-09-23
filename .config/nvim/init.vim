@@ -1,4 +1,5 @@
 """"""""""""""""""""""""""""""""""""""""""""""""
+syntax enable
 filetype plugin indent on
 
 let mapleader = ","
@@ -83,8 +84,8 @@ autocmd FileType make set noexpandtab
 set smarttab
 
 " 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=2
+set tabstop=2
 
 " Auto indent and wrap lines
 set ai
@@ -179,7 +180,16 @@ au BufRead,BufNewFile Dockerfile* set filetype=dockerfile
 
 " Neovim LSP configs
 Plug 'neovim/nvim-lsp'
+
+" Completion plugins
 Plug 'nvim-lua/completion-nvim'
+
+" Get the current buffer for completion
+Plug 'steelsojka/completion-buffers'
+
+" Diagnostic navigation and settings for built-in LSP
+Plug 'nvim-lua/diagnostic-nvim'
+
 """""""""""""""""""""""""""""""""""""""""""""" Languages & Files
 
 call plug#end()
@@ -201,6 +211,10 @@ inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Set completeopt to have a better completion experience
+" " :help completeopt
+" menuone: popup even when there's only one match
+" noinsert: Do not insert text until a selection is made
+" noselect: Do not select, force user to select one from the menu
 set completeopt=menuone,noinsert,noselect
 
 " Avoid showing message extra message when using completion
@@ -208,6 +222,30 @@ set shortmess+=c
 
 " Use completion-nvim in every buffer
 autocmd BufEnter * lua require'completion'.on_attach()
+
+" configure the completion-buffers, as a secondary source
+let g:completion_chain_complete_list = [
+    \{'complete_items': ['lsp', 'snippet' ]},
+    \{'complete_items': ['buffer']},
+    \{'mode': '<c-p>'},
+    \{'mode': '<c-n>'}
+\]
+
+" use <c-j> and <c-k> to move between sources ^
+let g:completion_auto_change_source = 1
+imap <c-j> <Plug>(completion_prev_source)
+imap <c-k> <Plug>(completion_next_source)
+
+" Code navigation shortcuts
+nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
 
 """
 " inccommand!
@@ -220,11 +258,20 @@ endif
 " Neovim LSP Configuration
 """
 lua << EOF
+
 local nvim_lsp = require'nvim_lsp'
-local completion = require'completion'
+
+-- function to attach completion and diagnostics
+-- when setting up lsp
+local on_attach = function(client)
+    require'completion'.on_attach(client)
+    require'diagnostic'.on_attach(client)
+end
+
+
 nvim_lsp.pyls.setup{
     cmd = { "/Users/kchau/venv/python3/neovim/bin/pyls" };
-    on_attach= completion.on_attach;
+    on_attach= on_attach=on_attach;
     settings = {
         pyls = {
             enable = true;
@@ -266,8 +313,8 @@ nvim_lsp.bashls.setup{
     root_dir = nvim_lsp.util.root_pattern('.git');
 }
 
-nvim_lsp.gopls.setup{on_attach = completion.on_attach}
-nvim_lsp.sumneko_lua.setup{on_attach = completion.on_attach}
-nvim_lsp.rust_analyzer.setup{on_attach = completion.on_attach}
-nvim_lsp.metals.setup{on_attach = completion.on_attach}
+nvim_lsp.gopls.setup{on_attach = on_attach}
+nvim_lsp.sumneko_lua.setup{on_attach = on_attach}
+nvim_lsp.rust_analyzer.setup{on_attach = on_attach}
+nvim_lsp.metals.setup{on_attach = on_attach}
 EOF
