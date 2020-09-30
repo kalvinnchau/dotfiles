@@ -270,7 +270,6 @@ end
 
 
 nvim_lsp.pyls.setup{
-    cmd = { "/Users/kchau/venv/python3/neovim/bin/pyls" };
     on_attach = on_attach;
     settings = {
         pyls = {
