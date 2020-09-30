@@ -54,7 +54,7 @@ truncate_to_repo = false
 style = "blue"
 
 [git_branch]
-format = "[$symbol$branch]($style) "
+format = "[$symbol$branch]($style)"
 
 [git_status]
 ahead = "⇡${count}"
@@ -81,6 +81,9 @@ pyenv_version_name = true
 symbol = "rs:"
 format = "[$symbol$version]($style) "
 style = "underline red"
+
+[nodejs]
+format= "[$symbol$version]($style) "
 
 [package]
 disabled = true
