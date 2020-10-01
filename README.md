@@ -71,6 +71,11 @@ jenv add /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
 jenv global <set version>
 ```
 
+### nvm/node
+docs at [nvm-sh/nvm](https://github.com/nvm-sh/nvm)
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
+```
 
 ## todo
 - [ ] script installation of step 4+

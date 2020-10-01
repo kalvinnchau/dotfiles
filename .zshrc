@@ -121,6 +121,10 @@ export PATH=$PATH:/usr/local/bin:$HOME/.cargo/bin
 export PATH="$HOME/.jenv/bin:$PATH"
 export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
 export PATH=$PATH:"$HOME/.local/bin"
+export PATH="/usr/local/opt/mysql-client/bin:$PATH"
 
 command -v jenv &> /dev/null && eval "$(jenv init -)"
 command -v starship &> /dev/null && eval "$(starship init zsh)"
+
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
