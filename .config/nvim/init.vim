@@ -142,14 +142,14 @@ let g:gruvbox_improved_warnings=1
 
 """""""""""""""""""""""""""""""""""""""""""""" Navigation
 " Use ripgrep if ya got it!
-if executable("rg")
-    set grepprg=rg\ --vimgrep
-    set grepformat^=%f:%l:%c:%m
-    " Recursively search for word under cursor
-    nnoremap <leader>f :silent grep <C-R><C-W><CR>:cw<CR>
-    " Recursively search for visually selected phrase
-    vnoremap <leader>f y:silent grep '<C-R>"'<CR>:cw<CR>
-endif
+"if executable("rg")
+"    set grepprg=rg\ --vimgrep
+"    set grepformat^=%f:%l:%c:%m
+"    " Recursively search for word under cursor
+"    nnoremap <leader>f :silent grep <C-R><C-W><CR>:cw<CR>
+"    " Recursively search for visually selected phrase
+"    vnoremap <leader>f y:silent grep '<C-R>"'<CR>:cw<CR>
+"endif
 
 """""""""""""""""""""""""""""""""""""""""""""" End Navigation
 
@@ -169,6 +169,8 @@ autocmd FileType json setlocal foldmethod=syntax
 
 Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'cespare/vim-toml'
+Plug 'yuezk/vim-js'
+Plug 'maxmellon/vim-jsx-pretty'
 
 "" For Jenkinsfiles
 au BufNewFile,BufRead Jenkinsfile set filetype=groovy
@@ -189,6 +191,14 @@ Plug 'steelsojka/completion-buffers'
 
 " Diagnostic navigation and settings for built-in LSP
 Plug 'nvim-lua/diagnostic-nvim'
+
+" Searching for files
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-lua/telescope.nvim'
+
+Plug 'RishabhRD/popfix'
+Plug 'RishabhRD/nvim-lsputils'
 
 """""""""""""""""""""""""""""""""""""""""""""" Languages & Files
 
@@ -237,6 +247,7 @@ imap <c-j> <Plug>(completion_prev_source)
 imap <c-k> <Plug>(completion_next_source)
 
 " Code navigation shortcuts
+nnoremap <silent> ca    <cmd>lua vim.lsp.buf.code_action()<CR>
 nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
@@ -319,7 +330,7 @@ nvim_lsp.pyls.setup{
                     all_scopes = true;
                 };
                 pylint = {
-                    enabled = true;
+                    enabled = false;
                 };
                 yapf = {
                     enabled = true;
@@ -340,4 +351,88 @@ nvim_lsp.metals.setup{on_attach = on_attach}
 
 nvim_lsp.tsserver.setup{on_attach = on_attach}
 nvim_lsp.vuels.setup{on_attach = on_attach}
+nvim_lsp.jdtls.setup{
+  on_attach = on_attach;
+  root_dir = nvim_lsp.util.root_pattern(".git", "pom.xml", "build.xml")
+}
+EOF
+
+nnoremap <leader>f :lua require'telescope.builtin'.live_grep{}<CR>
+nnoremap <leader>fg :lua require'telescope.builtin'.git_files{}<CR>
+
+" Set up telescope.nvim actions
+lua << EOF
+local actions = require'telescope.actions'
+
+require'telescope'.setup {
+  defaults = {
+    mappings = {
+      i = {
+        ["<C-j>"] = actions.move_selection_next,
+        ["<C-k>"] = actions.move_selection_previous,
+      }
+    }
+  }
+}
+EOF
+
+" Setup nvim-lsputils configuration and callbacks
+lua <<EOF
+vim.g.lsp_utils_location_opts = {
+	height = 24,
+	mode = 'editor',
+  list = {
+    border = true,
+    numbering = true;
+    title = 'Location Files',
+  };
+	preview = {
+		title = 'Location Preview'
+	};
+	keymaps = {
+		n = {
+			['<C-n>'] = 'j',
+			['<C-p>'] = 'k',
+		}
+	}
+}
+
+vim.g.lsp_utils_symbols_opts = {
+	height = 24,
+	mode = 'editor',
+  list = {
+    border = true,
+    numbering = true;
+    title = 'Symbols',
+  };
+	preview = {
+		title = 'Symbol Preview'
+	};
+	keymaps = {
+		n = {
+			['<C-n>'] = 'j',
+			['<C-p>'] = 'k',
+		}
+	}
+}
+
+vim.g.lsp_utils_codeaction_opts = {
+	height = 24,
+	mode = 'editor',
+  list = {
+    border = true,
+    numbering = true;
+    title = 'Code Actions',
+  }
+}
+
+vim.lsp.callbacks['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
+vim.lsp.callbacks['textDocument/references'] = require'lsputil.locations'.references_handler
+vim.lsp.callbacks['textDocument/definition'] = require'lsputil.locations'.definition_handler
+vim.lsp.callbacks['textDocument/declaration'] = require'lsputil.locations'.declaration_handler
+vim.lsp.callbacks['textDocument/typeDefinition'] = require'lsputil.locations'.typeDefinition_handler
+vim.lsp.callbacks['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
+vim.lsp.callbacks['textDocument/documentSymbol'] = require'lsputil.symbols'.document_handler
+vim.lsp.callbacks['workspace/symbol'] = require'lsputil.symbols'.workspace_handler
+
 EOF
