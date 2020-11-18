@@ -189,9 +189,6 @@ Plug 'nvim-lua/completion-nvim'
 " Get the current buffer for completion
 Plug 'steelsojka/completion-buffers'
 
-" Diagnostic navigation and settings for built-in LSP
-Plug 'nvim-lua/diagnostic-nvim'
-
 " Searching for files
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
@@ -259,21 +256,16 @@ nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
 
 
-" Visualize diagnostics
-"let g:diagnostic_enable_virtual_text = 1
-"let g:diagnostic_trimmed_virtual_text = '40'
-"" Don't show diagnostics while in insert mode
-"let g:diagnostic_insert_delay = 1
 
 " Set updatetime for CursorHold
 " 300ms of no cursor movement to trigger CursorHold
 set updatetime=300
 " Show diagnostic popup on cursor hold
-autocmd CursorHold * lua vim.lsp.util.show_line_diagnostics()
+autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
 
 " Goto previous/next diagnostic warning/error
-nnoremap <silent> g[ <cmd>PrevDiagnosticCycle<cr>
-nnoremap <silent> g] <cmd>NextDiagnosticCycle<cr>
+nnoremap <silent> <leader>dn <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+nnoremap <silent> <leader>dp <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
 
 " have a fixed column for the diagnostics to appear in
 " this removes the jitter when warnings/errors flow in
@@ -291,13 +283,12 @@ endif
 """
 lua << EOF
 
-local nvim_lsp = require'nvim_lsp'
+local nvim_lsp = require'lspconfig'
 
 -- function to attach completion and diagnostics
 -- when setting up lsp
 local on_attach = function(client)
     require'completion'.on_attach(client)
-    require'diagnostic'.on_attach(client)
 end
 
 
@@ -351,14 +342,36 @@ nvim_lsp.metals.setup{on_attach = on_attach}
 
 nvim_lsp.tsserver.setup{on_attach = on_attach}
 nvim_lsp.vuels.setup{on_attach = on_attach}
-nvim_lsp.jdtls.setup{
-  on_attach = on_attach;
-  root_dir = nvim_lsp.util.root_pattern(".git", "pom.xml", "build.xml")
-}
+
+-- vim diagnostic config
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    -- This will disable virtual text, like doing:
+    -- let g:diagnostic_enable_virtual_text = 0
+    virtual_text = false,
+
+    -- This is similar to:
+    -- let g:diagnostic_show_sign = 1
+    -- To configure sign display,
+    --  see: ":help vim.lsp.diagnostic.set_signs()"
+    signs = true,
+
+    -- This is similar to:
+    -- "let g:diagnostic_insert_delay = 1"
+    update_in_insert = false,
+  }
+)
 EOF
+" nvim_lsp.jdtls.setup{
+"   on_attach = on_attach;
+"   root_dir = nvim_lsp.util.root_pattern(".git", "pom.xml", "build.xml")
+" }
 
 nnoremap <leader>f :lua require'telescope.builtin'.live_grep{}<CR>
 nnoremap <leader>fg :lua require'telescope.builtin'.git_files{}<CR>
+nnoremap <leader>lr :lua require'telescope.builtin'.lsp_references{}<CR>
+nnoremap <leader>qf :lua require'telescope.builtin'.quickfix{}<CR>
+nnoremap <leader>ll :lua require'telescope.builtin'.loclist{}<CR>
 
 " Set up telescope.nvim actions
 lua << EOF
@@ -415,6 +428,7 @@ vim.g.lsp_utils_symbols_opts = {
 		}
 	}
 }
+
 
 vim.g.lsp_utils_codeaction_opts = {
 	height = 24,
