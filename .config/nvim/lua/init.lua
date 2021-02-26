@@ -14,7 +14,7 @@ local on_attach = function(client)
 
     buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 
-    -- Mappings.
+    -- Setup our mappings for the lsp actions
     local opts = {noremap = true, silent = true}
     buf_set_keymap("n", "ca",    "<Cmd>lua vim.lsp.buf.code_action()<CR>", opts)
     buf_set_keymap("n", "gD",    "<Cmd>lua vim.lsp.buf.declaration()<CR>", opts)
@@ -32,6 +32,8 @@ local on_attach = function(client)
 
 end
 
+-- Configure each of the LSPs that we want to use
+-- Apply any custom configuration here
 lsp.pyls.setup{
   on_attach = on_attach;
   settings = {
@@ -73,7 +75,7 @@ lsp.pyls.setup{
 
 lsp.bashls.setup{
     on_attach = on_attach;
-    cmd = { "/Users/kchau/.nvm/versions/node/v14.9.0/bin/bash-language-server", "start"};
+    cmd = { "bash-language-server", "start"};
     root_dir = lsp.util.root_pattern('.git');
 }
 
@@ -94,7 +96,6 @@ lsp.jdtls.setup{
   on_attach = on_attach;
   root_dir = lsp.util.root_pattern(".git", "pom.xml", "build.xml")
 }
-
 
 lsp.diagnosticls.setup {
     on_attach = on_attach;
@@ -153,8 +154,8 @@ lsp.diagnosticls.setup {
 }
 
 -- Use a loop to setup servers that dont have custom settings
+-- just attach the custom on_attach function
 local servers = {
-  "sumneko_lua",
   "metals",
   "tsserver",
   "vuels",
@@ -215,64 +216,3 @@ telescope.setup {
     }
   }
 }
-
-
--- Setup nvim-lsputils configuration and callbacks
-vim.g.lsp_utils_location_opts = {
-	height = 24,
-	mode = 'editor',
-  list = {
-    border = true,
-    numbering = true;
-    title = 'Location Files',
-  };
-	preview = {
-		title = 'Location Preview'
-	};
-	keymaps = {
-		n = {
-			['<C-n>'] = 'j',
-			['<C-p>'] = 'k',
-		}
-	}
-}
-
-vim.g.lsp_utils_symbols_opts = {
-	height = 24,
-	mode = 'editor',
-  list = {
-    border = true,
-    numbering = true;
-    title = 'Symbols',
-  };
-	preview = {
-		title = 'Symbol Preview'
-	};
-	keymaps = {
-		n = {
-			['<C-n>'] = 'j',
-			['<C-p>'] = 'k',
-		}
-	}
-}
-
-
-vim.g.lsp_utils_codeaction_opts = {
-	height = 24,
-	mode = 'editor',
-  list = {
-    border = true,
-    numbering = true;
-    title = 'Code Actions',
-  }
-}
-
-vim.lsp.callbacks['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
-vim.lsp.callbacks['textDocument/references'] = require'lsputil.locations'.references_handler
-vim.lsp.callbacks['textDocument/definition'] = require'lsputil.locations'.definition_handler
-vim.lsp.callbacks['textDocument/declaration'] = require'lsputil.locations'.declaration_handler
-vim.lsp.callbacks['textDocument/typeDefinition'] = require'lsputil.locations'.typeDefinition_handler
-vim.lsp.callbacks['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
-vim.lsp.callbacks['textDocument/documentSymbol'] = require'lsputil.symbols'.document_handler
-vim.lsp.callbacks['workspace/symbol'] = require'lsputil.symbols'.workspace_handler
-

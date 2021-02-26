@@ -119,7 +119,9 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 let g:airline#extensions#tabline#enabled = 1
-let airline#extensions#ale#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline_powerline_fonts = 1
 
 " Shows the indentation levels with lines
@@ -193,10 +195,7 @@ Plug 'steelsojka/completion-buffers'
 " Searching for files
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-lua/telescope.nvim'
-
-Plug 'RishabhRD/popfix'
-Plug 'RishabhRD/nvim-lsputils'
+Plug 'nvim-telescope/telescope.nvim'
 
 """""""""""""""""""""""""""""""""""""""""""""" Languages & Files
 
@@ -279,6 +278,7 @@ endif
 
 nnoremap <leader>f :lua require'telescope.builtin'.live_grep{}<CR>
 nnoremap <leader>fg :lua require'telescope.builtin'.git_files{}<CR>
+nnoremap <leader>fb :lua require'telescope.builtin'.buffers{ show_all_buffers = true; }<cr>
 nnoremap <leader>lr :lua require'telescope.builtin'.lsp_references{}<CR>
 nnoremap <leader>qf :lua require'telescope.builtin'.quickfix{}<CR>
 nnoremap <leader>ll :lua require'telescope.builtin'.loclist{}<CR>
