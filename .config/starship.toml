@@ -56,6 +56,9 @@ style = "blue"
 [git_branch]
 format = "[$symbol$branch]($style)"
 
+[git_commit]
+format = "[\\($hash\\)]($style)"
+
 [git_status]
 ahead = "⇡${count}"
 diverged = "⇕⇡${ahead_count}⇣${behind_count}"

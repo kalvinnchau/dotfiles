@@ -70,6 +70,7 @@ set undoreload=10000
 " Source and Edit nvim/init
 nnoremap <leader>src :source ~/.config/nvim/init.vim<cr>
 nnoremap <leader>erc :vsp ~/.config/nvim/init.vim<cr>
+nnoremap <leader>erl :vsp ~/.config/nvim/lua/init.lua<cr>
 
 """"""""""""""""""""""""""""
 " => Text, tab and indent related
@@ -238,24 +239,25 @@ let g:completion_chain_complete_list = [
     \{'mode': '<c-n>'}
 \]
 
+let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy', 'all']
+
 " use <c-j> and <c-k> to move between sources ^
 let g:completion_auto_change_source = 1
 imap <c-j> <Plug>(completion_prev_source)
 imap <c-k> <Plug>(completion_next_source)
 
 " Code navigation shortcuts
-nnoremap <silent> ca    <cmd>lua vim.lsp.buf.code_action()<CR>
-nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
-nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
-nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
-nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
-nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
-
-
+"nnoremap <silent> ca    <cmd>lua vim.lsp.buf.code_action()<CR>
+"nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+"nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+"nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+"nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+"nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+"nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+"nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+"nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+"nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
+"nnoremap <silent> ff    <cmd>lua vim.lsp.buf.formatting()<CR>
 
 " Set updatetime for CursorHold
 " 300ms of no cursor movement to trigger CursorHold
@@ -263,9 +265,6 @@ set updatetime=300
 " Show diagnostic popup on cursor hold
 autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
 
-" Goto previous/next diagnostic warning/error
-nnoremap <silent> <leader>dn <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
-nnoremap <silent> <leader>dp <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
 
 " have a fixed column for the diagnostics to appear in
 " this removes the jitter when warnings/errors flow in
@@ -278,175 +277,11 @@ if exists('&inccommand')
       set inccommand=split
 endif
 
-"""
-" Neovim LSP Configuration
-"""
-lua << EOF
-
-local nvim_lsp = require'lspconfig'
-
--- function to attach completion and diagnostics
--- when setting up lsp
-local on_attach = function(client)
-    require'completion'.on_attach(client)
-end
-
-
-nvim_lsp.pyls.setup{
-    on_attach = on_attach;
-    settings = {
-        pyls = {
-            enable = true;
-            plugins = {
-                jedi_completion = {
-                    enabled = true;
-                    include_params = true;
-                };
-                jedi_definition = {
-                    enabled = true;
-                    follow_builtin_imports = true;
-                    follow_imports = true;
-                };
-                jedi_hover = {
-                    enabled = true;
-                };
-                jedi_references = {
-                    enabled = true;
-                };
-                jedi_signature_help = {
-                    enabled = true;
-                };
-                jedi_symbols = {
-                    enabled = true;
-                    all_scopes = true;
-                };
-                pylint = {
-                    enabled = false;
-                };
-                yapf = {
-                    enabled = true;
-                };
-            }
-        }
-    }
-}
-
-nvim_lsp.bashls.setup{
-    root_dir = nvim_lsp.util.root_pattern('.git');
-}
-
-nvim_lsp.gopls.setup{on_attach = on_attach}
-nvim_lsp.sumneko_lua.setup{on_attach = on_attach}
-nvim_lsp.rust_analyzer.setup{on_attach = on_attach}
-nvim_lsp.metals.setup{on_attach = on_attach}
-
-nvim_lsp.tsserver.setup{on_attach = on_attach}
-nvim_lsp.vuels.setup{on_attach = on_attach}
-
--- vim diagnostic config
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    -- This will disable virtual text, like doing:
-    -- let g:diagnostic_enable_virtual_text = 0
-    virtual_text = false,
-
-    -- This is similar to:
-    -- let g:diagnostic_show_sign = 1
-    -- To configure sign display,
-    --  see: ":help vim.lsp.diagnostic.set_signs()"
-    signs = true,
-
-    -- This is similar to:
-    -- "let g:diagnostic_insert_delay = 1"
-    update_in_insert = false,
-  }
-)
-EOF
-" nvim_lsp.jdtls.setup{
-"   on_attach = on_attach;
-"   root_dir = nvim_lsp.util.root_pattern(".git", "pom.xml", "build.xml")
-" }
-
 nnoremap <leader>f :lua require'telescope.builtin'.live_grep{}<CR>
 nnoremap <leader>fg :lua require'telescope.builtin'.git_files{}<CR>
 nnoremap <leader>lr :lua require'telescope.builtin'.lsp_references{}<CR>
 nnoremap <leader>qf :lua require'telescope.builtin'.quickfix{}<CR>
 nnoremap <leader>ll :lua require'telescope.builtin'.loclist{}<CR>
 
-" Set up telescope.nvim actions
-lua << EOF
-local actions = require'telescope.actions'
-
-require'telescope'.setup {
-  defaults = {
-    mappings = {
-      i = {
-        ["<C-j>"] = actions.move_selection_next,
-        ["<C-k>"] = actions.move_selection_previous,
-      }
-    }
-  }
-}
-EOF
-
-" Setup nvim-lsputils configuration and callbacks
-lua <<EOF
-vim.g.lsp_utils_location_opts = {
-	height = 24,
-	mode = 'editor',
-  list = {
-    border = true,
-    numbering = true;
-    title = 'Location Files',
-  };
-	preview = {
-		title = 'Location Preview'
-	};
-	keymaps = {
-		n = {
-			['<C-n>'] = 'j',
-			['<C-p>'] = 'k',
-		}
-	}
-}
-
-vim.g.lsp_utils_symbols_opts = {
-	height = 24,
-	mode = 'editor',
-  list = {
-    border = true,
-    numbering = true;
-    title = 'Symbols',
-  };
-	preview = {
-		title = 'Symbol Preview'
-	};
-	keymaps = {
-		n = {
-			['<C-n>'] = 'j',
-			['<C-p>'] = 'k',
-		}
-	}
-}
-
-
-vim.g.lsp_utils_codeaction_opts = {
-	height = 24,
-	mode = 'editor',
-  list = {
-    border = true,
-    numbering = true;
-    title = 'Code Actions',
-  }
-}
-
-vim.lsp.callbacks['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
-vim.lsp.callbacks['textDocument/references'] = require'lsputil.locations'.references_handler
-vim.lsp.callbacks['textDocument/definition'] = require'lsputil.locations'.definition_handler
-vim.lsp.callbacks['textDocument/declaration'] = require'lsputil.locations'.declaration_handler
-vim.lsp.callbacks['textDocument/typeDefinition'] = require'lsputil.locations'.typeDefinition_handler
-vim.lsp.callbacks['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
-vim.lsp.callbacks['textDocument/documentSymbol'] = require'lsputil.symbols'.document_handler
-vim.lsp.callbacks['workspace/symbol'] = require'lsputil.symbols'.workspace_handler
-
-EOF
+" Loads lua config
+lua require('init')

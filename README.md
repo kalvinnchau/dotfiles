@@ -75,6 +75,21 @@ jenv global <set version>
 docs at [nvm-sh/nvm](https://github.com/nvm-sh/nvm)
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
+
+nvm use <>
+```
+
+### nvim lsp
+
+```
+npm install -g npm
+npm i -g prettier
+npm i -g bash-language-server
+npm i -g diagnostic-languageserver
+npm i -g typescript-language-server
+
+brew install shellcheck
+brew install shfmt
 ```
 
 ## todo

@@ -17,7 +17,8 @@ zinit light-mode for \
     zinit-zsh/z-a-rust \
     zinit-zsh/z-a-as-monitor \
     zinit-zsh/z-a-patch-dl \
-    zinit-zsh/z-a-bin-gem-node
+    zinit-zsh/z-a-bin-gem-node \
+    zsh-users/zsh-completions
 
 ### End of Zinit's installer chunk
 
@@ -28,6 +29,18 @@ zinit wait lucid light-mode for \
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+# Use fd (https://github.com/sharkdp/fd) instead of the default find
+# command for listing path candidates.
+# - The first argument to the function ($1) is the base path to start traversal
+# - See the source code (completion.{bash,zsh}) for the details.
+_fzf_compgen_path() {
+  fd --hidden --follow --exclude ".git" . "$1"
+}
+
+# Use fd to generate the list for directory completion
+_fzf_compgen_dir() {
+  fd --type d --hidden --follow --exclude ".git" . "$1"
+}
 
 autoload -U compinit && compinit
 
@@ -69,6 +82,12 @@ bindkey '^[^?' tcsh-backward-delete-word
 zle -N tcsh-backward-delete-word
 
 ##
+# functions
+##
+# todo make conditional
+source ~/.config/zsh/functions.sh
+
+##
 # aliases
 ##
 alias vi=nvim
@@ -102,6 +121,13 @@ export EDITOR=nvim
 export HISTCONTROL=ignoredups,ignorespace
 export HISTFILESIZE=50000
 export HISTSIZE=${HISTFILESIZE}
+setopt APPEND_HISTORY # Don't erase history
+setopt EXTENDED_HISTORY # Add additional data to history like timestamp
+setopt INC_APPEND_HISTORY # Add immediately
+setopt HIST_FIND_NO_DUPS # Don't show duplicates in search
+setopt HIST_IGNORE_SPACE # Don't preserve spaces. You may want to turn it off
+setopt NO_HIST_BEEP # Don't beep
+setopt SHARE_HISTORY # Share history between session/terminals
 
 # Use only virtualenvs
 export PIP_REQUIRE_VIRTUALENV=true
