@@ -208,10 +208,10 @@ telescope.setup {
       i = {
         ["<C-j>"] = actions.move_selection_next,
         ["<C-k>"] = actions.move_selection_previous,
-        ["<CR>"] = actions.goto_file_selection_edit + actions.center,
-        ["<C-x>"] = actions.goto_file_selection_split,
-        ["<C-v>"] = actions.goto_file_selection_vsplit,
-        ["<C-t>"] = actions.goto_file_selection_tabedit,
+        ["<CR>"]  = actions.select_default + actions.center,
+        ["<C-x>"] = actions.select_horizontal,
+        ["<C-v>"] = actions.select_vertical,
+        ["<C-t>"] = actions.select_tab,
       }
     }
   }

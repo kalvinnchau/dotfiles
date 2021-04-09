@@ -84,8 +84,11 @@ zle -N tcsh-backward-delete-word
 ##
 # functions
 ##
-# todo make conditional
-source ~/.config/zsh/functions.sh
+if [ -d ~/.config/zsh ]; then
+  for f in ~/.config/zsh/*.sh; do
+    [ -r "$f" ] && source "$f"
+  done
+fi
 
 ##
 # aliases
@@ -154,3 +157,8 @@ command -v starship &> /dev/null && eval "$(starship init zsh)"
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/local/bin/s5cmd s5cmd
+
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
