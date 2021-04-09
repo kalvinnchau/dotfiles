@@ -81,14 +81,6 @@ bindkey '^W' tcsh-backward-delete-word
 bindkey '^[^?' tcsh-backward-delete-word
 zle -N tcsh-backward-delete-word
 
-##
-# functions
-##
-if [ -d ~/.config/zsh ]; then
-  for f in ~/.config/zsh/*.sh; do
-    [ -r "$f" ] && source "$f"
-  done
-fi
 
 ##
 # aliases
@@ -162,3 +154,12 @@ autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/s5cmd s5cmd
 
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
+##
+# functions
+##
+if [ -d ~/.config/zsh ]; then
+  for f in ~/.config/zsh/*.sh; do
+    [ -r "$f" ] && source "$f"
+  done
+fi
