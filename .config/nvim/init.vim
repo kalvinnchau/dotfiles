@@ -30,6 +30,9 @@ set scrolljump=-10
 " Set background dark
 set background=dark
 
+" allow resizing splits with the mouse
+set mouse+=a
+
 " Use system clipboard
 nnoremap <leader>ys "+yy
 nnoremap <leader>ps "+p
@@ -106,8 +109,6 @@ if has('nvim')
     tnoremap <Esc> <C-\><C-n>
 endif
 
-
-
 """"""""""""""""""""""""""""""""""""""""""""""""
 " vim-plug setup
 """"""""""""""""""""""""""""""""""""""""""""""""
@@ -161,10 +162,11 @@ Plug 'junegunn/fzf.vim'
 
 """""""""""""""""""""""""""""""""""""""""""""" Languages & Files
 Plug 'plasticboy/vim-markdown', { 'for' : ['md'] }
-Plug 'ajorgensen/vim-markdown-toc'
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_conceal = 0
 let g:vim_markdown_conceal_code_blocks = 0
+
+Plug 'mzlogin/vim-markdown-toc'
 
 Plug 'elzr/vim-json', {'for': ['json']}
 let g:vim_json_syntax_conceal = 0
@@ -174,6 +176,7 @@ Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'cespare/vim-toml'
 Plug 'yuezk/vim-js'
 Plug 'maxmellon/vim-jsx-pretty'
+Plug 'lifepillar/pgsql.vim'
 
 "" For Jenkinsfiles
 au BufNewFile,BufRead Jenkinsfile set filetype=groovy
@@ -197,6 +200,9 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+Plug 'sindrets/diffview.nvim', { 'branch': 'main' }
 """""""""""""""""""""""""""""""""""""""""""""" Languages & Files
 
 call plug#end()
@@ -244,19 +250,6 @@ let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy', 'all']
 let g:completion_auto_change_source = 1
 imap <c-j> <Plug>(completion_prev_source)
 imap <c-k> <Plug>(completion_next_source)
-
-" Code navigation shortcuts
-"nnoremap <silent> ca    <cmd>lua vim.lsp.buf.code_action()<CR>
-"nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
-"nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-"nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
-"nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
-"nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
-"nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
-"nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
-"nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-"nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
-"nnoremap <silent> ff    <cmd>lua vim.lsp.buf.formatting()<CR>
 
 " Set updatetime for CursorHold
 " 300ms of no cursor movement to trigger CursorHold

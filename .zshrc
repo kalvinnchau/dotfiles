@@ -24,7 +24,8 @@ zinit light-mode for \
 
 zinit wait lucid light-mode for \
     kazhala/dotbare \
-    zdharma/fast-syntax-highlighting
+    zdharma/fast-syntax-highlighting\
+    zsh-users/zsh-autosuggestions
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null'

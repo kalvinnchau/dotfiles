@@ -41,7 +41,6 @@ format = """\
 
 [aws]
 style = "bold blue"
-displayed_items = "profile"
 
 [cmd_duration]
 min_time = 1000
@@ -93,7 +92,8 @@ disabled = true
 
 [jobs]
 symbol = "+ "
-threshold = 0
+number_threshold = 0
+symbol_threshold = 0
 
 [kubernetes]
 format = "[$symbol$context(\\($namespace\\))]($style) "
