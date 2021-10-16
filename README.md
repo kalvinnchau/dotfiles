@@ -10,7 +10,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/i
 # install homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
-brew install fzf tree
+brew install fzf tree jq
 $(brew --prefix)/opt/fzf/install
 brew install neovim --HEAD
 ```
@@ -48,6 +48,17 @@ brew install aws-iam-authenticator
 ```
 
 ## other stuff
+
+### install nerd fonts
+This installs the latest SourceCodePro font set
+```bash
+cd ~/Library/Fonts && \
+  curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest |
+    jq -r '.assets[] | select(.name == "SourceCodePro.zip") | .browser_download_url' |
+    xargs -I{} curl -s -L -O {} && \
+  unzip SourceCodePro.zip
+```
+
 ### jvm
 
 Use `jenv` to mange all the version fun

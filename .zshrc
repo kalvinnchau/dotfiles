@@ -155,6 +155,7 @@ autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/s5cmd s5cmd
 
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 ##
 # functions
