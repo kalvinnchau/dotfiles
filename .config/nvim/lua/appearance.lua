@@ -1,3 +1,4 @@
+local common = require('common')
 ----------------------------------------
 -- Appearance settings
 ----------------------------------------
@@ -32,9 +33,8 @@ require('bufferline').setup{
 }
 
 -- cycle through buffers with b+tab or b+shift+tab
-local mapopts = {noremap=true, silent=true}
-vim.api.nvim_set_keymap('n', 'b<tab>', ':BufferLineCycleNext<cr>', mapopts)
-vim.api.nvim_set_keymap('n', 'b<s-tab>', ':BufferLineCyclePrev<cr>', mapopts)
+common.nvim_nmap('b<tab>',    ':BufferLineCycleNext<cr>')
+common.nvim_nmap('b<s-tab>',  ':BufferLineCyclePrev<cr>')
 
 require('nvim-web-devicons').setup{}
 

@@ -1,3 +1,4 @@
+local common = require('common')
 ----------------------------------------
 -- Vim Configuration
 ----------------------------------------
@@ -71,19 +72,19 @@ vim.opt.undoreload = 10000
 ----------------------------------------
 -- Vim key mapping
 ----------------------------------------
+-- non-recursive remap, silence output
 local mapopts = {noremap=true, silent=true}
 
-vim.api.nvim_set_keymap('n', '<leader>erc', ':vsp ~/.config/nvim/init.vim<cr>', mapopts)
-vim.api.nvim_set_keymap('n', '<leader>erl', ':vsp ~/.config/nvim/lua/init.lua<cr>', mapopts)
-vim.api.nvim_set_keymap('n', '<leader>path', [[:echo expand('%:p')<cr>]], mapopts)
+common.nvim_nmap('<leader>erc', ':vsp ~/.config/nvim/init.vim<cr>')
+common.nvim_nmap('<leader>erl', ':vsp ~/.config/nvim/lua/init.lua<cr>')
+common.nvim_nmap('<leader>path', [[:echo expand('%:p')<cr>]])
+
+common.nvim_nmap('<leader>PI', ':PackerInstall<cr>')
+common.nvim_nmap('<leader>PU', ':PackerUpdate<cr>')
+common.nvim_nmap('<leader>PS', ':PackerSync<cr>')
+common.nvim_nmap('<leader>PC', ':PackerCompile<cr>')
 
 vim.api.nvim_set_keymap('t', '<Esc>', [[<C-\><C-n>]], {noremap=true, silent=true})
-
-
-vim.api.nvim_set_keymap('n', '<leader>PI', ':PackerInstall<cr>', mapopts)
-vim.api.nvim_set_keymap('n', '<leader>PU', ':PackerUpdate<cr>', mapopts)
-vim.api.nvim_set_keymap('n', '<leader>PS', ':PackerSync<cr>', mapopts)
-vim.api.nvim_set_keymap('n', '<leader>PC', ':PackerCompile<cr>', mapopts)
 
 -- auto remove trailing whitespace on write
 vim.cmd [[autocmd BufWritePre * :%s/\s\+$//e]]

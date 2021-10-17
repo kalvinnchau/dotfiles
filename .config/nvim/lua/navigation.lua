@@ -1,12 +1,16 @@
 ----------------------------------------
 -- nvim-tree.lua
 ----------------------------------------
-vim.api.nvim_set_keymap('', '<leader>tree', [[:NvimTreeToggle<cr>]], {silent=true})
-
 local tree = require('nvim-tree')
+local common = require('common')
 
 tree.setup {
+  -- updates the root directory of the tree on `DirChanged` (when `:cd` is run)
+  update_cwd = true,
 }
+
+common.nvim_nmap('<leader>tree',  [[:NvimTreeToggle<cr>]])
+common.nvim_nmap('<leader>cd',    ':cd %:p:h<CR>:pwd<CR>')
 
 ----------------------------------------
 -- telescope.nvim
@@ -38,32 +42,30 @@ telescope.setup {
   }
 }
 
-local opts = {noremap=true, silent=true}
-
-vim.api.nvim_set_keymap(
-  'n', '<leader>f', [[<cmd>lua require('telescope.builtin').live_grep{}<CR>]], opts
+common.nvim_nmap(
+  '<leader>f', [[<cmd>lua require('telescope.builtin').live_grep{}<CR>]]
 )
 
-vim.api.nvim_set_keymap(
-  'n', '<leader>ff', [[<cmd>lua require('telescope.builtin').find_files{}<CR>]], opts
+common.nvim_nmap(
+  '<leader>ff', [[<cmd>lua require('telescope.builtin').find_files{}<CR>]]
 )
 
-vim.api.nvim_set_keymap(
-  'n', '<leader>fg', [[<cmd>lua require('telescope.builtin').git_files{}<CR>]], opts
+common.nvim_nmap(
+  '<leader>fg', [[<cmd>lua require('telescope.builtin').git_files{}<CR>]]
 )
 
 -- vim pickers
-vim.api.nvim_set_keymap(
-  'n', '<leader>fb', [[<cmd>lua require('telescope.builtin').buffers{show_all_buffers = true }<CR>]], opts
-)
-vim.api.nvim_set_keymap(
-  'n', '<leader>fm', [[<cmd>lua require('telescope.builtin').keymaps{}<CR>]], opts
-)
-vim.api.nvim_set_keymap(
-  'n', '<leader>fc', [[<cmd>lua require('telescope.builtin').commands{}<CR>]], opts
+common.nvim_nmap(
+  '<leader>fb', [[<cmd>lua require('telescope.builtin').buffers{show_all_buffers = true }<CR>]]
 )
 
+common.nvim_nmap(
+  '<leader>fm', [[<cmd>lua require('telescope.builtin').keymaps{}<CR>]]
+)
+common.nvim_nmap(
+  '<leader>fc', [[<cmd>lua require('telescope.builtin').commands{}<CR>]]
+)
 
-vim.api.nvim_set_keymap(
-  'n', '<leader>ll', [[<cmd>lua require('telescope.builtin').loclist{}<cr>]], opts
+common.nvim_nmap(
+  '<leader>ll', [[<cmd>lua require('telescope.builtin').loclist{}<cr>]]
 )
