@@ -2,10 +2,10 @@ local lsp = require('lspconfig')
 local common = require('common')
 
 -- signs
-vim.fn.sign_define('LspDiagnosticsErrorSign', {text='✗', texthl='LspDiagnosticsError'})
-vim.fn.sign_define('LspDiagnosticsWarningSign', {text='⚠', texthl='LspDiagnosticsWarning'})
-vim.fn.sign_define('LspDiagnosticsInformationSign', {text='ⓘ', texthl='LspDiagnosticsInformation'})
-vim.fn.sign_define('LspDiagnosticsHintSign', {text='✓', texthl='LspDiagnosticsHint'})
+--vim.fn.sign_define('LspDiagnosticsErrorSign', {text='✗', texthl='LspDiagnosticsError', linehl='', numhl=''})
+--vim.fn.sign_define('LspDiagnosticsWarningSign', {text='⚠', texthl='LspDiagnosticsWarning', linehl='', numhl=''})
+--vim.fn.sign_define('LspDiagnosticsInformationSign', {text='ⓘ', texthl='LspDiagnosticsInformation', linehl='', numhl=''})
+--vim.fn.sign_define('LspDiagnosticsHintSign', {text='✓', texthl='LspDiagnosticsHint', linehl='', numhl=''})
 
 -- icons
 require('lspkind').init({
@@ -40,10 +40,6 @@ cmp.setup({
 })
 
 vim.cmd[[autocmd FileType TelescopePrompt lua require('cmp').setup.buffer { enabled = false }]]
-
--- time in ms for CursorHold, to display the current line's diagnostic
-vim.g.cursorhold_updatetime = 100
-vim.cmd[[autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()]]
 
 local updated_capabilities = vim.lsp.protocol.make_client_capabilities()
 updated_capabilities = require('cmp_nvim_lsp').update_capabilities(updated_capabilities)
@@ -278,13 +274,18 @@ for _, lsp_name in ipairs(servers) do
 end
 
 -- vim diagnostic config
+
+-- time in ms for CursorHold, to display the current line's diagnostic
+vim.g.cursorhold_updatetime = 100
+vim.cmd[[autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()]]
+
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
     underline = true,
 
     -- This will disable virtual text, like doing:
     -- let g:diagnostic_enable_virtual_text = 0
-    virtual_text = false,
+    virtual_text = false, -- {spacing = 4, prefix = "■"},
 
     -- This is similar to:
     -- let g:diagnostic_show_sign = 1
