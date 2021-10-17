@@ -2,7 +2,7 @@
 -- generic 'other' config
 ----------------------------------------
 -- treesitter config
-local tree = require'nvim-treesitter.configs'
+local tree = require('nvim-treesitter.configs')
 tree.setup {
   -- TODO consider using 'maintained'
   ensure_installed = { 'bash', 'dockerfile', 'go', 'java', 'javascript', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vue', 'yaml' },
@@ -13,7 +13,7 @@ tree.setup {
 
 -- setup diffview
 -- -- Lua
-local cb = require'diffview.config'.diffview_callback
+local cb = require('diffview.config').diffview_callback
 
 require'diffview'.setup {
   diff_binaries = false,    -- Show diffs for binaries
