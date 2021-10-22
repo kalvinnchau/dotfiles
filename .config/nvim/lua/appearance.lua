@@ -20,16 +20,68 @@ vim.g.gruvbox_contrast_light = 'medium'
 vim.g.gruvbox_improved_warnings = 1
 
 require('lualine').setup{
-    options = {
-        theme = 'gruvbox',
-    }
+  options = {
+      theme = 'gruvbox',
+  }
 }
 
 require('bufferline').setup{
-    options = {
-        numbers = 'buffer_id',
-        diagnostics = 'nvim_lsp',
+  options = {
+    numbers = 'buffer_id',
+    diagnostics = 'nvim_lsp',
+    offsets = {
+      {
+        filetype = 'NvimTree',
+        text_align = 'center',
+        text = 'File Explorer',
+      },
     }
+  },
+  -- remove italics
+  highlights = {
+    buffer_selected = {
+      gui = 'bold',
+    },
+    diagnostic_selected = {
+      gui = 'bold',
+    },
+    info_selected = {
+      gui = 'bold',
+    },
+    info_diagnostic_selected = {
+      gui = 'bold',
+    },
+    warning_selected = {
+      gui = 'bold',
+    },
+    warning_diagnostic_selected = {
+      gui = 'bold',
+    },
+    error_selected = {
+      gui = 'bold',
+    },
+    error_diagnostic_selected = {
+      gui = 'bold',
+    },
+    duplicate_selected = {
+      gui = 'NONE',
+    },
+    duplicate_visible = {
+      gui = 'NONE',
+    },
+    duplicate = {
+      gui = 'NONE',
+    },
+    pick_selected = {
+      gui = 'bold',
+    },
+    pick_visible = {
+      gui = 'bold',
+    },
+    pick = {
+      gui = 'bold',
+    },
+  },
 }
 
 -- cycle through buffers with b+tab or b+shift+tab
