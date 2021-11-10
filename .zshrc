@@ -145,17 +145,37 @@ export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
 export PATH=$PATH:"$HOME/.local/bin"
 export PATH="/usr/local/opt/mysql-client/bin:$PATH"
 
-command -v jenv &> /dev/null && eval "$(jenv init -)"
+# speed up init time, rehash in the background
+if command -v jenv &> /dev/null; then
+  eval "$(jenv init - --no-rehash)"
+  (jenv rehash &) 2> /dev/null
+fi
+
 command -v starship &> /dev/null && eval "$(starship init zsh)"
 
+# lazy load nvm until nvm, node or a node-dependent command is run
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+if [[ -s "$NVM_DIR/nvm.sh" ]]; then
+  NODE_GLOBALS=($(find $NVM_DIR/versions/node -maxdepth 3 -type l -wholename '*/bin/*' | xargs -n1 basename | sort | uniq))
+  NODE_GLOBALS+=("node")
+  NODE_GLOBALS+=("nvm")
+  # Lazy-loading nvm + npm on node globals
+  load_nvm () {
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+  }
+  # Making node global trigger the lazy loading
+  for cmd in "${NODE_GLOBALS[@]}"; do
+    eval "${cmd}(){ unset -f ${NODE_GLOBALS}; load_nvm; ${cmd} \$@ }"
+  done
+fi
+
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/s5cmd s5cmd
 
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-eval "$(/opt/homebrew/bin/brew shellenv)"
+[ -s "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 
 ##
 # functions
