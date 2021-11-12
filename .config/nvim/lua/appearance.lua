@@ -84,9 +84,9 @@ require('bufferline').setup{
   },
 }
 
--- cycle through buffers with b+tab or b+shift+tab
-common.nvim_nmap('b<tab>',    ':BufferLineCycleNext<cr>')
-common.nvim_nmap('b<s-tab>',  ':BufferLineCyclePrev<cr>')
+-- cycle through buffers with [+tab or ]+shift+tab
+common.nvim_nmap('[<tab>',    ':BufferLineCycleNext<cr>')
+common.nvim_nmap('[<s-tab>',  ':BufferLineCyclePrev<cr>')
 
 require('nvim-web-devicons').setup{}
 
