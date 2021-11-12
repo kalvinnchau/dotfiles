@@ -5,9 +5,18 @@ local common = require('common')
 vim.g.indent_blankline_use_treesitter = true
 vim.g.indent_blankline_show_current_context = true
 vim.g.indent_blankline_context_patterns = {
-    'class', 'function', 'method', '^if', '^while',
-    '^for', '^object', '^table', 'block', 'arguments',
-    'func_literal', 'block',
+  'class',
+  'function',
+  'method',
+  '^if',
+  '^while',
+  '^for',
+  '^object',
+  '^table',
+  'block',
+  'arguments',
+  'func_literal',
+  'block',
 }
 
 vim.o.termguicolors = true
@@ -19,13 +28,13 @@ vim.g.gruvbox_contrast_light = 'medium'
 --vim.g.gruvbox_improved_strings = 1
 vim.g.gruvbox_improved_warnings = 1
 
-require('lualine').setup{
+require('lualine').setup({
   options = {
-      theme = 'gruvbox',
-  }
-}
+    theme = 'gruvbox',
+  },
+})
 
-require('bufferline').setup{
+require('bufferline').setup({
   options = {
     numbers = 'buffer_id',
     diagnostics = 'nvim_lsp',
@@ -35,7 +44,7 @@ require('bufferline').setup{
         text_align = 'center',
         text = 'File Explorer',
       },
-    }
+    },
   },
   -- remove italics
   highlights = {
@@ -82,12 +91,12 @@ require('bufferline').setup{
       gui = 'bold',
     },
   },
-}
+})
 
 -- cycle through buffers with [+tab or ]+shift+tab
-common.nvim_nmap('[<tab>',    ':BufferLineCycleNext<cr>')
-common.nvim_nmap('[<s-tab>',  ':BufferLineCyclePrev<cr>')
+common.nvim_nmap('[<tab>', ':BufferLineCycleNext<cr>')
+common.nvim_nmap('[<s-tab>', ':BufferLineCyclePrev<cr>')
 
-require('nvim-web-devicons').setup{}
+require('nvim-web-devicons').setup({})
 
-vim.cmd[[colorscheme gruvbox]]
+vim.cmd([[colorscheme gruvbox]])

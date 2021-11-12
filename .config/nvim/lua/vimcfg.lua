@@ -81,7 +81,7 @@ common.nvim_nmap('<leader>PU', ':PackerUpdate<cr>')
 common.nvim_nmap('<leader>PS', ':PackerSync<cr>')
 common.nvim_nmap('<leader>PC', ':PackerCompile<cr>')
 
-vim.api.nvim_set_keymap('t', '<Esc>', [[<C-\><C-n>]], {noremap=true, silent=true})
+vim.api.nvim_set_keymap('t', '<Esc>', [[<C-\><C-n>]], { noremap = true, silent = true })
 
 -- auto remove trailing whitespace on write
-vim.cmd [[autocmd BufWritePre * :%s/\s\+$//e]]
+vim.cmd([[autocmd BufWritePre * :%s/\s\+$//e]])
