@@ -72,9 +72,6 @@ vim.opt.undoreload = 10000
 ----------------------------------------
 -- Vim key mapping
 ----------------------------------------
--- non-recursive remap, silence output
-local mapopts = {noremap=true, silent=true}
-
 common.nvim_nmap('<leader>erc', ':vsp ~/.config/nvim/init.vim<cr>')
 common.nvim_nmap('<leader>erl', ':vsp ~/.config/nvim/lua/init.lua<cr>')
 common.nvim_nmap('<leader>path', [[:echo expand('%:p')<cr>]])

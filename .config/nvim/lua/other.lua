@@ -49,3 +49,6 @@ require'diffview'.setup {
     }
   }
 }
+
+-- don't hide the quotes for json
+vim.g.vim_json_syntax_conceal = 0
