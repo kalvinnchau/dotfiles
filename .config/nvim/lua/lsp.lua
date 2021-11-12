@@ -146,38 +146,6 @@ lsp['null-ls'].setup({
   on_attach = on_attach,
   capabilities = updated_capabilities,
 })
---------------------------------------------------------------
----- efm https://github.com/mattn/efm-langserver
----- generic lsp support
---------------------------------------------------------------
---local stylua_config = os.getenv("HOME") .. '/.config/stylua/stylua.toml'
---lsp.efm.setup{
---  cmd = { "efm-langserver", "-logfile", "/tmp/efm.log", "-loglevel", "10"},
---  on_attach = on_attach,
---  capabilities = updated_capabilities,
---  init_options = {documentFormatting = true},
---  filetypes = {"sh", "lua", "json"},
---  settings = {
---    rootMarkers = {".git/"},
---    languages = {
---      sh = {{
---        lintCommand = 'shellcheck -f gcc -x -',
---        lintSource = 'shellcheck',
---        lintFormats = {'%f:%l:%c: %trror: %m', '%f:%l:%c: %tarning: %m', '%f:%l:%c: %tote: %m'},
---        lintIgnoreExitCode = true,
---        lintStdin = true,
---      }},
---      lua = {{
---        formatCommand = 'stylua --config-path ' .. stylua_config .. ' -',
---        formatStdin = true,
---      }},
---      json = {{
---        formatCommand = 'jq -r .',
---        formatStdin = true,
---      }}
---    }
---  }
---}
 
 ------------------------------------------------------------
 -- golang
