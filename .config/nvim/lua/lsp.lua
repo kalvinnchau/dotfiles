@@ -128,6 +128,39 @@ lsp.bashls.setup{
 }
 
 ------------------------------------------------------------
+-- efm https://github.com/mattn/efm-langserver
+-- generic lsp support
+------------------------------------------------------------
+local stylua_config = os.getenv("HOME") .. '/.config/stylua/stylua.toml'
+lsp.efm.setup{
+  cmd = { "efm-langserver", "-logfile", "/tmp/efm.log", "-loglevel", "10"},
+  on_attach = on_attach,
+  capabilities = updated_capabilities,
+  init_options = {documentFormatting = true},
+  filetypes = {"sh", "lua", "json"},
+  settings = {
+    rootMarkers = {".git/"},
+    languages = {
+      sh = {{
+        lintCommand = 'shellcheck -f gcc -x -',
+        lintSource = 'shellcheck',
+        lintFormats = {'%f:%l:%c: %trror: %m', '%f:%l:%c: %tarning: %m', '%f:%l:%c: %tote: %m'},
+        lintIgnoreExitCode = true,
+        lintStdin = true,
+      }},
+      lua = {{
+        formatCommand = 'stylua --config-path ' .. stylua_config .. ' -',
+        formatStdin = true,
+      }},
+      json = {{
+        formatCommand = 'jq -r .',
+        formatStdin = true,
+      }}
+    }
+  }
+}
+
+------------------------------------------------------------
 -- golang
 ------------------------------------------------------------
 lsp.gopls.setup{
@@ -154,66 +187,6 @@ lsp.jdtls.setup{
   on_attach = on_attach;
   root_dir = lsp.util.root_pattern('.git', 'pom.xml', 'build.xml');
   capabilities = updated_capabilities,
-}
-
-------------------------------------------------------------
--- generics
-------------------------------------------------------------
-lsp.diagnosticls.setup {
-    on_attach = on_attach;
-    cmd = {'diagnostic-languageserver', '--stdio'};
-    filetypes = {
-        'lua',
-        'sh',
-        'json',
-        'yaml',
-        'toml'
-    };
-    init_options = {
-        linters = {
-            shellcheck = {
-                command = 'shellcheck',
-                debounce = 100,
-                args = {'--format', 'json', '-'},
-                sourceName = 'shellcheck',
-                parseJson = {
-                    line = 'line',
-                    column = 'column',
-                    endLine = 'endLine',
-                    endColumn = 'endColumn',
-                    message = '${message} [${code}]',
-                    security = 'level'
-                },
-                securities = {
-                    error = 'error',
-                    warning = 'warning',
-                    info = 'info',
-                    style = 'hint'
-                }
-            },
-        },
-        filetypes = {
-            sh = 'shellcheck',
-        },
-        formatters = {
-            shfmt = {
-                command = 'shfmt',
-                args = {'-i', '2', '-bn', '-ci', '-sr'}
-            },
-            prettier = {
-                command = 'prettier',
-                args = {'--stdin-filepath', '%filepath'},
-            }
-        },
-        formatFiletypes = {
-            sh = 'shfmt',
-            json = 'prettier',
-            yaml = 'prettier',
-            toml = 'prettier',
-            lua = 'prettier'
-        }
-    };
-    capabilities = updated_capabilities,
 }
 
 ------------------------------------------------------------
