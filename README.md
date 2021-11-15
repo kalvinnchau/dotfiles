@@ -35,6 +35,7 @@ cargo install fd-find
 cargo install du-dust
 cargo install starship
 cargo install git-delta
+cargo install stylua --features lua52
 ```
 
 5. brew packages
@@ -96,7 +97,6 @@ nvm use <>
 npm install -g npm
 npm i -g prettier
 npm i -g bash-language-server
-npm i -g diagnostic-languageserver
 npm i -g typescript-language-server
 
 brew install shellcheck

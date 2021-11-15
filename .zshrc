@@ -23,9 +23,10 @@ zinit light-mode for \
 ### End of Zinit's installer chunk
 
 zinit wait lucid light-mode for \
-    kazhala/dotbare \
-    zdharma/fast-syntax-highlighting\
+    zdharma/fast-syntax-highlighting \
     zsh-users/zsh-autosuggestions
+
+zinit light kazhala/dotbare
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null'
