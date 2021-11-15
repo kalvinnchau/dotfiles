@@ -117,6 +117,15 @@ return require('packer').startup({
       requires = { { 'nvim-lua/plenary.nvim' }, { 'neovim/nvim-lspconfig' } },
     })
 
+    -- snippet engine
+    use({
+      'L3MON4D3/LuaSnip',
+    })
+
+    use({
+      'saadparwaiz1/cmp_luasnip',
+    })
+
     -- Needed while issue https://github.com/neovim/neovim/issues/12587 is still open
     use({
       'antoinemadec/FixCursorHold.nvim',
@@ -168,6 +177,14 @@ return require('packer').startup({
 
     use({
       'mzlogin/vim-markdown-toc',
+    })
+
+    use({
+      'iamcco/markdown-preview.nvim',
+      run = function()
+        vim.fn['mkdp#util#install']()
+      end,
+      ft = 'markdown',
     })
 
     use({
