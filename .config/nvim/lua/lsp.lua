@@ -7,11 +7,24 @@ local has_words_before = function()
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
 end
 
+local M = {}
+
+function M.show_line_diagnostics()
+  local opts = {
+    focusable = false,
+    close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+    border = 'single',
+    source = 'always',  -- show source in diagnostic popup window
+    prefix = ' '
+  }
+  vim.diagnostic.open_float(nil, opts)
+end
+
 -- signs
---vim.fn.sign_define('LspDiagnosticsErrorSign', {text='✗', texthl='LspDiagnosticsError', linehl='', numhl=''})
---vim.fn.sign_define('LspDiagnosticsWarningSign', {text='⚠', texthl='LspDiagnosticsWarning', linehl='', numhl=''})
---vim.fn.sign_define('LspDiagnosticsInformationSign', {text='ⓘ', texthl='LspDiagnosticsInformation', linehl='', numhl=''})
---vim.fn.sign_define('LspDiagnosticsHintSign', {text='✓', texthl='LspDiagnosticsHint', linehl='', numhl=''})
+vim.fn.sign_define("DiagnosticSignError", { text = "✗", texthl = "DiagnosticSignError" })
+vim.fn.sign_define("DiagnosticSignWarn", { text = "⚠", texthl = "DiagnosticSignWarn" })
+vim.fn.sign_define("DiagnosticSignInfo", { text = "ⓘ", texthl = "DiagnosticSignInfo" })
+vim.fn.sign_define("DiagnosticSignHint", { text = "", texthl = "DiagnosticSignHint" })
 
 -- icons
 require('lspkind').init({
@@ -103,12 +116,12 @@ local on_attach = function(client)
   common.nvim_buf_nmap('ff', '<cmd>lua vim.lsp.buf.formatting()<CR>')
 
   common.nvim_buf_nmap('ld', [[<cmd>lua require('telescope.builtin').lsp_document_diagnostics{}<cr>]])
-  common.nvim_buf_nmap('dn', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
-  common.nvim_buf_nmap('dp', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
+  common.nvim_buf_nmap('dn', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
+  common.nvim_buf_nmap('dp', '<cmd>lua vim.diagnostic.goto_next()<CR>')
   common.nvim_buf_nmap('<c-k>', '<Cmd>lua vim.lsp.buf.signature_help()<CR>')
 
   common.nvim_buf_nmap('<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>')
-  common.nvim_buf_nmap('<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>')
+  common.nvim_buf_nmap('<space>e', '<cmd>lua require("lsp").show_line_diagnostics()<CR>')
 end
 
 -- Configure each of the LSPs that we want to use
@@ -278,9 +291,9 @@ end
 
 -- time in ms for CursorHold, to display the current line's diagnostic
 vim.g.cursorhold_updatetime = 100
-vim.cmd([[autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()]])
+vim.cmd([[autocmd CursorHold * lua require('lsp').show_line_diagnostics()]])
 
-vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+vim.diagnostic.config({
   underline = true,
 
   -- This will disable virtual text, like doing:
@@ -290,10 +303,12 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagn
   -- This is similar to:
   -- let g:diagnostic_show_sign = 1
   -- To configure sign display,
-  --  see: ':help vim.lsp.diagnostic.set_signs()'
+  --  see: ':help vim.diagnostic.set_signs()'
   signs = true,
 
   -- This is similar to:
   -- 'let g:diagnostic_insert_delay = 1'
   update_in_insert = false,
 })
+
+return M
