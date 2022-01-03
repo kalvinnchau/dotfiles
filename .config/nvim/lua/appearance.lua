@@ -99,4 +99,5 @@ common.nvim_nmap('[<s-tab>', ':BufferLineCyclePrev<cr>')
 
 require('nvim-web-devicons').setup({})
 
+vim.o.background = 'dark'
 vim.cmd([[colorscheme gruvbox]])

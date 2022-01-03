@@ -115,7 +115,7 @@ local on_attach = function(client)
   common.nvim_buf_nmap('K', '<Cmd>lua vim.lsp.buf.hover()<CR>')
   common.nvim_buf_nmap('ff', '<cmd>lua vim.lsp.buf.formatting()<CR>')
 
-  common.nvim_buf_nmap('ld', [[<cmd>lua require('telescope.builtin').lsp_document_diagnostics{}<cr>]])
+  common.nvim_buf_nmap('ld', [[<cmd>lua require('telescope.builtin').diagnostics{}<cr>]])
   common.nvim_buf_nmap('dn', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
   common.nvim_buf_nmap('dp', '<cmd>lua vim.diagnostic.goto_next()<CR>')
   common.nvim_buf_nmap('<c-k>', '<Cmd>lua vim.lsp.buf.signature_help()<CR>')
@@ -185,7 +185,7 @@ lsp.bashls.setup({
 ------------------------------------------------------------
 local null_ls = require('null-ls')
 
-null_ls.config({
+null_ls.setup({
   sources = {
     null_ls.builtins.formatting.stylua.with({
       extra_args = { '--config-path', vim.fn.expand('~/.config/stylua/stylua.toml') },
@@ -195,12 +195,14 @@ null_ls.config({
     }),
     null_ls.builtins.diagnostics.shellcheck,
   },
-})
-
-lsp['null-ls'].setup({
   on_attach = on_attach,
   capabilities = updated_capabilities,
 })
+
+--lsp['null-ls'].setup({
+--  on_attach = on_attach,
+--  capabilities = updated_capabilities,
+--})
 
 ------------------------------------------------------------
 -- golang
