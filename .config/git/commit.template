@@ -1,0 +1,3 @@
+# <type>[optional scope]: <description>
+#  type: build ci chore docs feat fix perf refactor revert style test
+# [optional body]

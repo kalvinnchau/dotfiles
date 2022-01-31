@@ -26,6 +26,9 @@
 [difftool "nvimdiff"]
   cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 
+[commit]
+  template = ~/.config/git/commit.template
+
 [alias]
   f   = fetch
   s   = status
