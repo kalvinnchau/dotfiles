@@ -40,11 +40,6 @@ return require('packer').startup({
     ----------------------------------------
     -- Navigation
     ----------------------------------------
-    -- sneak around s<char><char>
-    use({
-      'justinmk/vim-sneak',
-    })
-
     -- tree navigation
     use({
       'kyazdani42/nvim-tree.lua',
@@ -70,6 +65,18 @@ return require('packer').startup({
         require('colorizer').setup()
       end,
     })
+
+    use({
+      'blackCauldron7/surround.nvim',
+      config = function()
+        require('surround').setup({ mappings_style = 'sandwich' })
+      end,
+    })
+
+    --use({
+    --  'AckslD/nvim-neoclip.lua',
+    --  requires = { 'nvim-telescope/telescope.nvim' },
+    --})
 
     ----------------------------------------
     -- Git

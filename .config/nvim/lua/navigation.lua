@@ -42,16 +42,26 @@ telescope.setup({
   },
 })
 
+--local neoclip = require('neoclip')
+--
+--neoclip.setup({
+--  keys = {
+--    telescope = {
+--      i = {
+--        paste_behind = '<c-o>',
+--      },
+--    },
+--  },
+--})
+
 common.nvim_nmap('<leader>f', [[<cmd>lua require('telescope.builtin').live_grep{}<CR>]])
-
 common.nvim_nmap('<leader>ff', [[<cmd>lua require('telescope.builtin').find_files{}<CR>]])
-
 common.nvim_nmap('<leader>fg', [[<cmd>lua require('telescope.builtin').git_files{}<CR>]])
+--common.nvim_nmap('<leader>fr', [[<cmd>lua require('telescope').extensions.neoclip.default{}<CR>]])
 
 -- vim pickers
 common.nvim_nmap('<leader>fb', [[<cmd>lua require('telescope.builtin').buffers{show_all_buffers = true }<CR>]])
-
 common.nvim_nmap('<leader>fm', [[<cmd>lua require('telescope.builtin').keymaps{}<CR>]])
 common.nvim_nmap('<leader>fc', [[<cmd>lua require('telescope.builtin').commands{}<CR>]])
-
+common.nvim_nmap('<leader>fk', [[<cmd>lua require('telescope.builtin').keymaps{}<CR>]])
 common.nvim_nmap('<leader>ll', [[<cmd>lua require('telescope.builtin').loclist{}<cr>]])
