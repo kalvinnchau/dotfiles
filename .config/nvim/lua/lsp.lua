@@ -28,7 +28,7 @@ vim.fn.sign_define("DiagnosticSignHint", { text = "", texthl = "DiagnosticSig
 
 -- icons
 require('lspkind').init({
-  with_text = true,
+  mode = 'text_symbol',
   preset = 'default',
 })
 
@@ -82,7 +82,7 @@ cmp.setup({
   },
   formatting = {
     format = require('lspkind').cmp_format({
-      with_text = true,
+      mode = 'text_symbol',
       menu = {
         buffer = '[buffer]',
         nvim_lsp = '[lsp]',
