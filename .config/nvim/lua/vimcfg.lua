@@ -86,3 +86,11 @@ vim.api.nvim_set_keymap('t', '<Esc>', [[<C-\><C-n>]], { noremap = true, silent =
 
 -- auto remove trailing whitespace on write
 vim.cmd([[autocmd BufWritePre * :%s/\s\+$//e]])
+
+-- highlight yanked text for 300ms using the "Visual" highlight group
+vim.cmd([[
+augroup highlight_yank
+autocmd!
+au TextYankPost * silent! lua vim.highlight.on_yank({higroup="Visual", timeout=300})
+augroup END
+]])
