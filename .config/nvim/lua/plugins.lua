@@ -66,13 +66,6 @@ return require('packer').startup({
       end,
     })
 
-    use({
-      'blackCauldron7/surround.nvim',
-      config = function()
-        require('surround').setup({ mappings_style = 'sandwich' })
-      end,
-    })
-
     --use({
     --  'AckslD/nvim-neoclip.lua',
     --  requires = { 'nvim-telescope/telescope.nvim' },
