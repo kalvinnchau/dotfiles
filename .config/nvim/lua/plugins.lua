@@ -16,8 +16,10 @@ return require('packer').startup({
       'nvim-lualine/lualine.nvim',
       requires = { 'kyazdani42/nvim-web-devicons', opt = true },
     })
+
     use({
       'akinsho/nvim-bufferline.lua',
+      tag = '*',
       requires = 'kyazdani42/nvim-web-devicons',
     })
 

@@ -72,7 +72,7 @@ vim.opt.undoreload = 10000
 ----------------------------------------
 -- Vim key mapping
 ----------------------------------------
-common.nvim_nmap('<leader>erc', ':vsp ~/.config/nvim/init.vim<cr>')
+common.nvim_nmap('<leader>erc', ':e ~/.config/nvim/init.vim<cr> | :cd %:p:h<CR>:pwd<cr> | :NvimTreeToggle<cr>')
 common.nvim_nmap('<leader>erl', ':vsp ~/.config/nvim/lua/init.lua<cr>')
 common.nvim_nmap('<leader>path', [[:echo expand('%:p')<cr>]])
 

@@ -10,7 +10,7 @@ tree.setup({
 })
 
 common.nvim_nmap('<leader>tree', [[:NvimTreeToggle<cr>]])
-common.nvim_nmap('<leader>cd', ':cd %:p:h<CR>:pwd<CR>')
+common.nvim_nmap('<leader>cd', ':cd %:p:h<cr>:pwd<cr>')
 
 ----------------------------------------
 -- telescope.nvim
