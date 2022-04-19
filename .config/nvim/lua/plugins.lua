@@ -68,10 +68,9 @@ return require('packer').startup({
       end,
     })
 
-    --use({
-    --  'AckslD/nvim-neoclip.lua',
-    --  requires = { 'nvim-telescope/telescope.nvim' },
-    --})
+    use({
+      'simrat39/symbols-outline.nvim'
+    })
 
     ----------------------------------------
     -- Git

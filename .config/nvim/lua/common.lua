@@ -11,7 +11,7 @@ end
 
 -- buffer local keymap in normal mode, with noremap and silent
 local function nvim_buf_nmap(lhs, rhs)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', lhs, rhs, mapopts)
+  vim.api.nvim_buf_set_keymap(0, 'n', lhs, rhs, mapopts)
 end
 
 return {

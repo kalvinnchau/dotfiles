@@ -12,6 +12,14 @@ tree.setup({
 common.nvim_nmap('<leader>tree', [[:NvimTreeToggle<cr>]])
 common.nvim_nmap('<leader>cd', ':cd %:p:h<cr>:pwd<cr>')
 
+vim.g.symbols_outline = {
+  show_guides = false,
+  auto_preview = false,
+  show_numbers = true,
+  auto_close = true,
+}
+common.nvim_nmap('<leader><Tab>', [[:SymbolsOutline<cr>]])
+
 ----------------------------------------
 -- telescope.nvim
 ----------------------------------------
@@ -41,18 +49,6 @@ telescope.setup({
     },
   },
 })
-
---local neoclip = require('neoclip')
---
---neoclip.setup({
---  keys = {
---    telescope = {
---      i = {
---        paste_behind = '<c-o>',
---      },
---    },
---  },
---})
 
 common.nvim_nmap('<leader>f', [[<cmd>lua require('telescope.builtin').live_grep{}<CR>]])
 common.nvim_nmap('<leader>ff', [[<cmd>lua require('telescope.builtin').find_files{}<CR>]])
