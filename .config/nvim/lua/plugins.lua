@@ -36,7 +36,6 @@ return require('packer').startup({
     -- colorscheme
     use({
       'ellisonleao/gruvbox.nvim',
-      requires = { 'rktjmp/lush.nvim' },
     })
 
     ----------------------------------------
