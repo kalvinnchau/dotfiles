@@ -1,4 +1,3 @@
-local common = require('common')
 ----------------------------------------
 -- Vim Configuration
 ----------------------------------------
@@ -72,25 +71,34 @@ vim.opt.undoreload = 10000
 ----------------------------------------
 -- Vim key mapping
 ----------------------------------------
-common.nvim_nmap('<leader>erc', ':e ~/.config/nvim/init.vim<cr> | :cd %:p:h<CR>:pwd<cr> | :NvimTreeToggle<cr>')
-common.nvim_nmap('<leader>erl', ':vsp ~/.config/nvim/lua/init.lua<cr>')
-common.nvim_nmap('<leader>path', [[:echo expand('%:p')<cr>]])
+vim.keymap.set('n', '<leader>erc', ':e ~/.config/nvim/init.vim<cr> | :cd %:p:h<CR>:pwd<cr> | :NvimTreeToggle<cr>')
+vim.keymap.set('n', '<leader>erl', ':vsp ~/.config/nvim/lua/init.lua<cr>')
+vim.keymap.set('n', '<leader>path', [[:echo expand('%:p')<cr>]])
 
-common.nvim_nmap('<leader>PI', ':PackerInstall<cr>')
-common.nvim_nmap('<leader>PU', ':PackerUpdate<cr>')
-common.nvim_nmap('<leader>PS', ':PackerSync<cr>')
-common.nvim_nmap('<leader>PC', ':PackerCompile<cr>')
+vim.keymap.set('n', '<leader>PI', ':PackerInstall<cr>')
+vim.keymap.set('n', '<leader>PU', ':PackerUpdate<cr>')
+vim.keymap.set('n', '<leader>PS', ':PackerSync<cr>')
+vim.keymap.set('n', '<leader>PC', ':PackerCompile<cr>')
 
-vim.api.nvim_set_keymap('i', 'jj', '<Esc>', { noremap = true, silent = true})
+vim.api.nvim_set_keymap('i', 'jj', '<Esc>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('t', '<Esc>', [[<C-\><C-n>]], { noremap = true, silent = true })
 
--- auto remove trailing whitespace on write
-vim.cmd([[autocmd BufWritePre * :%s/\s\+$//e]])
+-- highlight yanks
+vim.api.nvim_create_autocmd('TextYankPost', {
+  pattern = '*',
+  callback = function()
+    vim.highlight.on_yank({ timeout = 300 })
+  end,
+})
 
--- highlight yanked text for 300ms using the "Visual" highlight group
-vim.cmd([[
-augroup highlight_yank
-autocmd!
-au TextYankPost * silent! lua vim.highlight.on_yank({higroup="Visual", timeout=300})
-augroup END
-]])
+-- start terminal in insert mode
+vim.api.nvim_create_autocmd('TermOpen', {
+  pattern = '*',
+  command = 'startinsert | set winfixheight',
+})
+
+-- auto remove trailing whitespace on write
+vim.api.nvim_create_autocmd('BufWritePre', {
+  pattern = '*',
+  command = ':%s/s+$//e',
+})

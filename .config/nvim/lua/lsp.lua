@@ -1,5 +1,4 @@
 local lsp = require('lspconfig')
-local common = require('common')
 local luasnip = require('luasnip')
 
 local has_words_before = function()
@@ -12,19 +11,19 @@ local M = {}
 function M.show_line_diagnostics()
   local opts = {
     focusable = false,
-    close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+    close_events = { 'BufLeave', 'CursorMoved', 'InsertEnter', 'FocusLost' },
     border = 'single',
-    source = 'always',  -- show source in diagnostic popup window
-    prefix = ' '
+    source = 'always', -- show source in diagnostic popup window
+    prefix = ' ',
   }
   vim.diagnostic.open_float(nil, opts)
 end
 
 -- signs
-vim.fn.sign_define("DiagnosticSignError", { text = "✗", texthl = "DiagnosticSignError" })
-vim.fn.sign_define("DiagnosticSignWarn", { text = "⚠", texthl = "DiagnosticSignWarn" })
-vim.fn.sign_define("DiagnosticSignInfo", { text = "ⓘ", texthl = "DiagnosticSignInfo" })
-vim.fn.sign_define("DiagnosticSignHint", { text = "", texthl = "DiagnosticSignHint" })
+vim.fn.sign_define('DiagnosticSignError', { text = '✗', texthl = 'DiagnosticSignError' })
+vim.fn.sign_define('DiagnosticSignWarn', { text = '⚠', texthl = 'DiagnosticSignWarn' })
+vim.fn.sign_define('DiagnosticSignInfo', { text = 'ⓘ', texthl = 'DiagnosticSignInfo' })
+vim.fn.sign_define('DiagnosticSignHint', { text = '', texthl = 'DiagnosticSignHint' })
 
 -- icons
 require('lspkind').init({
@@ -94,34 +93,43 @@ cmp.setup({
   },
 })
 
-vim.cmd([[autocmd FileType TelescopePrompt lua require('cmp').setup.buffer { enabled = false }]])
+--vim.cmd([[autocmd FileType TelescopePrompt lua require('cmp').setup.buffer { enabled = false }]])
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'TelescopePrompt',
+  callback = function()
+    cmp.setup.buffer({
+      enabled = false,
+    })
+  end,
+})
 
 local updated_capabilities = vim.lsp.protocol.make_client_capabilities()
 updated_capabilities = require('cmp_nvim_lsp').update_capabilities(updated_capabilities)
 
 -- function to attach completion and diagnostics
 -- when setting up lsp
-local on_attach = function(client)
+local on_attach = function(client, bufnr)
   vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
+  local telescope_builtin = require('telescope.builtin')
 
-  -- Setup our mappings for the lsp actions
-  common.nvim_buf_nmap('ca', [[<cmd>lua require('telescope.builtin').lsp_code_actions{}<cr>]])
-  common.nvim_buf_nmap('gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>')
-  common.nvim_buf_nmap('gi', [[<cmd>lua require('telescope.builtin').lsp_implementations{}<cr>]])
-  common.nvim_buf_nmap('gd', [[<cmd>lua require('telescope.builtin').lsp_definitions{}<cr>]])
-  common.nvim_buf_nmap('gsd', [[<cmd>lua require('telescope.builtin').lsp_definitions{ jump_type = 'split' }<cr>]])
-  common.nvim_buf_nmap('gr', [[<cmd>lua require('telescope.builtin').lsp_references{}<cr>]])
-
-  common.nvim_buf_nmap('K', '<Cmd>lua vim.lsp.buf.hover()<CR>')
-  common.nvim_buf_nmap('ff', '<cmd>lua vim.lsp.buf.formatting()<CR>')
-
-  common.nvim_buf_nmap('td', [[<cmd>lua require('telescope.builtin').diagnostics{}<cr>]])
-  common.nvim_buf_nmap('dn', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
-  common.nvim_buf_nmap('dp', '<cmd>lua vim.diagnostic.goto_next()<CR>')
-  common.nvim_buf_nmap('<c-k>', '<Cmd>lua vim.lsp.buf.signature_help()<CR>')
-
-  common.nvim_buf_nmap('<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>')
-  common.nvim_buf_nmap('<space>e', '<cmd>lua require("lsp").show_line_diagnostics()<CR>')
+  local opts = { buffer = bufnr, silent = true }
+  vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, opts)
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+  vim.keymap.set('n', 'gd', telescope_builtin.lsp_definitions, opts)
+  vim.keymap.set('n', 'gi', telescope_builtin.lsp_implementations, opts)
+  vim.keymap.set('n', 'gsd', function()
+    telescope_builtin.lsp_definitions({
+      jump_type = 'split',
+    })
+  end, opts)
+  vim.keymap.set('n', 'gr', telescope_builtin.lsp_references, opts)
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+  vim.keymap.set('n', 'ff', vim.lsp.buf.formatting, opts)
+  vim.keymap.set('n', 'td', telescope_builtin.diagnostics, opts)
+  vim.keymap.set('n', 'dn', vim.diagnostic.goto_next, opts)
+  vim.keymap.set('n', 'dp', vim.diagnostic.goto_prev, opts)
+  vim.keymap.set('n', '<c-k>', vim.lsp.buf.signature_help, opts)
+  vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
 end
 
 -- Configure each of the LSPs that we want to use
@@ -222,7 +230,12 @@ lsp.gopls.setup({
 })
 
 -- run the go formatter on save
-vim.api.nvim_command('autocmd BufWritePre *.go lua vim.lsp.buf.formatting_sync()')
+vim.api.nvim_create_autocmd('BufWritePre', {
+  pattern = '*.go',
+  callback = function()
+    vim.lsp.buf.formatting_sync()
+  end,
+})
 
 ------------------------------------------------------------
 -- java
@@ -293,7 +306,12 @@ end
 
 -- time in ms for CursorHold, to display the current line's diagnostic
 vim.g.cursorhold_updatetime = 100
-vim.cmd([[autocmd CursorHold * lua require('lsp').show_line_diagnostics()]])
+vim.api.nvim_create_autocmd('CursorHold', {
+  pattern = '*',
+  callback = function()
+    M.show_line_diagnostics()
+  end,
+})
 
 vim.diagnostic.config({
   underline = true,

@@ -2,15 +2,14 @@
 -- nvim-tree.lua
 ----------------------------------------
 local tree = require('nvim-tree')
-local common = require('common')
 
 tree.setup({
   -- updates the root directory of the tree on `DirChanged` (when `:cd` is run)
   update_cwd = true,
 })
 
-common.nvim_nmap('<leader>tree', [[:NvimTreeToggle<cr>]])
-common.nvim_nmap('<leader>cd', ':cd %:p:h<cr>:pwd<cr>')
+vim.keymap.set('n', '<leader>tree', [[:NvimTreeToggle<cr>]])
+vim.keymap.set('n', '<leader>cd', ':cd %:p:h<cr>:pwd<cr>')
 
 vim.g.symbols_outline = {
   show_guides = false,
@@ -18,7 +17,7 @@ vim.g.symbols_outline = {
   show_numbers = true,
   auto_close = true,
 }
-common.nvim_nmap('<leader><Tab>', [[:SymbolsOutline<cr>]])
+vim.keymap.set('n', '<leader><Tab>', [[:SymbolsOutline<cr>]])
 
 ----------------------------------------
 -- telescope.nvim
@@ -50,14 +49,14 @@ telescope.setup({
   },
 })
 
-common.nvim_nmap('<leader>f', [[<cmd>lua require('telescope.builtin').live_grep{}<CR>]])
-common.nvim_nmap('<leader>ff', [[<cmd>lua require('telescope.builtin').find_files{}<CR>]])
-common.nvim_nmap('<leader>fg', [[<cmd>lua require('telescope.builtin').git_files{}<CR>]])
---common.nvim_nmap('<leader>fr', [[<cmd>lua require('telescope').extensions.neoclip.default{}<CR>]])
+vim.keymap.set('n', '<leader>f', [[<cmd>lua require('telescope.builtin').live_grep{}<CR>]])
+vim.keymap.set('n', '<leader>ff', [[<cmd>lua require('telescope.builtin').find_files{}<CR>]])
+vim.keymap.set('n', '<leader>fg', [[<cmd>lua require('telescope.builtin').git_files{}<CR>]])
+--vim.keymap.set('n', '<leader>fr', [[<cmd>lua require('telescope').extensions.neoclip.default{}<CR>]])
 
 -- vim pickers
-common.nvim_nmap('<leader>fb', [[<cmd>lua require('telescope.builtin').buffers{show_all_buffers = true }<CR>]])
-common.nvim_nmap('<leader>fm', [[<cmd>lua require('telescope.builtin').keymaps{}<CR>]])
-common.nvim_nmap('<leader>fc', [[<cmd>lua require('telescope.builtin').commands{}<CR>]])
-common.nvim_nmap('<leader>fk', [[<cmd>lua require('telescope.builtin').keymaps{}<CR>]])
-common.nvim_nmap('<leader>ll', [[<cmd>lua require('telescope.builtin').loclist{}<cr>]])
+vim.keymap.set('n', '<leader>fb', [[<cmd>lua require('telescope.builtin').buffers{show_all_buffers = true }<CR>]])
+vim.keymap.set('n', '<leader>fm', [[<cmd>lua require('telescope.builtin').keymaps{}<CR>]])
+vim.keymap.set('n', '<leader>fc', [[<cmd>lua require('telescope.builtin').commands{}<CR>]])
+vim.keymap.set('n', '<leader>fk', [[<cmd>lua require('telescope.builtin').keymaps{}<CR>]])
+vim.keymap.set('n', '<leader>ll', [[<cmd>lua require('telescope.builtin').loclist{}<cr>]])
