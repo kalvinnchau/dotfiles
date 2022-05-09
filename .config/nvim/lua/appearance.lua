@@ -76,15 +76,6 @@ require('bufferline').setup({
     error_diagnostic_selected = {
       gui = 'bold',
     },
-    duplicate_selected = {
-      gui = 'NONE',
-    },
-    duplicate_visible = {
-      gui = 'NONE',
-    },
-    duplicate = {
-      gui = 'NONE',
-    },
     pick_selected = {
       gui = 'bold',
     },
