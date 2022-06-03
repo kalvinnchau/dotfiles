@@ -132,6 +132,10 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
 end
 
+-- set the on_attach functions to the passed in config
+function M.set_on_attach(config)
+  config.on_attach = on_attach
+end
 -- Configure each of the LSPs that we want to use
 -- Apply any custom configuration here
 
@@ -240,11 +244,11 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 ------------------------------------------------------------
 -- java
 ------------------------------------------------------------
-lsp.jdtls.setup({
-  on_attach = on_attach,
-  root_dir = lsp.util.root_pattern('.git', 'pom.xml', 'build.xml'),
-  capabilities = updated_capabilities,
-})
+-- lsp.jdtls.setup({
+--   on_attach = on_attach,
+--   root_dir = lsp.util.root_pattern('.git', 'pom.xml', 'build.xml'),
+--   capabilities = updated_capabilities,
+-- })
 
 ------------------------------------------------------------
 -- lua

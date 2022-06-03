@@ -56,6 +56,10 @@ return require('packer').startup({
     })
 
     use({
+      'nvim-telescope/telescope-ui-select.nvim'
+    })
+
+    use({
       'nvim-treesitter/nvim-treesitter',
       run = ':TSUpdate',
     })
@@ -135,6 +139,11 @@ return require('packer').startup({
     -- light build for code actions
     use({
       'kosayoda/nvim-lightbulb',
+    })
+
+    -- fully featured jdtls plugin
+    use({
+      'mfussenegger/nvim-jdtls'
     })
 
     -- Filetypes

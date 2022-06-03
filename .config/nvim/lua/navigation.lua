@@ -47,7 +47,15 @@ telescope.setup({
       },
     },
   },
+  extensions = {
+    ["ui-select"] = {
+      require("telescope.themes").get_dropdown {
+      },
+    },
+  },
 })
+
+telescope.load_extension("ui-select")
 
 vim.keymap.set('n', '<leader>f', [[<cmd>lua require('telescope.builtin').live_grep{}<CR>]])
 vim.keymap.set('n', '<leader>ff', [[<cmd>lua require('telescope.builtin').find_files{}<CR>]])
