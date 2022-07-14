@@ -96,3 +96,7 @@ require('nvim-web-devicons').setup({})
 
 vim.o.background = 'dark'
 vim.cmd([[colorscheme gruvbox]])
+
+require('mini.trailspace').setup({
+  only_in_normal_buffers = true,
+})

@@ -28,9 +28,10 @@ return require('packer').startup({
       'lukas-reineke/indent-blankline.nvim',
     })
 
-    -- Highlights extra whitespace in bright red
+    -- for mini.trailspace
     use({
-      'ntpeters/vim-better-whitespace',
+      'echasnovski/mini.nvim',
+      branch = 'stable',
     })
 
     -- colorscheme
@@ -53,7 +54,7 @@ return require('packer').startup({
     })
 
     use({
-      'nvim-telescope/telescope-ui-select.nvim'
+      'nvim-telescope/telescope-ui-select.nvim',
     })
 
     use({
@@ -69,7 +70,7 @@ return require('packer').startup({
     })
 
     use({
-      'simrat39/symbols-outline.nvim'
+      'simrat39/symbols-outline.nvim',
     })
 
     ----------------------------------------
@@ -140,7 +141,7 @@ return require('packer').startup({
 
     -- fully featured jdtls plugin
     use({
-      'mfussenegger/nvim-jdtls'
+      'mfussenegger/nvim-jdtls',
     })
 
     -- Filetypes
