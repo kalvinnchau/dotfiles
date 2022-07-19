@@ -144,6 +144,11 @@ return require('packer').startup({
       'mfussenegger/nvim-jdtls',
     })
 
+    -- nvim-progress
+    use({
+      'j-hui/fidget.nvim'
+    })
+
     -- Filetypes
     use({
       'martinda/Jenkinsfile-vim-syntax',
