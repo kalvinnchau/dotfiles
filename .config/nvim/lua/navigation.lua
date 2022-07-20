@@ -6,6 +6,12 @@ local tree = require('nvim-tree')
 tree.setup({
   -- updates the root directory of the tree on `DirChanged` (when `:cd` is run)
   update_cwd = true,
+  renderer = {
+    add_trailing = true,
+    indent_markers = {
+      enable = true,
+    },
+  },
 })
 
 vim.keymap.set('n', '<leader>tree', [[:NvimTreeToggle<cr>]])
