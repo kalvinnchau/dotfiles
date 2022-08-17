@@ -23,7 +23,10 @@ vim.g.symbols_outline = {
   show_numbers = true,
   auto_close = true,
 }
-vim.keymap.set('n', '<leader><Tab>', [[:SymbolsOutline<cr>]])
+vim.keymap.set('n', '<leader>sym', [[:SymbolsOutline<cr>]])
+
+local symbols = require("symbols-outline")
+symbols.setup()
 
 ----------------------------------------
 -- telescope.nvim
