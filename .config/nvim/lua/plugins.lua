@@ -128,6 +128,11 @@ return require('packer').startup({
     use({
       'saadparwaiz1/cmp_luasnip',
     })
+    
+    -- snippet collection
+    use({
+      'rafamadriz/friendly-snippets'
+    })
 
     -- Needed while issue https://github.com/neovim/neovim/issues/12587 is still open
     use({

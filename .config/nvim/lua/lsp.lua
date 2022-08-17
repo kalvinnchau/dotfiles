@@ -262,11 +262,11 @@ else
   print('Unsupported system for sumneko')
 end
 
-local sumneko_root_path = vim.fn.expand('~/code/src/github.com/sumneko/lua-language-server')
-local sumneko_binary = sumneko_root_path .. '/bin/' .. system_name .. '/lua-language-server'
+--local sumneko_root_path = vim.fn.expand('~/code/src/github.com/sumneko/lua-language-server')
+--local sumneko_binary = sumneko_root_path .. '/bin/' .. system_name .. '/lua-language-server'
 
 lsp.sumneko_lua.setup({
-  cmd = { sumneko_binary, '-E', sumneko_root_path .. '/main.lua' },
+  cmd = { "lua-language-server" },
   settings = {
     Lua = {
       runtime = {
@@ -336,5 +336,7 @@ vim.diagnostic.config({
 })
 
 require('fidget').setup{}
+
+require("luasnip.loaders.from_vscode").lazy_load()
 
 return M
