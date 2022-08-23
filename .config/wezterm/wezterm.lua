@@ -136,15 +136,22 @@ wezterm.on('update-right-status', function(window, pane)
   window:set_right_status(wezterm.format(elements))
 end)
 
+local font_size
+if wezterm.hostname() == 'LP-KCHAU2-OSX' then
+  font_size = 23.5
+else
+  font_size = 16.5
+end
+
 return {
   -- appearance
   adjust_window_size_when_changing_font_size = false,
   color_scheme = "GruvboxDark (Gogh)",
+  --color_scheme = "Gruvbox Dark",
   font = wezterm.font(
-    'SauceCodePro Nerd Font',
-    { weight = 'Light' }
+    'SauceCodePro Nerd Font'
   ),
-  font_size = 16.5,
+  font_size = font_size,
   scrollback_lines = 1000000,
 
   window_frame = {
@@ -170,6 +177,25 @@ return {
 
   -- key mappings
   keys = {
+
+    {
+      mods = 'OPT',
+      key = 'LeftArrow',
+      action = action.SendString('\x1bb'),
+    },
+
+    {
+      mods = 'OPT',
+      key = 'RightArrow',
+      action = action.SendString('\x1bf'),
+    },
+
+    {
+      mods = 'CMD',
+      key = 'Backspace',
+      action = action.SendString('\x15'),
+    },
+
     -- Turn off the default CMD-m Hide action, since we don't use it
     -- timeout_milliseconds defaults to 1000 and can be omitted
     {
@@ -178,17 +204,17 @@ return {
       action = 'DisableDefaultAssignment'
     },
 
-    -- CMD + ',' + x to split SplitHorizontal
-    {
-      mods = 'LEADER',
-      key = 'x',
-      action = action.SplitHorizontal,
-    },
-
-    -- CMD + ',' + v to split SplitVertical
+    -- CMD + ',' + v to split SplitHorizontal
     {
       mods = 'LEADER',
       key = 'v',
+      action = action.SplitHorizontal,
+    },
+
+    -- CMD + ',' + x to split SplitVertical
+    {
+      mods = 'LEADER',
+      key = 'x',
       action = action.SplitVertical,
     },
 

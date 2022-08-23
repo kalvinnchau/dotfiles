@@ -2,7 +2,7 @@
 -- https://github.com/mbadolato/iTerm2-Color-Schemes/blob/master/wezterm/Gruvbox%20Dark.toml
 local module = {}
 
-local colors = {
+local gruvbox_colors = {
   black        = '#282828',
   white        = '#ebdbb2',
   red          = '#fb4934',
@@ -17,31 +17,31 @@ local colors = {
 
 module.colorscheme = {
 
-  colors = colors,
+  colors = gruvbox_colors,
 
   tab_bar = {
-    background = colors.darkgray,
+    background = gruvbox_colors.darkgray,
     inactive_tab_edge = "#575757",
-    inactive_tab_edge_hover = colors.darkgray,
+    inactive_tab_edge_hover = gruvbox_colors.darkgray,
     active_tab = {
-      bg_color = colors.white,
-      fg_color = colors.lightgray,
+      bg_color = gruvbox_colors.white,
+      fg_color = gruvbox_colors.lightgray,
     },
     inactive_tab = {
-      bg_color = colors.darkgray,
-      fg_color = colors.white,
+      bg_color = gruvbox_colors.darkgray,
+      fg_color = gruvbox_colors.white,
     },
     inactive_tab_hover = {
-      bg_color = colors.white,
-      fg_color = colors.lightgray,
+      bg_color = gruvbox_colors.white,
+      fg_color = gruvbox_colors.lightgray,
     },
     new_tab = {
-      bg_color = colors.white,
-      fg_color = colors.lightgray,
+      bg_color = gruvbox_colors.white,
+      fg_color = gruvbox_colors.lightgray,
     },
     new_tab_hover = {
-      bg_color = colors.white,
-      fg_color = colors.lightgray,
+      bg_color = gruvbox_colors.white,
+      fg_color = gruvbox_colors.lightgray,
     },
   },
 }
