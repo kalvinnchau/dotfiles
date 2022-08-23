@@ -259,6 +259,34 @@ return {
       key = 'x',
       action = action.ActivateCopyMode
     },
+
+    {
+      mods = 'LEADER',
+      key = 'Space',
+      action = action.ActivateCopyMode
+    },
+
+    {
+      mods = 'CTRL',
+      key = 'Space',
+      action = action.QuickSelect
+    },
+
+    {
+      mods = 'CTRL',
+      key = 'P',
+      action = wezterm.action.QuickSelectArgs {
+        label = 'open url',
+        patterns = {
+          'https?://\\S+',
+        },
+        action = wezterm.action_callback(function(window, pane)
+          local url = window:get_selection_text_for_pane(pane)
+          wezterm.log_info('opening: ' .. url)
+          wezterm.open_with(url)
+        end),
+      },
+    },
   },
 
   mouse_bindings = {
