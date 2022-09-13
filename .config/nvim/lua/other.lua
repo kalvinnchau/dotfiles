@@ -22,6 +22,9 @@ tree.setup({
   highlight = {
     enable = true,
   },
+  indent = {
+    enable = true,
+  },
 })
 
 -- setup diffview

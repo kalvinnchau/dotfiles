@@ -15,12 +15,14 @@ return require('packer').startup({
     use({
       'nvim-lualine/lualine.nvim',
       requires = { 'kyazdani42/nvim-web-devicons', opt = true },
+      --config = function()
+      --  require('nvim-web-devicons').setup({})
+      --end,
     })
 
     use({
       'akinsho/nvim-bufferline.lua',
       tag = 'v2.*',
-      requires = 'kyazdani42/nvim-web-devicons',
     })
 
     -- show indentation levels
@@ -45,7 +47,7 @@ return require('packer').startup({
     -- tree navigation
     use({
       'kyazdani42/nvim-tree.lua',
-      requires = 'kyazdani42/nvim-web-devicons',
+      requires = { 'kyazdani42/nvim-web-devicons', opt = true },
     })
 
     use({

@@ -18,6 +18,12 @@ vim.g.indent_blankline_context_patterns = {
   'block',
 }
 
+require('indent_blankline').setup({
+  space_char_blankline = " ",
+  show_current_context = true,
+  show_current_context_start = true,
+})
+
 vim.o.termguicolors = true
 vim.o.background = 'dark'
 
@@ -91,8 +97,6 @@ require('bufferline').setup({
 -- cycle through buffers with [+tab or ]+shift+tab
 vim.keymap.set('n', '[<tab>', ':BufferLineCycleNext<cr>')
 vim.keymap.set('n', '[<s-tab>', ':BufferLineCyclePrev<cr>')
-
-require('nvim-web-devicons').setup({})
 
 vim.o.background = 'dark'
 vim.cmd([[colorscheme gruvbox]])
