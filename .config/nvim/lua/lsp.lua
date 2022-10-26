@@ -103,8 +103,7 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
-local updated_capabilities = vim.lsp.protocol.make_client_capabilities()
-updated_capabilities = require('cmp_nvim_lsp').update_capabilities(updated_capabilities)
+local updated_capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- function to attach completion and diagnostics
 -- when setting up lsp
@@ -124,7 +123,9 @@ local on_attach = function(client, bufnr)
   end, opts)
   vim.keymap.set('n', 'gr', telescope_builtin.lsp_references, opts)
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-  vim.keymap.set('n', 'ff', vim.lsp.buf.formatting, opts)
+  vim.keymap.set('n', 'ff', function()
+    vim.lsp.buf.format({ async = true })
+  end, opts)
   vim.keymap.set('n', 'td', telescope_builtin.diagnostics, opts)
   vim.keymap.set('n', 'dn', vim.diagnostic.goto_next, opts)
   vim.keymap.set('n', 'dp', vim.diagnostic.goto_prev, opts)
@@ -136,6 +137,7 @@ end
 function M.set_on_attach(config)
   config.on_attach = on_attach
 end
+
 -- Configure each of the LSPs that we want to use
 -- Apply any custom configuration here
 
@@ -266,7 +268,7 @@ end
 --local sumneko_binary = sumneko_root_path .. '/bin/' .. system_name .. '/lua-language-server'
 
 lsp.sumneko_lua.setup({
-  cmd = { "lua-language-server" },
+  cmd = { 'lua-language-server' },
   settings = {
     Lua = {
       runtime = {
@@ -335,8 +337,8 @@ vim.diagnostic.config({
   update_in_insert = false,
 })
 
-require('fidget').setup{}
+require('fidget').setup({})
 
-require("luasnip.loaders.from_vscode").lazy_load()
+require('luasnip.loaders.from_vscode').lazy_load()
 
 return M

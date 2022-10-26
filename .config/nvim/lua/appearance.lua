@@ -27,11 +27,6 @@ require('indent_blankline').setup({
 vim.o.termguicolors = true
 vim.o.background = 'dark'
 
--- use only filetype.lua
--- may miss some filetypes nvim 0.7 is opt-in
-vim.g.do_filetype_lua = 1
-vim.g.did_load_filetypes = 0
-
 -- gruvbox
 vim.g.gruvbox_contrast_dark = 'medium'
 vim.g.gruvbox_contrast_light = 'medium'
