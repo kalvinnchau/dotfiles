@@ -41,6 +41,11 @@ return require('packer').startup({
       'ellisonleao/gruvbox.nvim',
     })
 
+    -- smooth scrolling
+    use({
+      'karb94/neoscroll.nvim'
+    })
+
     ----------------------------------------
     -- Navigation
     ----------------------------------------
