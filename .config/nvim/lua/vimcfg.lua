@@ -71,15 +71,6 @@ vim.opt.undoreload = 10000
 ----------------------------------------
 -- Vim key mapping
 ----------------------------------------
-vim.keymap.set('n', '<leader>erc', ':e ~/.config/nvim/init.vim<cr> | :cd %:p:h<CR>:pwd<cr> | :NvimTreeToggle<cr>')
-vim.keymap.set('n', '<leader>erl', ':vsp ~/.config/nvim/lua/init.lua<cr>')
-vim.keymap.set('n', '<leader>path', [[:echo expand('%:p')<cr>]])
-
-vim.keymap.set('n', '<leader>PI', ':PackerInstall<cr>')
-vim.keymap.set('n', '<leader>PU', ':PackerUpdate<cr>')
-vim.keymap.set('n', '<leader>PS', ':PackerSync<cr>')
-vim.keymap.set('n', '<leader>PC', ':PackerCompile<cr>')
-
 vim.api.nvim_set_keymap('i', 'jj', '<Esc>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('t', '<Esc>', [[<C-\><C-n>]], { noremap = true, silent = true })
 

@@ -111,26 +111,42 @@ local on_attach = function(client, bufnr)
   vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
   local telescope_builtin = require('telescope.builtin')
 
-  local opts = { buffer = bufnr, silent = true }
-  vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, opts)
-  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-  vim.keymap.set('n', 'gd', telescope_builtin.lsp_definitions, opts)
-  vim.keymap.set('n', 'gi', telescope_builtin.lsp_implementations, opts)
-  vim.keymap.set('n', 'gsd', function()
+  local map = function(mode, l, r, opts)
+    opts = opts or {}
+    opts.silent = true
+    opts.buffer = bufnr
+    vim.keymap.set(mode, l, r, opts)
+  end
+
+  map('n', 'ca', vim.lsp.buf.code_action, { desc = 'show code actions' })
+
+  map('n', 'gd', telescope_builtin.lsp_definitions, { desc = 'go to definition' })
+  map('n', 'gi', telescope_builtin.lsp_implementations, { desc = 'show lsp impplementations' })
+  map('n', 'gsd', function()
     telescope_builtin.lsp_definitions({
       jump_type = 'split',
     })
-  end, opts)
-  vim.keymap.set('n', 'gr', telescope_builtin.lsp_references, opts)
-  vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-  vim.keymap.set('n', 'ff', function()
+  end, { desc = 'go to definition in a horizontal split view' })
+  map('n', 'gsv', function()
+    telescope_builtin.lsp_definitions({
+      jump_type = 'vsplit',
+    })
+  end, { desc = 'go to definition in a vertical split view' })
+
+  map('n', 'gr', telescope_builtin.lsp_references, { desc = 'show references to the symbol' })
+  map('n', 'K', vim.lsp.buf.hover, { desc = 'display information about the symbol' })
+  map('n', '<c-k>', vim.lsp.buf.signature_help, { desc = 'display the signature help' })
+
+  map('n', 'ff', function()
     vim.lsp.buf.format({ async = true })
-  end, opts)
-  vim.keymap.set('n', 'td', telescope_builtin.diagnostics, opts)
-  vim.keymap.set('n', 'dn', vim.diagnostic.goto_next, opts)
-  vim.keymap.set('n', 'dp', vim.diagnostic.goto_prev, opts)
-  vim.keymap.set('n', '<c-k>', vim.lsp.buf.signature_help, opts)
-  vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
+  end, { desc = 'format the current buffer' })
+
+  -- diagnostics
+  map('n', 'td', telescope_builtin.diagnostics, { desc = 'show diagnostics in current buffer' })
+  map('n', 'dn', vim.diagnostic.goto_next, { desc = 'go to next diagnostic' })
+  map('n', 'dp', vim.diagnostic.goto_prev, { desc = 'go to previous diagnostic' })
+
+  map('n', '<space>rn', vim.lsp.buf.rename, { desc = 'rename the current symbol' })
 end
 
 -- set the on_attach functions to the passed in config

@@ -74,6 +74,16 @@ return require('packer').startup({
       'simrat39/symbols-outline.nvim',
     })
 
+    use({
+      'folke/which-key.nvim',
+      config = function()
+        vim.o.timeout = true
+        vim.o.timeoutlen = 300
+        require('which-key').setup({
+        })
+      end,
+    })
+
     ----------------------------------------
     -- Git
     ----------------------------------------
@@ -129,10 +139,10 @@ return require('packer').startup({
     use({
       'saadparwaiz1/cmp_luasnip',
     })
-    
+
     -- snippet collection
     use({
-      'rafamadriz/friendly-snippets'
+      'rafamadriz/friendly-snippets',
     })
 
     -- Needed while issue https://github.com/neovim/neovim/issues/12587 is still open
@@ -152,7 +162,7 @@ return require('packer').startup({
 
     -- nvim-progress
     use({
-      'j-hui/fidget.nvim'
+      'j-hui/fidget.nvim',
     })
 
     -- Filetypes

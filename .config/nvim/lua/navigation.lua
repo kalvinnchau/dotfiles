@@ -2,6 +2,7 @@
 -- nvim-tree.lua
 ----------------------------------------
 local tree = require('nvim-tree')
+local wk = require('which-key')
 
 tree.setup({
   -- updates the root directory of the tree on `DirChanged` (when `:cd` is run)
@@ -14,8 +15,7 @@ tree.setup({
   },
 })
 
-vim.keymap.set('n', '<leader>tree', [[:NvimTreeToggle<cr>]])
-vim.keymap.set('n', '<leader>cd', ':cd %:p:h<cr>:pwd<cr>')
+vim.keymap.set('n', '<leader>tree', [[:NvimTreeToggle<cr>]], { desc = 'toggle tree view' })
 
 vim.g.symbols_outline = {
   show_guides = false,
@@ -23,9 +23,10 @@ vim.g.symbols_outline = {
   show_numbers = true,
   auto_close = true,
 }
-vim.keymap.set('n', '<leader>sm', [[:SymbolsOutline<cr>]])
 
-local symbols = require("symbols-outline")
+vim.keymap.set('n', '<leader>sm', [[:SymbolsOutline<cr>]], { desc = 'show all symbols in file' })
+
+local symbols = require('symbols-outline')
 symbols.setup()
 
 ----------------------------------------
@@ -57,23 +58,24 @@ telescope.setup({
     },
   },
   extensions = {
-    ["ui-select"] = {
-      require("telescope.themes").get_dropdown {
-      },
+    ['ui-select'] = {
+      require('telescope.themes').get_dropdown({}),
     },
   },
 })
 
-telescope.load_extension("ui-select")
+telescope.load_extension('ui-select')
 
-vim.keymap.set('n', '<leader>f', [[<cmd>lua require('telescope.builtin').live_grep{}<CR>]])
-vim.keymap.set('n', '<leader>ff', [[<cmd>lua require('telescope.builtin').find_files{}<CR>]])
-vim.keymap.set('n', '<leader>fg', [[<cmd>lua require('telescope.builtin').git_files{}<CR>]])
---vim.keymap.set('n', '<leader>fr', [[<cmd>lua require('telescope').extensions.neoclip.default{}<CR>]])
-
--- vim pickers
-vim.keymap.set('n', '<leader>fb', [[<cmd>lua require('telescope.builtin').buffers{show_all_buffers = true }<CR>]])
-vim.keymap.set('n', '<leader>fm', [[<cmd>lua require('telescope.builtin').keymaps{}<CR>]])
-vim.keymap.set('n', '<leader>fc', [[<cmd>lua require('telescope.builtin').commands{}<CR>]])
-vim.keymap.set('n', '<leader>fk', [[<cmd>lua require('telescope.builtin').keymaps{}<CR>]])
-vim.keymap.set('n', '<leader>ll', [[<cmd>lua require('telescope.builtin').loclist{}<cr>]])
+wk.register({
+  f = {
+    name = 'file', -- optional group name
+    g = { [[<cmd>lua require('telescope.builtin').live_grep{}<CR>]], 'grep files in cwd' },
+    f = { [[<cmd>lua require('telescope.builtin').find_files{}<CR>]], 'pick any files in cwd' },
+    t = { [[<cmd>lua require('telescope.builtin').git_files{}<CR>]], 'pick git files in cwd' },
+    b = { [[<cmd>lua require('telescope.builtin').buffers{show_all_buffers=true}<CR>]], 'pick from all buffers' },
+    c = { [[<cmd>lua require('telescope.builtin').commands{}<CR>]], 'pick any command' },
+    k = { [[<cmd>lua require('telescope.builtin').keymaps{}<CR>]], 'pick any keymap' },
+    r = { [[<cmd>lua require('telescope.builtin').oldfiles{}<CR>]], 'pick recently opened files' },
+    s = { [[<cmd>lua require('telescope.builtin').search_history{}<CR>]], 'pick recent searches' },
+  },
+}, { prefix = '<leader>' })

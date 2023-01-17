@@ -1,6 +1,36 @@
 ----------------------------------------
 -- generic 'other' config
 ----------------------------------------
+local wk = require('which-key')
+
+-- vim lua config mappings
+wk.register({
+  er = {
+    name = 'config',
+    c = { ':e ~/.config/nvim/init.vim<cr> | :cd %:p:h<CR>:pwd<cr> | :NvimTreeToggle<cr>', 'open vim cfg' },
+    l = { ':vsp ~/.config/nvim/lua/init.lua<cr>', 'open init lua in split' },
+  },
+}, { prefix = '<leader>' })
+
+wk.register({
+  p = {
+    name = 'path',
+    wd = { ':cd %:p:h<cr>:pwd<cr>', 'show cwd' },
+    ath = { ':echo expand("%:p")<cr>', 'show full path of current buffer'}
+  }
+}, { prefix = '<leader>' })
+
+-- setup packer mappings
+wk.register({
+  P = {
+    name = 'Packer',
+    I = { '<cmd>PackerInstall<cr>', 'packer install' },
+    U = { '<cmd>PackerUpdate<cr>', 'packer update and compile' },
+    S = { '<cmd>PackerSync<cr>', 'packer sync packages' },
+    C = { '<cmd>PackerCompile<cr>', 'packer compile' },
+  },
+}, { prefix = '<leader>' })
+
 -- treesitter config
 local tree = require('nvim-treesitter.configs')
 tree.setup({
