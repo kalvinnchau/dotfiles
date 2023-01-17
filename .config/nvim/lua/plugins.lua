@@ -11,13 +11,14 @@ return require('packer').startup({
     -- Appearance
     ----------------------------------------
 
+    use({
+      'nvim-tree/nvim-web-devicons'
+    })
+
     -- statusline plugins
     use({
       'nvim-lualine/lualine.nvim',
       requires = { 'kyazdani42/nvim-web-devicons', opt = true },
-      --config = function()
-      --  require('nvim-web-devicons').setup({})
-      --end,
     })
 
     use({
@@ -51,7 +52,7 @@ return require('packer').startup({
     ----------------------------------------
     -- tree navigation
     use({
-      'kyazdani42/nvim-tree.lua',
+      'nvim-tree/nvim-tree.lua',
     })
 
     use({
@@ -176,14 +177,14 @@ return require('packer').startup({
       ft = 'Jenkinsfile',
     })
 
-    use({
-      'ekalinin/Dockerfile.vim',
-      ft = 'dockerfile',
-      config = function()
-        vim.cmd([[au BufRead,BufNewFile Dockerfile set filetype=dockerfile]])
-        vim.cmd([[au BufRead,BufNewFile Dockerfile* set filetype=dockerfile]])
-      end,
-    })
+    --use({
+    --  'ekalinin/Dockerfile.vim',
+    --  ft = 'dockerfile',
+    --  config = function()
+    --    --vim.cmd([[au BufRead,BufNewFile Dockerfile set filetype=dockerfile]])
+    --    --vim.cmd([[au BufRead,BufNewFile Dockerfile* set filetype=dockerfile]])
+    --  end,
+    --})
 
     use({
       'mitsuhiko/vim-jinja',
@@ -228,6 +229,12 @@ return require('packer').startup({
     use({
       'maxmellon/vim-jsx-pretty',
     })
+
+    -- paste image from macos into terminal
+    use({
+      'mattdibi/incolla.nvim'
+    })
+
   end,
   config = {
     display = {

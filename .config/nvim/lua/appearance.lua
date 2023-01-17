@@ -121,3 +121,4 @@ t['zz'] = { 'zz', { '100' } }
 t['zb'] = { 'zb', { '100' } }
 
 require('neoscroll.config').set_mappings(t)
+require('nvim-web-devicons').setup({})

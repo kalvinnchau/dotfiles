@@ -93,7 +93,6 @@ cmp.setup({
   },
 })
 
---vim.cmd([[autocmd FileType TelescopePrompt lua require('cmp').setup.buffer { enabled = false }]])
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'TelescopePrompt',
   callback = function()
@@ -160,45 +159,45 @@ end
 ------------------------------------------------------------
 -- python
 ------------------------------------------------------------
-lsp.pylsp.setup({
-  on_attach = on_attach,
-  settings = {
-    pyls = {
-      enable = true,
-      plugins = {
-        jedi_completion = {
-          enabled = true,
-          include_params = true,
-        },
-        jedi_definition = {
-          enabled = true,
-          follow_builtin_imports = true,
-          follow_imports = true,
-        },
-        jedi_hover = {
-          enabled = true,
-        },
-        jedi_references = {
-          enabled = true,
-        },
-        jedi_signature_help = {
-          enabled = true,
-        },
-        jedi_symbols = {
-          enabled = true,
-          all_scopes = true,
-        },
-        pylint = {
-          enabled = false,
-        },
-        yapf = {
-          enabled = true,
-        },
-      },
-    },
-  },
-  capabilities = updated_capabilities,
-})
+--lsp.pylsp.setup({
+--  on_attach = on_attach,
+--  settings = {
+--    pyls = {
+--      enable = true,
+--      plugins = {
+--        jedi_completion = {
+--          enabled = true,
+--          include_params = true,
+--        },
+--        jedi_definition = {
+--          enabled = true,
+--          follow_builtin_imports = true,
+--          follow_imports = true,
+--        },
+--        jedi_hover = {
+--          enabled = true,
+--        },
+--        jedi_references = {
+--          enabled = true,
+--        },
+--        jedi_signature_help = {
+--          enabled = true,
+--        },
+--        jedi_symbols = {
+--          enabled = true,
+--          all_scopes = true,
+--        },
+--        pylint = {
+--          enabled = false,
+--        },
+--        yapf = {
+--          enabled = true,
+--        },
+--      },
+--    },
+--  },
+--  capabilities = updated_capabilities,
+--})
 
 ------------------------------------------------------------
 -- bash
@@ -221,7 +220,7 @@ null_ls.setup({
       extra_args = { '--config-path', vim.fn.expand('~/.config/stylua/stylua.toml') },
     }),
     null_ls.builtins.formatting.prettier.with({
-      filetypes = { 'html', 'json', 'yaml', 'markdown' },
+      filetypes = { 'html', 'json', 'yaml' },
     }),
     null_ls.builtins.diagnostics.shellcheck,
   },
