@@ -159,45 +159,45 @@ end
 ------------------------------------------------------------
 -- python
 ------------------------------------------------------------
---lsp.pylsp.setup({
---  on_attach = on_attach,
---  settings = {
---    pyls = {
---      enable = true,
---      plugins = {
---        jedi_completion = {
---          enabled = true,
---          include_params = true,
---        },
---        jedi_definition = {
---          enabled = true,
---          follow_builtin_imports = true,
---          follow_imports = true,
---        },
---        jedi_hover = {
---          enabled = true,
---        },
---        jedi_references = {
---          enabled = true,
---        },
---        jedi_signature_help = {
---          enabled = true,
---        },
---        jedi_symbols = {
---          enabled = true,
---          all_scopes = true,
---        },
---        pylint = {
---          enabled = false,
---        },
---        yapf = {
---          enabled = true,
---        },
---      },
---    },
---  },
---  capabilities = updated_capabilities,
---})
+lsp.pylsp.setup({
+  on_attach = on_attach,
+  settings = {
+    pyls = {
+      enable = true,
+      plugins = {
+        jedi_completion = {
+          enabled = true,
+          include_params = true,
+        },
+        jedi_definition = {
+          enabled = true,
+          follow_builtin_imports = true,
+          follow_imports = true,
+        },
+        jedi_hover = {
+          enabled = true,
+        },
+        jedi_references = {
+          enabled = true,
+        },
+        jedi_signature_help = {
+          enabled = true,
+        },
+        jedi_symbols = {
+          enabled = true,
+          all_scopes = true,
+        },
+        pylint = {
+          enabled = false,
+        },
+        yapf = {
+          enabled = true,
+        },
+      },
+    },
+  },
+  capabilities = updated_capabilities,
+})
 
 ------------------------------------------------------------
 -- bash
