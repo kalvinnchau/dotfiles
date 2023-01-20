@@ -3,6 +3,13 @@
 ----------------------------------------
 local wk = require('which-key')
 
+-- name the group for diagnostics
+wk.register({
+  d = {
+    name = 'diagnostics',
+  }
+}, { prefix = '<leader>' })
+
 -- vim lua config mappings
 wk.register({
   er = {

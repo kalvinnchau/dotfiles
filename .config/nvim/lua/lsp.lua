@@ -141,9 +141,9 @@ local on_attach = function(client, bufnr)
   end, { desc = 'format the current buffer' })
 
   -- diagnostics
-  map('n', 'td', telescope_builtin.diagnostics, { desc = 'show diagnostics in current buffer' })
-  map('n', 'dn', vim.diagnostic.goto_next, { desc = 'go to next diagnostic' })
-  map('n', 'dp', vim.diagnostic.goto_prev, { desc = 'go to previous diagnostic' })
+  map('n', '<leader>da', telescope_builtin.diagnostics, { desc = 'show diagnostics in current buffer' })
+  map('n', '<leader>dn', vim.diagnostic.goto_next, { desc = 'go to next diagnostic' })
+  map('n', '<leader>dp', vim.diagnostic.goto_prev, { desc = 'go to previous diagnostic' })
 
   map('n', '<space>rn', vim.lsp.buf.rename, { desc = 'rename the current symbol' })
 end
