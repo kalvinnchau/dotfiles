@@ -120,7 +120,7 @@ local on_attach = function(client, bufnr)
   map('n', 'ca', vim.lsp.buf.code_action, { desc = 'show code actions' })
 
   map('n', 'gd', telescope_builtin.lsp_definitions, { desc = 'go to definition' })
-  map('n', 'gi', telescope_builtin.lsp_implementations, { desc = 'show lsp impplementations' })
+  map('n', 'gi', telescope_builtin.lsp_implementations, { desc = 'show lsp implementations' })
   map('n', 'gsd', function()
     telescope_builtin.lsp_definitions({
       jump_type = 'split',
