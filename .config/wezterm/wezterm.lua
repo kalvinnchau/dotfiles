@@ -46,13 +46,14 @@ wezterm.on('format-tab-title', function(tab, tabs, _, _, hover, _)
 
   return {
     { Attribute = { Italic = false } },
-    { Attribute = { Intensity = hover and "Bold" or "Normal" } },
+    { Attribute = { Intensity = hover and 'Bold' or 'Normal' } },
     { Background = { Color = leading_bg } },
     { Foreground = { Color = leading_fg } },
     { Text = SOLID_RIGHT_ARROW },
     { Background = { Color = background } },
+    { Text = ' ' .. helpers.get_process(tab) },
     { Foreground = { Color = foreground } },
-    { Text = " " .. title .. " " },
+    { Text = ' ' .. title .. ' ' },
     { Background = { Color = trailing_bg } },
     { Foreground = { Color = trailing_fg } },
     { Text = SOLID_RIGHT_ARROW },
@@ -69,13 +70,13 @@ wezterm.on('update-right-status', function(window, pane)
   local cwd_uri = pane:get_current_working_dir()
   if cwd_uri then
     cwd_uri = cwd_uri:sub(8)
-    local slash = cwd_uri:find '/'
+    local slash = cwd_uri:find('/')
     local cwd = ''
     local hostname = ''
     if slash then
       hostname = cwd_uri:sub(1, slash - 1)
       -- Remove the domain name portion of the hostname
-      local dot = hostname:find '[.]'
+      local dot = hostname:find('[.]')
       if dot then
         hostname = hostname:sub(1, dot - 1)
       end
@@ -84,14 +85,14 @@ wezterm.on('update-right-status', function(window, pane)
       local contracted_cwd = helpers.contract_path(cwd)
 
       table.insert(cells, contracted_cwd)
-      if hostname ~= "" then
+      if hostname ~= '' then
         table.insert(cells, hostname)
       end
     end
   end
 
   -- Set UTC Datetime
-  local date = wezterm.strftime_utc '%Y-%m-%d %H:%M UTC'
+  local date = wezterm.strftime_utc('%Y-%m-%d %H:%M UTC')
   table.insert(cells, date)
 
   -- An entry for each battery (typically 0 or 1 battery)
@@ -146,19 +147,14 @@ end
 return {
   -- appearance
   adjust_window_size_when_changing_font_size = false,
-  color_scheme = "GruvboxDark (Gogh)",
+  color_scheme = 'GruvboxDark (Gogh)',
   --color_scheme = "Gruvbox Dark",
-  font = wezterm.font(
-    'SauceCodePro Nerd Font'
-  ),
+  font = wezterm.font('SauceCodePro Nerd Font'),
   font_size = font_size,
   scrollback_lines = 1000000,
 
   window_frame = {
-    font = wezterm.font(
-      'SauceCodePro Nerd Font',
-      { weight = 'Bold' }
-    ),
+    font = wezterm.font('SauceCodePro Nerd Font', { weight = 'Bold' }),
   },
 
   tab_max_width = 64,
@@ -172,7 +168,7 @@ return {
   leader = {
     mods = 'CMD',
     key = ',',
-    timeout_milliseconds = 1000
+    timeout_milliseconds = 1000,
   },
 
   -- key mappings
@@ -201,7 +197,7 @@ return {
     {
       mods = 'CMD',
       key = 'm',
-      action = 'DisableDefaultAssignment'
+      action = 'DisableDefaultAssignment',
     },
 
     -- CMD + ',' + v to split SplitHorizontal
@@ -228,22 +224,22 @@ return {
     {
       mods = 'CMD',
       key = 'h',
-      action = action.ActivatePaneDirection 'Left',
+      action = action.ActivatePaneDirection('Left'),
     },
     {
       mods = 'CMD',
       key = 'l',
-      action = action.ActivatePaneDirection 'Right',
+      action = action.ActivatePaneDirection('Right'),
     },
     {
       mods = 'CMD',
       key = 'k',
-      action = action.ActivatePaneDirection 'Up',
+      action = action.ActivatePaneDirection('Up'),
     },
     {
       mods = 'CMD',
       key = 'j',
-      action = action.ActivatePaneDirection 'Down',
+      action = action.ActivatePaneDirection('Down'),
     },
 
     {
@@ -257,25 +253,25 @@ return {
     {
       mods = 'CMD|SHIFT',
       key = 'x',
-      action = action.ActivateCopyMode
+      action = action.ActivateCopyMode,
     },
 
     {
       mods = 'LEADER',
       key = 'Space',
-      action = action.ActivateCopyMode
+      action = action.ActivateCopyMode,
     },
 
     {
       mods = 'CTRL',
       key = 'Space',
-      action = action.QuickSelect
+      action = action.QuickSelect,
     },
 
     {
       mods = 'CTRL',
       key = 'P',
-      action = wezterm.action.QuickSelectArgs {
+      action = wezterm.action.QuickSelectArgs({
         label = 'open url',
         patterns = {
           'https?://\\S+',
@@ -285,7 +281,7 @@ return {
           wezterm.log_info('opening: ' .. url)
           wezterm.open_with(url)
         end),
-      },
+      }),
     },
   },
 

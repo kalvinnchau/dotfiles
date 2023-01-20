@@ -1,5 +1,7 @@
 -- random helper functions
 local module = {}
+local wezterm = require('wezterm')
+local scheme = require('colors').colorscheme
 
 local function strip_home(path)
   local username = os.getenv("USER")
@@ -40,6 +42,80 @@ function module.contract_path(path)
   end
 
   return short_cwd
+end
+
+--[[
+get_process
+  uses the tab object to get the process name and replace
+  the process with a specific icon if available
+  otherwise we just print [process_name] in blue
+--]]
+function module.get_process(tab)
+  local process_icons = {
+    ['docker'] = {
+      { Foreground = { Color = scheme.colors.blue } },
+      { Text = wezterm.nerdfonts.linux_docker },
+    },
+    ['docker-compose'] = {
+      { Foreground = { Color = scheme.colors.blue } },
+      { Text = wezterm.nerdfonts.linux_docker },
+    },
+    ['nvim'] = {
+      { Foreground = { Color = scheme.colors.green } },
+      { Text = wezterm.nerdfonts.custom_vim },
+    },
+    ['vim'] = {
+      { Foreground = { Color = scheme.colors.green } },
+      { Text = wezterm.nerdfonts.dev_vim },
+    },
+    ['node'] = {
+      { Foreground = { Color = scheme.colors.green } },
+      { Text = wezterm.nerdfonts.mdi_hexagon },
+    },
+    ['zsh'] = {
+      { Foreground = { Color = scheme.colors.yellow } },
+      { Text = wezterm.nerdfonts.dev_terminal },
+    },
+    ['bash'] = {
+      { Foreground = { Color = scheme.colors.gray } },
+      { Text = wezterm.nerdfonts.cod_terminal_bash },
+    },
+    ['cargo'] = {
+      { Foreground = { Color = scheme.colors.red } },
+      { Text = wezterm.nerdfonts.dev_rust },
+    },
+    ['go'] = {
+      { Foreground = { Color = scheme.colors.blue } },
+      { Text = wezterm.nerdfonts.mdi_language_go },
+    },
+    ['git'] = {
+      { Foreground = { Color = scheme.colors.green } },
+      { Text = wezterm.nerdfonts.dev_git },
+    },
+    ['lua'] = {
+      { Foreground = { Color = scheme.colors.blue } },
+      { Text = wezterm.nerdfonts.seti_lua },
+    },
+    ['curl'] = {
+      { Foreground = { Color = scheme.colors.yellow } },
+      { Text = wezterm.nerdfonts.mdi_flattr },
+    },
+    ['kubectl'] = {
+      { Foreground = { Color = scheme.colors.yellow } },
+      { Text = '\u{f10fe}' }, -- k8s symbol
+    },
+    ['aws'] = {
+      { Foreground = { Color = scheme.colors.yellow } },
+      { Text = wezterm.nerdfonts.dev_aws },
+    },
+  }
+
+  local process_name = string.gsub(tab.active_pane.foreground_process_name, '(.*[/\\])(.*)', '%2')
+
+  return wezterm.format(process_icons[process_name] or {
+    { Foreground = { Color = scheme.colors.blue } },
+    { Text = string.format('[%s]', process_name) },
+  })
 end
 
 return module
