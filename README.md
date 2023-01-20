@@ -57,7 +57,7 @@ cd ~/Library/Fonts && \
   curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest |
     jq -r '.assets[] | select(.name == "SourceCodePro.zip") | .browser_download_url' |
     xargs -I{} curl -s -L -O {} && \
-  unzip SourceCodePro.zip
+  unzip -o SourceCodePro.zip
 ```
 
 ### jvm
