@@ -68,6 +68,10 @@ vim.opt.undofile = true
 vim.opt.undolevels = 1000
 vim.opt.undoreload = 10000
 
+-- disable netrw
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 ----------------------------------------
 -- Vim key mapping
 ----------------------------------------

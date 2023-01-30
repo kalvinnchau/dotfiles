@@ -11,9 +11,9 @@ if fn.empty(fn.glob(install_path)) > 0 then
 end
 
 -- import all our files
+require('vimcfg')
 require('plugins')
 require('appearance')
-require('vimcfg')
 require('other')
 require('navigation')
 require('lsp')

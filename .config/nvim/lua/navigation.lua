@@ -34,6 +34,7 @@ symbols.setup()
 ----------------------------------------
 local telescope = require('telescope')
 local actions = require('telescope.actions')
+local action_state = require('telescope.actions.state')
 
 telescope.setup({
   defaults = {
@@ -57,6 +58,25 @@ telescope.setup({
       },
     },
   },
+  pickers = {
+    git_commits = {
+      mappings = {
+        i = {
+          -- Open selected commit in diffview
+          ['<C-d>'] = function()
+            local selected_entry = action_state.get_selected_entry()
+            local value = selected_entry.value
+            -- close Telescope window properly prior to switching windows
+            vim.api.nvim_win_close(0, true)
+            vim.cmd('stopinsert')
+            vim.schedule(function()
+              vim.cmd(('DiffviewOpen %s^!'):format(value))
+            end)
+          end,
+        },
+      },
+    },
+  },
   extensions = {
     ['ui-select'] = {
       require('telescope.themes').get_dropdown({}),
@@ -73,9 +93,39 @@ wk.register({
     f = { [[<cmd>lua require('telescope.builtin').find_files{}<CR>]], 'pick any files in cwd' },
     t = { [[<cmd>lua require('telescope.builtin').git_files{}<CR>]], 'pick git files in cwd' },
     b = { [[<cmd>lua require('telescope.builtin').buffers{show_all_buffers=true}<CR>]], 'pick from all buffers' },
-    c = { [[<cmd>lua require('telescope.builtin').commands{}<CR>]], 'pick any command' },
+    v = { [[<cmd>lua require('telescope.builtin').commands{}<CR>]], 'pick any vim command' },
+    c = { [[<cmd>lua require('telescope.builtin').git_commits{}<CR>]], 'pick from git commits' },
     k = { [[<cmd>lua require('telescope.builtin').keymaps{}<CR>]], 'pick any keymap' },
     r = { [[<cmd>lua require('telescope.builtin').oldfiles{}<CR>]], 'pick recently opened files' },
     s = { [[<cmd>lua require('telescope.builtin').search_history{}<CR>]], 'pick recent searches' },
+    d = {
+      -- diff the current buffer against what's on the disk, useful before writing
+      function()
+        -- Get start buffer
+        local start = vim.api.nvim_get_current_buf()
+
+        -- `vnew` - Create empty vertical split window
+        -- `set buftype=nofile` - Buffer is not related to a file, will not be written
+        -- `0d_` - Remove an extra empty start row
+        -- `diffthis` - Set diff mode to a new vertical split
+        vim.cmd('vnew | set buftype=nofile | read ++edit # | 0d_ | diffthis')
+
+        -- Get scratch buffer
+        local scratch = vim.api.nvim_get_current_buf()
+
+        -- `wincmd p` - Go to the start window
+        -- `diffthis` - Set diff mode to a start window
+        vim.cmd('wincmd p | diffthis')
+
+        -- Map `q` for both buffers to exit diff view and delete scratch buffer
+        for _, buf in ipairs({ scratch, start }) do
+          vim.keymap.set('n', 'q', function()
+            vim.api.nvim_buf_delete(scratch, { force = true })
+            vim.keymap.del('n', 'q', { buffer = start })
+          end, { buffer = buf })
+        end
+      end,
+      'diff buffer against disk',
+    },
   },
 }, { prefix = '<leader>' })
