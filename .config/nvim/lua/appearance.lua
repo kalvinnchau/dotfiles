@@ -100,6 +100,8 @@ require('mini.trailspace').setup({
   only_in_normal_buffers = true,
 })
 
+require('mini.cursorword').setup({})
+
 require('neoscroll').setup({
   easing_function = 'quadratic',
 })

@@ -1,5 +1,6 @@
 local lsp = require('lspconfig')
 local luasnip = require('luasnip')
+local trailspace = require('mini.trailspace')
 
 local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -138,6 +139,7 @@ local on_attach = function(client, bufnr)
 
   map('n', 'ff', function()
     vim.lsp.buf.format({ async = true })
+    trailspace.trim()
   end, { desc = 'format the current buffer' })
 
   -- diagnostics
