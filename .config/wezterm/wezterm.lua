@@ -93,7 +93,8 @@ wezterm.on('update-right-status', function(window, pane)
 
   -- Set UTC Datetime
   local date = wezterm.strftime_utc('%Y-%m-%d %H:%M UTC')
-  table.insert(cells, date)
+  local tz = wezterm.strftime(' (%z)')
+  table.insert(cells, date..tz)
 
   -- An entry for each battery (typically 0 or 1 battery)
   for _, b in ipairs(wezterm.battery_info()) do
@@ -144,17 +145,20 @@ else
   font_size = 16.5
 end
 
+--local font = 'Input'
+local font = 'SauceCodePro Nerd Font'
+
 return {
   -- appearance
   adjust_window_size_when_changing_font_size = false,
   color_scheme = 'GruvboxDark (Gogh)',
   --color_scheme = "Gruvbox Dark",
-  font = wezterm.font('SauceCodePro Nerd Font'),
+  font = wezterm.font(font),
   font_size = font_size,
   scrollback_lines = 1000000,
 
   window_frame = {
-    font = wezterm.font('SauceCodePro Nerd Font', { weight = 'Bold' }),
+    font = wezterm.font(font, { weight = 'Bold' }),
   },
 
   tab_max_width = 64,
