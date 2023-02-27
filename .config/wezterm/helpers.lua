@@ -73,7 +73,7 @@ function module.get_process(tab)
       { Text = wezterm.nerdfonts.mdi_hexagon },
     },
     ['zsh'] = {
-      { Foreground = { Color = scheme.colors.yellow } },
+      { Foreground = { Color = scheme.colors.orange } },
       { Text = wezterm.nerdfonts.dev_terminal },
     },
     ['bash'] = {

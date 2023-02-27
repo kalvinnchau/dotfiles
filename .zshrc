@@ -1,3 +1,4 @@
+#zmodload zsh/zprof
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
     print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
@@ -40,7 +41,12 @@ _fzf_compgen_dir() {
   fd --type d --hidden --follow --exclude ".git" . "$1"
 }
 
-autoload -U compinit && compinit
+autoload -Uz compinit
+if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' ${ZDOTDIR:-$HOME}/.zcompdump) ]; then
+  compinit
+else
+  compinit -C
+fi
 
 ##
 # zsh settings
@@ -144,11 +150,9 @@ export PATH="/usr/local/opt/mysql-client/bin:$PATH"
 
 # speed up init time, rehash in the background
 if command -v jenv &> /dev/null; then
-  eval "$(jenv init - --no-rehash)"
+  #eval "$(jenv init - --no-rehash)"
   (jenv rehash &) 2> /dev/null
 fi
-
-command -v starship &> /dev/null && eval "$(starship init zsh)"
 
 # lazy load nvm until nvm, node or a node-dependent command is run
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
@@ -167,12 +171,19 @@ if [[ -s "$NVM_DIR/nvm.sh" ]]; then
   done
 fi
 
+command -v starship &> /dev/null && eval "$(starship init zsh)"
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/s5cmd s5cmd
 
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 [ -s "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+
+
+alias luamake=/Users/kchau/code/src/github.com/sumneko/lua-language-server/3rd/luamake/luamake
+eval "$(pyenv init - | grep -v 'command pyenv rehash')"
+eval "$(pyenv virtualenv-init -)"
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
 ##
 # functions
@@ -182,4 +193,4 @@ if [ -d ~/.config/zsh ]; then
     [ -r "$f" ] && source "$f"
   done
 fi
-
+#zprof
