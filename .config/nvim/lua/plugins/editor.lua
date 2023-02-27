@@ -99,20 +99,7 @@ return {
           },
         },
       },
-      extensions = {
-        ['ui-select'] = {
-          require('telescope.themes').get_dropdown({}),
-        },
-      },
     },
-  },
-
-  -- telescope ui-select
-  {
-    'nvim-telescope/telescope-ui-select.nvim',
-    init = function()
-      require('telescope').load_extension('ui-select')
-    end,
   },
 
   -- which-key
