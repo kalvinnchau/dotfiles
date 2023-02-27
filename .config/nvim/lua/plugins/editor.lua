@@ -2,6 +2,7 @@ return {
   -- file explorer
   {
     'nvim-tree/nvim-tree.lua',
+    event = 'VeryLazy',
     keys = {
       {
         '<leader>tree',
@@ -143,6 +144,7 @@ return {
         ['<leader>u'] = { name = '+ui' },
         ['<leader>w'] = { name = '+windows' },
         ['<leader>x'] = { name = '+diagnostics/quickfix' },
+        ['<leader>d'] = { name = '+diagnostics' },
         f = {
           d = {
             -- diff the current buffer against what's on the disk, useful before writing
