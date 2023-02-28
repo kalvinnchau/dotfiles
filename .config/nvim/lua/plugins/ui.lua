@@ -19,9 +19,9 @@ return {
   -- bufferline
   {
     'akinsho/nvim-bufferline.lua',
-    --event = 'VeryLazy',
-    lazy = false,
-    priority = 900,
+    event = 'VeryLazy',
+    --lazy = false,
+    --priority = 900,
     init = function()
       vim.keymap.set('n', '[<tab>', ':BufferLineCycleNext<cr>')
       vim.keymap.set('n', '[<s-tab>', ':BufferLineCyclePrev<cr>')
