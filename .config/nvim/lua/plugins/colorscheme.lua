@@ -7,13 +7,8 @@ return {
     opts = {
       contrast = 'medium',
     },
-    init = function(_, opts)
+    init = function()
       vim.cmd.colorscheme('gruvbox')
     end,
   },
-  config = function(_, opts)
-    vim.o.background = 'dark'
-    require('gruvbox').setup(opts)
-    vim.cmd.colorscheme('gruvbox')
-  end,
 }
