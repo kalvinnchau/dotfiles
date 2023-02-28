@@ -33,9 +33,10 @@ return {
         diagnostics = 'nvim_lsp',
         offsets = {
           {
-            filetype = 'NvimTree',
+            --filetype = 'NvimTree',
+            filetype = 'neo-tree',
             text_align = 'center',
-            text = 'File Explorer',
+            text = 'Explorer',
           },
         },
       },

@@ -4,7 +4,7 @@ vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { noremap = true, silent = true })
 vim.keymap.set(
   'n',
   '<leader>erc',
-  ':e ~/.config/nvim/init.lua<cr> | :cd %:p:h<CR>:pwd<cr> | :NvimTreeToggle<cr>',
+  ':e ~/.config/nvim/init.lua<cr> | :cd %:p:h<CR>:pwd<cr> | :Neotree toggle<cr>',
   { desc = 'edit nvim cfg' }
 )
 

@@ -1,25 +1,72 @@
 return {
   -- file explorer
+  --{
+  --  'nvim-tree/nvim-tree.lua',
+  --  event = 'VeryLazy',
+  --  keys = {
+  --    {
+  --      '<leader>tree',
+  --      function()
+  --        local tree = require('nvim-tree.api')
+  --        tree.tree.toggle()
+  --      end,
+  --      'toggle nvim tree',
+  --    },
+  --  },
+  --  opts = {
+  --    -- updates the root directory of the tree on `DirChanged` (when `:cd` is run)
+  --    update_cwd = true,
+  --    renderer = {
+  --      add_trailing = true,
+  --      indent_markers = {
+  --        enable = true,
+  --      },
+  --    },
+  --  },
+  --},
+
+  -- file explorer
   {
-    'nvim-tree/nvim-tree.lua',
-    event = 'VeryLazy',
+    'nvim-neo-tree/neo-tree.nvim',
+    cmd = 'Neotree',
     keys = {
       {
-        '<leader>tree',
+        '<leader>fe',
         function()
-          local tree = require('nvim-tree.api')
-          tree.tree.toggle()
+          require('neo-tree.command').execute({ toggle = true, dir = vim.loop.cwd() })
         end,
-        'toggle nvim tree',
+        desc = 'NeoTree Files (cwd)',
       },
+      {
+        '<leader>fB',
+        function()
+          require('neo-tree.command').execute({ toggle = true, source = 'buffers' })
+        end,
+        desc = 'NeoTree Buffers (cwd)',
+      },
+      { '<leader>e', '<leader>fe', desc = 'NeoTree Files (cwd)', remap = true },
+      { '<leader>tree', '<leader>fe', desc = 'NeoTree Files (cwd)', remap = true },
     },
+    deactivate = function()
+      vim.cmd([[Neotree close]])
+    end,
+    init = function()
+      vim.g.neo_tree_remove_legacy_commands = 1
+      if vim.fn.argc() == 1 then
+        local stat = vim.loop.fs_stat(vim.fn.argv(0))
+        if stat and stat.type == 'directory' then
+          require('neo-tree')
+        end
+      end
+    end,
     opts = {
-      -- updates the root directory of the tree on `DirChanged` (when `:cd` is run)
-      update_cwd = true,
-      renderer = {
-        add_trailing = true,
-        indent_markers = {
-          enable = true,
+      filesystem = {
+        bind_to_cwd = false,
+        follow_current_file = true,
+      },
+      window = {
+        mappings = {
+          ['<space>'] = 'none',
         },
       },
     },
