@@ -2,6 +2,7 @@
 -- Vim Configuration
 ----------------------------------------
 vim.g.mapleader = ','
+vim.g.maplocalleader = ','
 
 -- enable reading of rc files in cwd
 vim.opt.exrc = true
@@ -72,28 +73,5 @@ vim.opt.undoreload = 10000
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
-----------------------------------------
--- Vim key mapping
-----------------------------------------
-vim.api.nvim_set_keymap('i', 'jj', '<Esc>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('t', '<Esc>', [[<C-\><C-n>]], { noremap = true, silent = true })
-
--- highlight yanks
-vim.api.nvim_create_autocmd('TextYankPost', {
-  pattern = '*',
-  callback = function()
-    vim.highlight.on_yank({ timeout = 300 })
-  end,
-})
-
--- start terminal in insert mode
-vim.api.nvim_create_autocmd('TermOpen', {
-  pattern = '*',
-  command = 'startinsert | set winfixheight',
-})
-
--- auto remove trailing whitespace on write
-vim.api.nvim_create_autocmd('BufWritePre', {
-  pattern = '*',
-  command = ':%s/s+$//e',
-})
+vim.o.termguicolors = true
+vim.o.background = 'dark'

@@ -3,16 +3,16 @@
 local module = {}
 
 local gruvbox_colors = {
-  black        = '#282828',
-  white        = '#ebdbb2',
-  red          = '#fb4934',
-  green        = '#b8bb26',
-  blue         = '#83a598',
-  orange       = '#fe8019',
-  yellow       = '#fabd2f',
-  gray         = '#a89984',
-  darkgray     = '#3c3836',
-  lightgray    = '#504945',
+  black = '#282828',
+  white = '#ebdbb2',
+  red = '#fb4934',
+  green = '#b8bb26',
+  blue = '#83a598',
+  orange = '#fe8019',
+  yellow = '#fabd2f',
+  gray = '#a89984',
+  darkgray = '#3c3836',
+  lightgray = '#504945',
   inactivegray = '#7c6f64',
 }
 
@@ -22,7 +22,7 @@ module.colorscheme = {
 
   tab_bar = {
     background = gruvbox_colors.darkgray,
-    inactive_tab_edge = "#575757",
+    inactive_tab_edge = '#575757',
     inactive_tab_edge_hover = gruvbox_colors.darkgray,
     active_tab = {
       bg_color = gruvbox_colors.inactivegray,
