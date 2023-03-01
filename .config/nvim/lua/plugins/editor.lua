@@ -1,29 +1,4 @@
 return {
-  -- file explorer
-  --{
-  --  'nvim-tree/nvim-tree.lua',
-  --  event = 'VeryLazy',
-  --  keys = {
-  --    {
-  --      '<leader>tree',
-  --      function()
-  --        local tree = require('nvim-tree.api')
-  --        tree.tree.toggle()
-  --      end,
-  --      'toggle nvim tree',
-  --    },
-  --  },
-  --  opts = {
-  --    -- updates the root directory of the tree on `DirChanged` (when `:cd` is run)
-  --    update_cwd = true,
-  --    renderer = {
-  --      add_trailing = true,
-  --      indent_markers = {
-  --        enable = true,
-  --      },
-  --    },
-  --  },
-  --},
 
   -- file explorer
   {
@@ -67,6 +42,9 @@ return {
       window = {
         mappings = {
           ['<space>'] = 'none',
+          ['<C-v>'] = 'open_vsplit',
+          ['<C-x>'] = 'open_split',
+          ['<C-t>'] = 'open_tabnew',
         },
       },
     },
