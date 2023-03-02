@@ -75,3 +75,7 @@ vim.g.loaded_netrwPlugin = 1
 
 vim.o.termguicolors = true
 vim.o.background = 'dark'
+
+vim.o.foldmethod = 'expr'
+vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
+vim.o.foldenable = false
