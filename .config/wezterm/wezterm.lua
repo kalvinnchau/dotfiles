@@ -151,8 +151,8 @@ local font = 'SauceCodePro Nerd Font'
 return {
   -- appearance
   adjust_window_size_when_changing_font_size = false,
-  color_scheme = 'GruvboxDark (Gogh)',
-  --color_scheme = "Gruvbox Dark",
+  --color_scheme = 'GruvboxDark (Gogh)',
+  color_scheme = 'GruvboxDark',
   font = wezterm.font(font),
   font_size = font_size,
   scrollback_lines = 1000000,
@@ -274,7 +274,7 @@ return {
 
     {
       mods = 'CTRL',
-      key = 'P',
+      key = 'O',
       action = wezterm.action.QuickSelectArgs({
         label = 'open url',
         patterns = {
