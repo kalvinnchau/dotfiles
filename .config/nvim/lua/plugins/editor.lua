@@ -19,6 +19,13 @@ return {
         end,
         desc = 'NeoTree Buffers (cwd)',
       },
+      {
+        '<leader>fG',
+        function()
+          require('neo-tree.command').execute({ toggle = true, source = 'git_status' })
+        end,
+        desc = 'NeoTree Git Status (cwd)',
+      },
       { '<leader>e', '<leader>fe', desc = 'NeoTree Files (cwd)', remap = true },
       { '<leader>tree', '<leader>fe', desc = 'NeoTree Files (cwd)', remap = true },
     },
@@ -218,6 +225,8 @@ return {
         -- stylua: ignore start
         map("n", "]h", gs.next_hunk, "Next Hunk")
         map("n", "[h", gs.prev_hunk, "Prev Hunk")
+        map("n", "<leader>gn", gs.next_hunk, "Next Hunk")
+        map("n", "<leader>gp", gs.prev_hunk, "Prev Hunk")
         map({ "n", "v" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
         map({ "n", "v" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
         map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
