@@ -146,14 +146,15 @@ else
 end
 
 --local font = 'Input'
-local font = 'SauceCodePro Nerd Font'
+--local font = 'SauceCodePro Nerd Font'
+local font = 'Iosevka Term'
 
 return {
   -- appearance
   adjust_window_size_when_changing_font_size = false,
   --color_scheme = 'GruvboxDark (Gogh)',
   color_scheme = 'GruvboxDark',
-  font = wezterm.font(font),
+  font = wezterm.font(font, { stretch = 'Expanded', weight = 'Regular' }),
   font_size = font_size,
   scrollback_lines = 1000000,
 
