@@ -10,24 +10,24 @@ return {
         function()
           require('neo-tree.command').execute({ toggle = true, dir = vim.loop.cwd() })
         end,
-        desc = 'NeoTree Files (cwd)',
+        desc = 'Neotree Files (cwd)',
       },
       {
         '<leader>fB',
         function()
           require('neo-tree.command').execute({ toggle = true, source = 'buffers' })
         end,
-        desc = 'NeoTree Buffers (cwd)',
+        desc = 'Neotree Buffers (cwd)',
       },
       {
         '<leader>fG',
         function()
           require('neo-tree.command').execute({ toggle = true, source = 'git_status' })
         end,
-        desc = 'NeoTree Git Status (cwd)',
+        desc = 'Neotree Git Status (cwd)',
       },
-      { '<leader>e', '<leader>fe', desc = 'NeoTree Files (cwd)', remap = true },
-      { '<leader>tree', '<leader>fe', desc = 'NeoTree Files (cwd)', remap = true },
+      { '<leader>e', '<leader>fe', desc = 'Neotree Files (cwd)', remap = true },
+      { '<leader>tree', '<leader>fe', desc = 'Neotree Files (cwd)', remap = true },
     },
     deactivate = function()
       vim.cmd([[Neotree close]])
@@ -44,7 +44,9 @@ return {
     opts = {
       filesystem = {
         bind_to_cwd = false,
-        follow_current_file = true,
+        follow_current_file = {
+          enabled = true,
+        },
       },
       window = {
         mappings = {
