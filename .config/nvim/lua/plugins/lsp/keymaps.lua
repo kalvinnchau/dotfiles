@@ -65,7 +65,7 @@ function M.on_attach(client, buffer)
 
   for _, value in ipairs(M.get()) do
     local keys = Keys.parse(value)
-    if keys[2] == vim.NIL or keys[2] == false then
+    if keys.rhs == vim.NIL or keys.rhs == false then
       keymaps[keys.id] = nil
     else
       keymaps[keys.id] = keys
@@ -79,7 +79,7 @@ function M.on_attach(client, buffer)
       opts.has = nil
       opts.silent = true
       opts.buffer = buffer
-      vim.keymap.set(keys.mode or 'n', keys[1], keys[2], opts)
+      vim.keymap.set(keys.mode or 'n', keys.lhs, keys.rhs, opts)
     end
   end
 end

@@ -58,6 +58,7 @@ return {
             },
           },
         },
+        ruff_lsp = {},
       },
       -- you can do any additional lsp server setup here
       -- return true if you don't want this server to be  lspconfig
@@ -142,7 +143,7 @@ return {
 
   -- formatters
   {
-    'jose-elias-alvarez/null-ls.nvim',
+    'nvimtools/none-ls.nvim',
     event = 'BufReadPre',
     dependencies = {
       --'mason.nvim'
@@ -169,11 +170,13 @@ return {
 
           nls.builtins.formatting.terraform_fmt,
 
-          nls.builtins.formatting.ruff,
-          nls.builtins.formatting.black,
+          --nls.builtins.formatting.ruff,
+          --nls.builtins.formatting.black,
 
           nls.builtins.formatting.buildifier,
           nls.builtins.diagnostics.buildifier,
+
+          nls.builtins.diagnostics.vale,
         },
       }
     end,
