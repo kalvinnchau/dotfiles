@@ -48,6 +48,7 @@
   recap = !"git log --all --oneline --no-merges --author=$(git config user.email)"
   open = !open $(git remote get-url origin | sed -E 's/.*@([[:alnum:]\\.-]*):([[:alnum:]-]*)\\/([[:alnum:]-]*)(\\.git)?/https:\\/\\/\\1\\/\\2\\/\\3/')
   search = "!f(){ git branch -a | sed -e 's/[ \\*]*//' | grep -v -e '\\->' | xargs git grep $@; };f "
+  cleanbranches =!"git fetch -p && for branch in $(git branch -vv | grep ': gone]' | awk '{print $1}'); do git branch -D $branch; done"
 
 # custom config overriding
 [includeIf "gitdir:~/code/src/git.viasat.com/"]

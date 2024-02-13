@@ -12,3 +12,7 @@ vim.keymap.set('n', '<leader>path', [[:echo expand('%:p')<cr>]])
 
 -- lazy
 vim.keymap.set('n', '<leader>l', '<cmd>:Lazy<cr>', { desc = 'Lazy' })
+
+-- base64 visual selection decoding and encoding
+vim.keymap.set('v', '<leader>b', 'y:let @"=system(\'base64 --decode\', @")<cr>gvP')
+vim.keymap.set('v', '<leader>B', 'y:let @"=trim(system(\'base64\', @"))<cr>gvP')
