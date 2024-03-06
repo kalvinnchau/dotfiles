@@ -92,8 +92,8 @@ wezterm.on('update-status', function(window, pane)
 
   -- Set UTC Datetime
   local date = wezterm.strftime_utc('%Y-%m-%d %H:%M UTC')
-  local tz = wezterm.strftime(' (%z)')
-  table.insert(cells, date .. tz)
+  -- local tz = wezterm.strftime(' (%z)')
+  table.insert(cells, date) --.. tz)
 
   -- An entry for each battery (typically 0 or 1 battery)
   for _, b in ipairs(wezterm.battery_info()) do
