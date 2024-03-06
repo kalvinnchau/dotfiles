@@ -11,6 +11,7 @@
 
 [merge]
   path = nvim
+  conflictstyle = zdiff3
 
 [core]
   editor = nvim
@@ -20,6 +21,7 @@
 
 [diff]
   tool = nvimdiff
+  algorithm = histogram
 
 [difftool]
   prompt = false
@@ -29,6 +31,7 @@
 
 [commit]
   template = ~/.config/git/commit.template
+  verbose = true
 
 [alias]
   f   = fetch
