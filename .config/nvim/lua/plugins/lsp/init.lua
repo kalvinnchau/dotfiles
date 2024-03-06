@@ -14,8 +14,7 @@ return {
         config = true,
       },
       { 'folke/neodev.nvim', opts = { experimental = { pathStrict = true } } },
-      --'mason.nvim',
-      --'williamboman/mason-lspconfig.nvim',
+      'williamboman/mason.nvim',
       'hrsh7th/cmp-nvim-lsp',
     },
     ---@class PluginLspOpts
@@ -41,6 +40,7 @@ return {
       -- LSP Server Settings
       ---@type lspconfig.options
       servers = {
+        bashls = {},
         metals = {},
         tsserver = {},
         vuels = {},
@@ -146,7 +146,7 @@ return {
     'nvimtools/none-ls.nvim',
     event = 'BufReadPre',
     dependencies = {
-      --'mason.nvim'
+      'williamboman/mason.nvim',
     },
     opts = function()
       local nls = require('null-ls')
@@ -165,9 +165,6 @@ return {
             extra_args = { '--ignore-path', vim.fn.expand('~/.prettierignore') },
           }),
 
-          nls.builtins.diagnostics.shellcheck,
-          nls.builtins.formatting.shellharden,
-
           nls.builtins.formatting.terraform_fmt,
 
           --nls.builtins.formatting.ruff,
@@ -182,43 +179,64 @@ return {
     end,
   },
 
-  -- cmdline tools and lsp servers
-  --{
-  --  'williamboman/mason.nvim',
-  --  cmd = 'Mason',
-  --  keys = { { '<leader>cm', '<cmd>Mason<cr>', desc = 'Mason' } },
-  --  opts = {
-  --    ensure_installed = {
-  --      -- python
-  --      'ruff',
-  --      'debugpy',
-  --      -- golang
-  --      'delve',
-  --      'gomodifytags',
-  --      -- rust
-  --      'rustfmt',
-  --      -- lua
-  --      'stylua',
-  --      -- sh
-  --      'shellcheck',
-  --      'shellharden',
-  --      -- typescript/javascript
-  --      'prettier',
-  --      -- others
-  --      'buildifier',
-  --      'commitlint',
-  --    },
-  --  },
-  --  ---@param opts MasonSettings | {ensure_installed: string[]}
-  --  config = function(_, opts)
-  --    require('mason').setup(opts)
-  --    local mr = require('mason-registry')
-  --    for _, tool in ipairs(opts.ensure_installed) do
-  --      local p = mr.get_package(tool)
-  --      if not p:is_installed() then
-  --        p:install()
-  --      end
-  --    end
-  --  end,
-  --},
+  {
+    'williamboman/mason.nvim',
+    cmd = 'Mason',
+    keys = { { '<leader>cm', '<cmd>Mason<cr>', desc = 'Mason' } },
+    build = ':MasonUpdate',
+    opts = {
+      ensure_installed = {
+        -- python
+        'ruff',
+        'ruff-lsp',
+        --'python-lsp-server',
+        'debugpy',
+        'pyright',
+        -- golang
+        'gopls',
+        'delve',
+        'gomodifytags',
+        'goimports',
+        -- lua
+        'lua-language-server',
+        'stylua',
+        -- sh
+        'shellcheck',
+        'shellharden',
+        -- typescript/javascript
+        'prettier',
+        -- others
+        'bash-language-server',
+        'buildifier',
+        'commitlint',
+        'vale',
+      },
+    },
+    ---@param opts MasonSettings | {ensure_installed: string[]}
+    config = function(_, opts)
+      require('mason').setup(opts)
+      local mr = require('mason-registry')
+      mr:on('package:install:success', function()
+        vim.defer_fn(function()
+          require('lazy.core.handler.event').trigger({
+            event = 'FileType',
+            buf = vim.api.nvim_get_current_buf(),
+          })
+        end, 100)
+      end)
+      local function ensure_installed()
+        for _, tool in ipairs(opts.ensure_installed) do
+          local p = mr.get_package(tool)
+          if not p:is_installed() then
+            p:install()
+          end
+        end
+      end
+      if mr.refresh then
+        mr.refresh(ensure_installed)
+      else
+        ensure_installed()
+      end
+    end,
+  },
 }
