@@ -201,6 +201,19 @@ return {
     end,
   },
 
+  -- diff views
+  {
+    'sindrets/diffview.nvim',
+    opts = {},
+    keys = {
+      {
+        '<leader>dh',
+        '<cmd>DiffviewOpen<cr>',
+        desc = 'diff against HEAD',
+      },
+    },
+  },
+
   -- git signs
   {
     'lewis6991/gitsigns.nvim',
