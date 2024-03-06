@@ -143,33 +143,8 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 # path configuration
 export PATH=$PATH:/usr/local/bin:$HOME/.cargo/bin
-export PATH="$HOME/.jenv/bin:$PATH"
 export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
 export PATH=$PATH:"$HOME/.local/bin"
-export PATH="/usr/local/opt/mysql-client/bin:$PATH"
-
-# speed up init time, rehash in the background
-if command -v jenv &> /dev/null; then
-  #eval "$(jenv init - --no-rehash)"
-  (jenv rehash &) 2> /dev/null
-fi
-
-# lazy load nvm until nvm, node or a node-dependent command is run
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-if [[ -s "$NVM_DIR/nvm.sh" ]]; then
-  NODE_GLOBALS=($(find $NVM_DIR/versions/node -maxdepth 3 -type l -wholename '*/bin/*' | xargs -n1 basename | sort | uniq))
-  NODE_GLOBALS+=("node")
-  NODE_GLOBALS+=("nvm")
-  # Lazy-loading nvm + npm on node globals
-  load_nvm () {
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-  }
-  # Making node global trigger the lazy loading
-  for cmd in "${NODE_GLOBALS[@]}"; do
-    eval "${cmd}(){ unset -f ${NODE_GLOBALS}; load_nvm; ${cmd} \$@ }"
-  done
-fi
 
 command -v starship &> /dev/null && eval "$(starship init zsh)"
 
@@ -179,11 +154,7 @@ complete -o nospace -C /usr/local/bin/s5cmd s5cmd
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 [ -s "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 
-
-alias luamake=/Users/kchau/code/src/github.com/sumneko/lua-language-server/3rd/luamake/luamake
-eval "$(pyenv init - | grep -v 'command pyenv rehash')"
-eval "$(pyenv virtualenv-init -)"
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+eval "$(/Users/kchau/.local/bin/mise activate zsh)"
 
 ##
 # functions
