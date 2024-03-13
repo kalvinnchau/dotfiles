@@ -1,0 +1,13 @@
+[tools]
+go = "1.21"
+java = "temurin-11.0.22+7"
+node = "20"
+python = "3.11"
+
+[env]
+MISE_DATA_DIR = "{{env.HOME}}/.local/share/mise"
+
+_.python.venv = { path = "{{env.MISE_DATA_DIR}}/python/venv/global", create = true }
+
+[settings]
+experimental = true
