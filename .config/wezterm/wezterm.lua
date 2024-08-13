@@ -138,7 +138,7 @@ wezterm.on('update-status', function(window, pane)
 end)
 
 local font_size
-if wezterm.hostname() == 'LP-KCHAU2-OSX' then
+if wezterm.hostname() == 'LP-KCHAU2-OSX' or wezterm.hostname() == 'kchau.vsat' then
   font_size = 23.5
 else
   font_size = 16.5

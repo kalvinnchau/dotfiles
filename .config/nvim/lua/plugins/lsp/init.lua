@@ -46,6 +46,7 @@ return {
         vuels = {},
         rust_analyzer = {},
         terraformls = {},
+        lemminx = {},
         lua_ls = {
           settings = {
             Lua = {
@@ -204,11 +205,15 @@ return {
         'shellcheck',
         'shellharden',
         -- typescript/javascript
+        'typescript-language-server',
         'prettier',
+        -- java,
+        'lemminx', -- xml
         -- others
         'bash-language-server',
         'buildifier',
         'commitlint',
+        'terraform-ls',
         'vale',
       },
     },

@@ -42,6 +42,7 @@ return {
         'regex',
         'rust',
         'rust',
+        'terraform',
         'typescript',
         'vim',
         'vimdoc',

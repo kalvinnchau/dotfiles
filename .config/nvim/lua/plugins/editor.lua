@@ -142,33 +142,36 @@ return {
     event = 'VeryLazy',
     opts = {
       plugins = { spelling = true },
-      key_labels = { ['<leader>'] = 'SPC' },
+      replace = { ['<leader>'] = 'SPC' },
+    },
+    dependencies = {
+      'echasnovski/mini.icons',
     },
     config = function(_, opts)
       local wk = require('which-key')
       vim.o.timeout = true
       vim.o.timeoutlen = 300
       wk.setup(opts)
-      wk.register({
-        mode = { 'n', 'v' },
-        ['g'] = { name = '+goto' },
-        [']'] = { name = '+next' },
-        ['['] = { name = '+prev' },
-        ['<leader><tab>'] = { name = '+tabs' },
-        ['<leader>b'] = { name = '+buffer' },
-        ['<leader>c'] = { name = '+code' },
-        ['<leader>f'] = { name = '+file/find' },
-        ['<leader>g'] = { name = '+git' },
-        ['<leader>gh'] = { name = '+hunks' },
-        ['<leader>q'] = { name = '+quit/session' },
-        ['<leader>s'] = { name = '+search' },
-        ['<leader>u'] = { name = '+ui' },
-        ['<leader>w'] = { name = '+windows' },
-        ['<leader>x'] = { name = '+diagnostics/quickfix' },
-        ['<leader>d'] = { name = '+diagnostics' },
-        f = {
-          d = {
-            -- diff the current buffer against what's on the disk, useful before writing
+      wk.add({
+        {
+          mode = { 'n', 'v' },
+          { '<leader><tab>', group = 'tabs' },
+          { '<leader>b', group = 'buffer' },
+          { '<leader>c', group = 'code' },
+          { '<leader>d', group = 'diagnostics' },
+          { '<leader>f', group = 'file/find' },
+          { '<leader>g', group = 'git' },
+          { '<leader>gh', group = 'hunks' },
+          { '<leader>q', group = 'quit/session' },
+          { '<leader>s', group = 'search' },
+          { '<leader>u', group = 'ui' },
+          { '<leader>w', group = 'windows' },
+          { '<leader>x', group = 'diagnostics/quickfix' },
+          { '[', group = 'prev' },
+          { ']', group = 'next' },
+          { 'g', group = 'goto' },
+          {
+            'fd',
             function()
               -- Get start buffer
               local start = vim.api.nvim_get_current_buf()
@@ -194,7 +197,7 @@ return {
                 end, { buffer = buf })
               end
             end,
-            'diff buffer against disk',
+            desc = 'diff buffer against disk',
           },
         },
       })
@@ -209,7 +212,12 @@ return {
       {
         '<leader>dh',
         '<cmd>DiffviewOpen<cr>',
-        desc = 'diff against HEAD',
+        desc = 'open diff view diff against HEAD',
+      },
+      {
+        '<leader>dc',
+        '<cmd>DiffviewClose<cr>',
+        desc = 'close diff view diff against HEAD',
       },
     },
   },
@@ -286,13 +294,17 @@ return {
   -- better diagnostics list and others
   {
     'folke/trouble.nvim',
-    cmd = { 'TroubleToggle', 'Trouble' },
-    opts = { use_diagnostic_signs = true },
     keys = {
-      { '<leader>xx', '<cmd>TroubleToggle document_diagnostics<cr>', desc = 'Document Diagnostics (Trouble)' },
-      { '<leader>xX', '<cmd>TroubleToggle workspace_diagnostics<cr>', desc = 'Workspace Diagnostics (Trouble)' },
-      { '<leader>xL', '<cmd>TroubleToggle loclist<cr>', desc = 'Location List (Trouble)' },
-      { '<leader>xQ', '<cmd>TroubleToggle quickfix<cr>', desc = 'Quickfix List (Trouble)' },
+      { '<leader>xx', '<cmd>Trouble diagnostics toggle<cr>', desc = 'Diagnostics (Trouble)' },
+      { '<leader>xX', '<cmd>Trouble diagnostics toggle filter.buf=0<cr>', desc = 'Buffer  Diagnostics (Trouble)' },
+      { '<leader>cs', '<cmd>Trouble symbols toggle focus=false<cr>', desc = 'Symbols (Trouble)' },
+      {
+        '<leader>cl',
+        '<cmd>Trouble lsp toggle focus=false win.position=right<cr>',
+        desc = 'LSP Definitions / references / ... (Trouble)',
+      },
+      { '<leader>xL', '<cmd>Trouble loclist toggle<cr>', desc = 'Location List (Trouble)' },
+      { '<leader>xQ', '<cmd>Trouble qflist toggle<cr>', desc = 'Quickfix List (Trouble)' },
     },
   },
 
@@ -321,6 +333,45 @@ return {
       { '<leader>xt', '<cmd>TodoTrouble<cr>', desc = 'Todo Trouble' },
       --{ '<leader>xtt', '<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>', desc = 'Todo Trouble' },
       { '<leader>xT', '<cmd>TodoTelescope<cr>', desc = 'Todo Telescope' },
+    },
+  },
+
+  -- obsidian.nvim
+  {
+    'epwalsh/obsidian.nvim',
+    version = '*', -- recommended, use latest release instead of latest commit
+    lazy = true,
+    ft = 'markdown',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'hrsh7th/nvim-cmp',
+    },
+    opts = {
+      workspaces = {
+        {
+          name = 'work',
+          path = '~/code/src/git.viasat.com/kchau/obsidian/work',
+        },
+      },
+      completion = {
+        nvim_cmp = true,
+        min_chars = 2,
+      },
+      --wiki_link_func = 'prepend_note_id',
+      preferred_link_style = 'markdown',
+    },
+    keys = {
+      {
+        'gf',
+        function()
+          if require('obsidian').util.cursor_on_markdown_link() then
+            return '<cmd>ObsidianFollowLink<CR>'
+          else
+            return 'gf'
+          end
+        end,
+        desc = 'goto file or obsidian follow',
+      },
     },
   },
 }

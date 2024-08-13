@@ -60,6 +60,16 @@ brew install kubectx
 brew install aws-iam-authenticator
 ```
 
+## misc notes
+
+### enable key repeats
+
+Run the following to enable key repeating by holding down a key, speed controlled in `System Settings -> Keyboard`
+
+```bash
+defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+```
+
 ---
 
 # deprecated

@@ -52,6 +52,9 @@ truncation_length = 2
 truncate_to_repo = false
 style = "blue"
 
+[docker_context]
+disabled = true
+
 [git_branch]
 format = "[$symbol$branch]($style)"
 

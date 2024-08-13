@@ -124,6 +124,7 @@ return {
         replace = 'gzr', -- Replace surrounding
         update_n_lines = 'gzn', -- Update `n_lines`
       },
+      silent = false,
     },
     config = function(_, opts)
       -- use gz mappings instead of s to prevent conflict with leap

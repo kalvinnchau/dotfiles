@@ -45,3 +45,15 @@ vim.api.nvim_create_autocmd('BufWinEnter', {
     end
   end,
 })
+
+-- set conceallevel for markdown to 1 to use with obsidian.nvim
+vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
+  desc = 'Set conceallevel based on filetype',
+  callback = function()
+    if string.match(vim.bo.filetype, 'markdown') then
+      vim.opt.conceallevel = 1
+    else
+      vim.opt.conceallevel = 0
+    end
+  end,
+})

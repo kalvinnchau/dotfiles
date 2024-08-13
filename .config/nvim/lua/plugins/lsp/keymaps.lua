@@ -34,6 +34,10 @@ function M.get()
         require('mini.trailspace').trim()
       end, desc = 'format the current buffer' },
 
+      { '<leader>tf', function()
+        require('plugins.lsp.format').toggle()
+      end, desc = 'toggle autoformat'},
+
       -- diagnostics
       { '<leader>da', require('telescope.builtin').diagnostics, desc = 'show diagnostics in current buffer' },
       { '<leader>dn', vim.diagnostic.goto_next, desc = 'go to next diagnostic' },
