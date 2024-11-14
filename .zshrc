@@ -41,12 +41,22 @@ _fzf_compgen_dir() {
   fd --type d --hidden --follow --exclude ".git" . "$1"
 }
 
-autoload -Uz compinit
-if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' ${ZDOTDIR:-$HOME}/.zcompdump) ]; then
-  compinit
-else
-  compinit -C
-fi
+#autoload -Uz compinit
+#if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' ${ZDOTDIR:-$HOME}/.zcompdump) ]; then
+#  compinit
+#else
+#  compinit -C
+#fi
+autoload -U compinit && compinit
+{
+  # Compile the completion dump to increase startup speed. Run in background.
+  zcompdump="${ZDOTDIR:-$HOME}/.zcompdump"
+  if [[ -s "$zcompdump" && (! -s "${zcompdump}.zwc" || "$zcompdump" -nt "${zcompdump}.zwc") ]]; then
+    # if zcompdump file exists, and we don't have a compiled version or the
+    # dump file is newer than the compiled file
+    zcompile "$zcompdump"
+  fi
+} &!
 
 ##
 # zsh settings

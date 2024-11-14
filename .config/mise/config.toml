@@ -3,6 +3,7 @@ go = "1.21"
 java = "temurin-11.0.22+7"
 node = "20"
 python = "3.11"
+"cargo:pqrs" = "latest"
 
 [env]
 MISE_DATA_DIR = "{{env.HOME}}/.local/share/mise"

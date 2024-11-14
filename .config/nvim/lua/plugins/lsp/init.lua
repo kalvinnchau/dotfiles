@@ -42,7 +42,7 @@ return {
       servers = {
         bashls = {},
         metals = {},
-        tsserver = {},
+        ts_ls = {},
         vuels = {},
         rust_analyzer = {},
         terraformls = {},
@@ -59,7 +59,7 @@ return {
             },
           },
         },
-        ruff_lsp = {},
+        ruff = {},
       },
       -- you can do any additional lsp server setup here
       -- return true if you don't want this server to be  lspconfig
