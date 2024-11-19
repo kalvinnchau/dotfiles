@@ -6,3 +6,9 @@ fg() {
         builtin fg %"$@"
     fi
 }
+
+osc() {
+  code=$1
+  text=$2
+  echo -n "\x1b]$code;$text\x1b\\"
+}

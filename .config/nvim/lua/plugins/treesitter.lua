@@ -28,6 +28,7 @@ return {
       context_commentstring = { enable = true, enable_autocmd = false },
       auto_install = true,
       ensure_installed = {
+        'astro',
         'bash',
         'go',
         'dockerfile',

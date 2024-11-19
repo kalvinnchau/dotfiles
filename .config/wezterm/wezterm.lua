@@ -165,6 +165,8 @@ return {
   use_fancy_tab_bar = false,
   enable_tab_bar = true,
 
+  max_fps = 240,
+
   default_prog = { '/bin/zsh', '-l' },
 
   -- leader option CMD + ,
