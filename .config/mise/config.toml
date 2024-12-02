@@ -3,7 +3,8 @@ go = "1.21"
 java = "temurin-11.0.22+7"
 node = "20"
 python = "3.11"
-"cargo:pqrs" = "latest"
+"cargo:cargo-binstall" = "latest"
+"cargo:rustic-rs" = "latest"
 
 [env]
 MISE_DATA_DIR = "{{env.HOME}}/.local/share/mise"
@@ -11,4 +12,6 @@ MISE_DATA_DIR = "{{env.HOME}}/.local/share/mise"
 _.python.venv = { path = "{{env.MISE_DATA_DIR}}/python/venv/global", create = true }
 
 [settings]
+# use provided binaries if available
+cargo.binstall = true
 experimental = true
