@@ -44,7 +44,6 @@ return {
         metals = {},
         ts_ls = {},
         vuels = {},
-        rust_analyzer = {},
         terraformls = {},
         lemminx = {},
         lua_ls = {

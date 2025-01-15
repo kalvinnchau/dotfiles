@@ -131,4 +131,117 @@ return {
       require('mini.surround').setup(opts)
     end,
   },
+
+  -- nvim-dap
+  {
+    'mfussenegger/nvim-dap',
+    keys = {
+      {
+        '<leader>bb',
+        function()
+          require('dap').toggle_breakpoint()
+        end,
+        desc = 'toggle breakpoint',
+      },
+      {
+        '<leader>bn',
+        function()
+          require('dap').continue()
+        end,
+        desc = 'continue application',
+      },
+      {
+        '<leader>bl',
+        function()
+          require('dap').step_over()
+        end,
+        desc = 'step over',
+      },
+      {
+        '<leader>bj',
+        function()
+          require('dap').step_into()
+        end,
+        desc = 'step into',
+      },
+      {
+        '<leader>bk',
+        function()
+          require('dap').step_out()
+        end,
+        desc = 'step out',
+      },
+      {
+        '<leader>bh',
+        function()
+          require('dap').step_back()
+        end,
+        desc = 'step back',
+      },
+    },
+  },
+  {
+    'theHamsta/nvim-dap-virtual-text',
+    opts = {},
+  },
+  {
+    'rcarriga/nvim-dap-ui',
+    dependencies = { 'mfussenegger/nvim-dap', 'nvim-neotest/nvim-nio' },
+    opts = {
+      layouts = {
+        {
+          elements = {
+            {
+              id = 'scopes',
+              size = 0.50,
+            },
+            {
+              id = 'stacks',
+              size = 0.25,
+            },
+            {
+              id = 'breakpoints',
+              size = 0.25,
+            },
+            --{
+            --  id = 'watches',
+            --  size = 0.25,
+            --},
+          },
+          position = 'left',
+          size = 50,
+        },
+        {
+          elements = {
+            {
+              id = 'repl',
+              size = 0.5,
+            },
+            {
+              id = 'console',
+              size = 0.5,
+            },
+          },
+          position = 'bottom',
+          size = 10,
+        },
+      },
+    },
+    keys = {
+      {
+        '<leader>du',
+        function()
+          require('dapui').toggle()
+        end,
+        desc = 'open DAP UI',
+      },
+      {
+        '<leader>df',
+        function()
+          require('dapui').float_element('scopes')
+        end,
+        desc = 'open DAP scops in a floating window',
+      },
+    },
+  },
 }

@@ -4,6 +4,52 @@ return {
   {
     'nvim-neo-tree/neo-tree.nvim',
     cmd = 'Neotree',
+    dependencies = {
+      {
+        's1n7ax/nvim-window-picker',
+        version = '2.*',
+        opts = {
+          filter_rules = {
+            include_current_win = false,
+            autoselect_one = true,
+            -- filter using buffer options
+            bo = {
+              -- if the file type is one of following, the window will be ignored
+              filetype = { 'neo-tree', 'neo-tree-popup', 'notify' },
+              -- if the buffer type is one of following, the window will be ignored
+              buftype = { 'terminal', 'quickfix' },
+            },
+          },
+          highlights = {
+            enabled = true,
+            statusline = {
+              focused = {
+                fg = '#ededed',
+                bg = '#e35e4f',
+                bold = true,
+              },
+              unfocused = {
+                fg = '#ededed',
+                bg = '#c96826',
+                bold = true,
+              },
+            },
+            winbar = {
+              focused = {
+                fg = '#ededed',
+                bg = '#e35e4f',
+                bold = true,
+              },
+              unfocused = {
+                fg = '#ededed',
+                bg = '#c96826',
+                bold = true,
+              },
+            },
+          },
+        },
+      },
+    },
     keys = {
       {
         '<leader>fe',
@@ -51,9 +97,13 @@ return {
       window = {
         mappings = {
           ['<space>'] = 'none',
-          ['<C-v>'] = 'open_vsplit',
-          ['<C-x>'] = 'open_split',
+          ['<C-v>'] = 'vsplit_with_window_picker',
+          ['<C-x>'] = 'split_with_window_picker',
           ['<C-t>'] = 'open_tabnew',
+        },
+        fuzzy_finder_mappings = {
+          ['<C-j>'] = 'move_cursor_down',
+          ['<C-k>'] = 'move_cursor_up',
         },
       },
     },
@@ -64,6 +114,9 @@ return {
     'nvim-telescope/telescope.nvim',
     cmd = 'Telescope',
     version = false, -- telescope did only one release, so use HEAD for now
+    dependencies = {
+      'nvim-telescope/telescope-dap.nvim',
+    },
     keys = {
       { '<leader>fg', [[<cmd>lua require('telescope.builtin').live_grep{}<CR>]], desc = 'grep files in cwd' },
       { '<leader>ff', [[<cmd>lua require('telescope.builtin').find_files{}<CR>]], desc = 'pick any files in cwd' },
@@ -76,7 +129,11 @@ return {
       { '<leader>fv', [[<cmd>lua require('telescope.builtin').commands{}<CR>]], desc = 'pick any vim command' },
       { '<leader>fc', [[<cmd>lua require('telescope.builtin').git_commits{}<CR>]], desc = 'pick from git commits' },
       { '<leader>fk', [[<cmd>lua require('telescope.builtin').keymaps{}<CR>]], desc = 'pick any keymap' },
-      { '<leader>fr', [[<cmd>lua require('telescope.builtin').oldfiles{}<CR>]], desc = 'pick recently opened files' },
+      {
+        '<leader>fr',
+        [[<cmd>lua require('telescope.builtin').oldfiles{}<CR>]],
+        desc = 'pick recently opened files',
+      },
       { '<leader>fs', [[<cmd>lua require('telescope.builtin').search_history{}<CR>]], desc = 'pick recent searches' },
     },
     opts = {
@@ -134,6 +191,11 @@ return {
         },
       },
     },
+    config = function(_, opts)
+      local t = require('telescope')
+      t.setup(opts)
+      t.load_extension('dap')
+    end,
   },
 
   -- which-key
@@ -330,7 +392,7 @@ return {
         end,
         desc = 'Previous todo comment',
       },
-      { '<leader>xt', '<cmd>TodoTrouble<cr>', desc = 'Todo Trouble' },
+      { '<leader>xt', '<cmd>TodoTrouble<cr>',   desc = 'Todo Trouble' },
       --{ '<leader>xtt', '<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>', desc = 'Todo Trouble' },
       { '<leader>xT', '<cmd>TodoTelescope<cr>', desc = 'Todo Telescope' },
     },

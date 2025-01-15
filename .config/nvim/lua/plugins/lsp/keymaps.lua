@@ -39,7 +39,8 @@ function M.get()
       end, desc = 'toggle autoformat'},
 
       -- diagnostics
-      { '<leader>da', require('telescope.builtin').diagnostics, desc = 'show diagnostics in current buffer' },
+      { '<leader>da', function() require('telescope.builtin').diagnostics({bufnr = 0 }) end, desc = 'show diagnostics in current buffer' },
+      { '<leader>dw', function() require('telescope.builtin').diagnostics() end, desc = 'show diagnostics for workspace' },
       { '<leader>dn', vim.diagnostic.goto_next, desc = 'go to next diagnostic' },
       { '<leader>dp', vim.diagnostic.goto_prev, desc = 'go to previous diagnostic' },
 
