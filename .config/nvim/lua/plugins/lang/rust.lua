@@ -2,10 +2,14 @@ vim.g.rustaceanvim = function()
   local cfg = {
     -- Plugin configuration
     tools = {
+      float_win_config = {
+        border = 'rounded',
+      },
       test_executor = 'background',
     },
     -- LSP configuration
     server = {
+      on_attach = function(client, bufnr) end,
       default_settings = {
         ['rust-analyzer'] = {
           settings = {
