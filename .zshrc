@@ -158,13 +158,14 @@ export PATH=$PATH:"$HOME/.local/bin"
 
 command -v starship &> /dev/null && eval "$(starship init zsh)"
 
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /usr/local/bin/s5cmd s5cmd
-
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 [ -s "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 
-eval "$(/Users/kchau/.local/bin/mise activate zsh)"
+eval "$($HOME/.local/bin/mise activate zsh)"
+
+export _ZO_DATA_DIR="$HOME/.local/share"
+export _ZO_FZF_OPTS="--exact --no-sort --cycle --keep-right --border=sharp --height=45% --info=inline --tabstop=1 --exit-0 --preview=\"command -p env CLICOLOR_FORCE=1 ls --color=always -1AGp {2..}\" --bind shift-tab:preview-half-page-up,tab:preview-half-page-down"
+eval "$(zoxide init --cmd cd zsh)"
 
 ##
 # functions

@@ -46,7 +46,6 @@ cargo install git-delta
 ```bash
 curl https://mise.run | sh
 mise install
-mise plugin add poetry
 ```
 
 6. brew packages

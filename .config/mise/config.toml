@@ -1,11 +1,15 @@
 [tools]
-go = "1.21"
-java = "temurin-11.0.22+7"
-node = "20"
+go = "1.23"
+java = "21"
+node = "22"
+
 python = "3.11"
+uv = "latest"
+
 "cargo:cargo-binstall" = "latest"
 "cargo:rustic-rs" = "latest"
-uv = "latest"
+
+"ubi:ajeetdsouza/zoxide" = "latest"
 
 [env]
 MISE_DATA_DIR = "{{env.HOME}}/.local/share/mise"
