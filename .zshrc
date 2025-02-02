@@ -162,6 +162,7 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 [ -s "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 
 eval "$($HOME/.local/bin/mise activate zsh)"
+eval "$(mise completion zsh)"
 
 export _ZO_DATA_DIR="$HOME/.local/share"
 export _ZO_FZF_OPTS="--exact --no-sort --cycle --keep-right --border=sharp --height=45% --info=inline --tabstop=1 --exit-0 --preview=\"command -p env CLICOLOR_FORCE=1 ls --color=always -1AGp {2..}\" --bind shift-tab:preview-half-page-up,tab:preview-half-page-down"

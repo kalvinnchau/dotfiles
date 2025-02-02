@@ -10,6 +10,7 @@ uv = "latest"
 "cargo:rustic-rs" = "latest"
 
 "ubi:ajeetdsouza/zoxide" = "latest"
+"ubi:jdx/usage" = "latest"
 
 [env]
 MISE_DATA_DIR = "{{env.HOME}}/.local/share/mise"
