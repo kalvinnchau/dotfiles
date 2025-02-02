@@ -41,12 +41,9 @@ _fzf_compgen_dir() {
   fd --type d --hidden --follow --exclude ".git" . "$1"
 }
 
-#autoload -Uz compinit
-#if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' ${ZDOTDIR:-$HOME}/.zcompdump) ]; then
-#  compinit
-#else
-#  compinit -C
-#fi
+# rg --generate complete-zsh > "$HOME/.zsh-complete/_rg"
+fpath=($HOME/.zsh-complete $fpath)
+
 autoload -U compinit && compinit
 {
   # Compile the completion dump to increase startup speed. Run in background.
@@ -57,6 +54,8 @@ autoload -U compinit && compinit
     zcompile "$zcompdump"
   fi
 } &!
+
+zinit light Aloxaf/fzf-tab
 
 ##
 # zsh settings
@@ -161,9 +160,14 @@ command -v starship &> /dev/null && eval "$(starship init zsh)"
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 [ -s "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 
+# mise config
 eval "$($HOME/.local/bin/mise activate zsh)"
 eval "$(mise completion zsh)"
 
+# uv config, must be after mise
+eval "$(uv generate-shell-completion zsh)"
+
+# zoxide config, must be after mise
 export _ZO_DATA_DIR="$HOME/.local/share"
 export _ZO_FZF_OPTS="--exact --no-sort --cycle --keep-right --border=sharp --height=45% --info=inline --tabstop=1 --exit-0 --preview=\"command -p env CLICOLOR_FORCE=1 ls --color=always -1AGp {2..}\" --bind shift-tab:preview-half-page-up,tab:preview-half-page-down"
 eval "$(zoxide init --cmd cd zsh)"
