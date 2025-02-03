@@ -30,6 +30,14 @@ vim.opt.smartcase = true
 -- highlight search results
 vim.opt.hlsearch = true
 
+-- highlight the current line for easier visiual identification
+vim.opt.cursorline = true
+vim.api.nvim_create_autocmd('ColorScheme', {
+  callback = function()
+    vim.api.nvim_set_hl(0, 'CursorLine', { bg = '#302D2B' })
+  end,
+})
+
 -- have fixed column for diagnostics to appear
 vim.opt.signcolumn = 'yes'
 

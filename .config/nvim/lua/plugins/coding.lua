@@ -116,15 +116,11 @@ return {
     version = false, -- last release is way too old
     event = 'InsertEnter',
     dependencies = {
-      --'hrsh7th/cmp-nvim-lsp',
-      --'hrsh7th/cmp-buffer',
-      --'hrsh7th/cmp-path',
-      --'hrsh7th/cmp-nvim-lua',
-      'https://codeberg.org/FelipeLema/cmp-async-path',
       { 'iguanacucumber/mag-nvim-lsp', name = 'cmp-nvim-lsp', opts = {} },
       { 'iguanacucumber/mag-nvim-lua', name = 'cmp-nvim-lua' },
       { 'iguanacucumber/mag-buffer', name = 'cmp-buffer' },
       { 'iguanacucumber/mag-cmdline', name = 'cmp-cmdline' },
+      'https://codeberg.org/FelipeLema/cmp-async-path',
       'saadparwaiz1/cmp_luasnip',
       'onsails/lspkind-nvim',
     },
@@ -147,7 +143,14 @@ return {
         }, {
           { name = 'cmdline' },
         }),
-        matching = { disallow_symbol_nonprefix_matching = false },
+        matching = {
+          disallow_fullfuzzy_matching = false,
+          disallow_fuzzy_matching = false,
+          disallow_partial_fuzzy_matching = true,
+          disallow_partial_matching = false,
+          disallow_prefix_unmatching = false,
+          disallow_symbol_nonprefix_matching = false,
+        },
       })
 
       return {
