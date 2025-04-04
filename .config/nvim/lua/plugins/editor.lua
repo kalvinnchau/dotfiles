@@ -397,43 +397,4 @@ return {
       { '<leader>xT', '<cmd>TodoTelescope<cr>', desc = 'Todo Telescope' },
     },
   },
-
-  -- obsidian.nvim
-  --{
-  --  'epwalsh/obsidian.nvim',
-  --  version = '*', -- recommended, use latest release instead of latest commit
-  --  lazy = true,
-  --  ft = 'markdown',
-  --  dependencies = {
-  --    'nvim-lua/plenary.nvim',
-  --    'hrsh7th/nvim-cmp',
-  --  },
-  --  opts = {
-  --    workspaces = {
-  --      {
-  --        name = 'work',
-  --        path = '~/code/src/git.viasat.com/kchau/obsidian/work',
-  --      },
-  --    },
-  --    completion = {
-  --      nvim_cmp = true,
-  --      min_chars = 2,
-  --    },
-  --    --wiki_link_func = 'prepend_note_id',
-  --    preferred_link_style = 'markdown',
-  --  },
-  --  keys = {
-  --    {
-  --      'gf',
-  --      function()
-  --        if require('obsidian').util.cursor_on_markdown_link() then
-  --          return '<cmd>ObsidianFollowLink<CR>'
-  --        else
-  --          return 'gf'
-  --        end
-  --      end,
-  --      desc = 'goto file or obsidian follow',
-  --    },
-  --  },
-  --},
 }

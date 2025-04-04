@@ -26,25 +26,11 @@ vim.g.rustaceanvim = function()
   return cfg
 end
 return {
-  --  {
-  --    'neovim/nvim-lspconfig',
-  --    opts = {
-  --      server = {
-  --        rust_analyzer = {
-  --          settings = {
-  --            diagnostic = {
-  --              refreshSupport = false,
-  --            },
-  --          },
-  --        },
-  --      },
-  --    },
-  --  },
 
   -- when using rustaceanvim, do not use the nvim-lspconfig setup above
   {
     'mrcjkb/rustaceanvim',
-    version = '^5', -- Recommended
+    version = '^6',
     lazy = false, -- This plugin is already lazy
     keys = {
       {

@@ -3,13 +3,9 @@ return {
     'neovim/nvim-lspconfig',
     opts = {
       servers = {
-        pyright = {},
+        basedpyright = {},
       },
     },
-    setup = {
-      pyright = function(_, _)
-        return false
-      end,
-    },
+    setup = {},
   },
 }

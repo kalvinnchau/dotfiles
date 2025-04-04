@@ -26,211 +26,114 @@ return {
     end,
   },
 
-  -- auto completeion
-  --{
-  --  'hrsh7th/nvim-cmp',
-  --  version = false, -- last release is way too old
-  --  event = 'InsertEnter',
-  --  dependencies = {
-  --    'hrsh7th/cmp-nvim-lsp',
-  --    'hrsh7th/cmp-buffer',
-  --    'hrsh7th/cmp-path',
-  --    'hrsh7th/cmp-nvim-lua',
-  --    'saadparwaiz1/cmp_luasnip',
-  --    'onsails/lspkind-nvim',
-  --  },
-  --  opts = function()
-  --    -- configure nvim-cmp
-  --    local cmp = require('cmp')
-  --    local luasnip = require('luasnip')
-
-  --    local has_words_before = function()
-  --      local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  --      return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
-  --    end
-
-  --    return {
-  --      snippet = {
-  --        expand = function(args)
-  --          luasnip.lsp_expand(args.body)
-  --        end,
-  --      },
-  --      mapping = cmp.mapping.preset.insert({
-  --        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-  --        ['<C-f>'] = cmp.mapping.scroll_docs(4),
-  --        ['<C-Space>'] = cmp.mapping.complete(),
-  --        ['<C-e>'] = cmp.mapping.close(),
-  --        ['<CR>'] = cmp.mapping.confirm({ select = false }),
-  --        ['<Tab>'] = cmp.mapping(function(fallback)
-  --          if cmp.visible() then
-  --            cmp.select_next_item()
-  --          elseif luasnip.expand_or_jumpable() then
-  --            luasnip.expand_or_jump()
-  --          elseif has_words_before() then
-  --            cmp.complete()
-  --          else
-  --            fallback()
-  --          end
-  --        end, {
-  --          'i',
-  --          's',
-  --        }),
-  --        ['<S-Tab>'] = cmp.mapping(function(fallback)
-  --          if cmp.visible() then
-  --            cmp.select_prev_item()
-  --          elseif luasnip.jumpable(-1) then
-  --            luasnip.jump(-1)
-  --          else
-  --            fallback()
-  --          end
-  --        end, {
-  --          'i',
-  --          's',
-  --        }),
-  --      }),
-  --      sources = {
-  --        { name = 'nvim_lsp' },
-  --        { name = 'luasnip' },
-  --        { name = 'buffer' },
-  --        { name = 'path' },
-  --      },
-  --      formatting = {
-  --        format = require('lspkind').cmp_format({
-  --          mode = 'text_symbol',
-  --          menu = {
-  --            buffer = '[buffer]',
-  --            nvim_lsp = '[lsp]',
-  --            luasnip = '[luaSnip]',
-  --            nvim_lua = '[lua]',
-  --            path = '[path]',
-  --          },
-  --        }),
-  --      },
-  --    }
-  --  end,
-  --},
   {
-    -- perf focused fork of nvim-cmp
-    'iguanacucumber/magazine.nvim',
-    name = 'nvim-cmp',
-    version = false, -- last release is way too old
-    event = 'InsertEnter',
-    dependencies = {
-      { 'iguanacucumber/mag-nvim-lsp', name = 'cmp-nvim-lsp', opts = {} },
-      { 'iguanacucumber/mag-nvim-lua', name = 'cmp-nvim-lua' },
-      { 'iguanacucumber/mag-buffer', name = 'cmp-buffer' },
-      { 'iguanacucumber/mag-cmdline', name = 'cmp-cmdline' },
-      'https://codeberg.org/FelipeLema/cmp-async-path',
-      'saadparwaiz1/cmp_luasnip',
-      'onsails/lspkind-nvim',
-    },
-    opts = function()
-      -- configure nvim-cmp
-      local cmp = require('cmp')
-      local luasnip = require('luasnip')
-      local compare = require('cmp.config.compare')
+    'saghen/blink.cmp',
+    -- optional: provides snippets for the snippet source
+    dependencies = { 'L3MON4D3/LuaSnip', version = 'v2.*' },
 
-      local has_words_before = function()
-        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
-      end
+    -- use a release tag to download pre-built binaries
+    version = '*',
+    -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
+    -- build = 'cargo build --release',
+    -- If you use nix, you can build from source using latest nightly rust with:
+    -- build = 'nix run .#build-plugin',
 
-      -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-      cmp.setup.cmdline(':', {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = cmp.config.sources({
-          { name = 'async_path' },
-        }, {
-          { name = 'cmdline' },
-        }),
-        matching = {
-          disallow_fullfuzzy_matching = false,
-          disallow_fuzzy_matching = false,
-          disallow_partial_fuzzy_matching = true,
-          disallow_partial_matching = false,
-          disallow_prefix_unmatching = false,
-          disallow_symbol_nonprefix_matching = false,
-        },
-      })
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
+    opts = {
+      -- 'default' for mappings similar to built-in completion
+      -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
+      -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
+      -- See the full "keymap" documentation for information on defining your own keymap.
+      keymap = {
+        preset = 'enter',
+        ['<C-d>'] = { 'scroll_documentation_up', 'fallback' },
+        ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
 
-      return {
-        snippet = {
-          expand = function(args)
-            luasnip.lsp_expand(args.body)
-          end,
+        ['<C-e>'] = { 'hide', 'fallback' },
+        ['<CR>'] = { 'accept', 'fallback' },
+
+        ['<Tab>'] = { 'select_next', 'fallback' },
+        ['<S-Tab>'] = { 'select_prev', 'fallback' },
+      },
+
+      cmdline = {
+        -- on enter accept and feed a newline
+        keymap = {
+          ['<CR>'] = { 'accept_and_enter', 'fallback' },
         },
-        window = {
-          completion = cmp.config.window.bordered(),
-          documentation = cmp.config.window.bordered(),
-        },
-        mapping = cmp.mapping.preset.insert({
-          ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-          ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<C-Space>'] = cmp.mapping.complete(),
-          ['<C-e>'] = cmp.mapping.close(),
-          ['<CR>'] = cmp.mapping.confirm({ select = false }),
-          ['<Tab>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_next_item()
-            elseif luasnip.expand_or_jumpable() then
-              luasnip.expand_or_jump()
-            elseif has_words_before() then
-              cmp.complete()
-            else
-              fallback()
-            end
-          end, {
-            'i',
-            's',
-          }),
-          ['<S-Tab>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-              luasnip.jump(-1)
-            else
-              fallback()
-            end
-          end, {
-            'i',
-            's',
-          }),
-        }),
-        sources = {
-          { name = 'nvim_lsp' },
-          { name = 'luasnip' },
-          { name = 'buffer' },
-          { name = 'async_path' },
-        },
-        sorting = {
-          priority_weight = 2,
-          comparators = {
-            compare.offset,
-            compare.exact,
-            -- compare.scopes,
-            compare.score,
-            compare.recently_used,
-            compare.locality,
-            compare.kind,
-            -- compare.sort_text,
-            compare.length,
-            compare.order,
+      },
+
+      appearance = {
+        -- Sets the fallback highlight groups to nvim-cmp's highlight groups
+        -- Useful for when your theme doesn't support blink.cmp
+        -- Will be removed in a future release
+        use_nvim_cmp_as_default = true,
+        -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+        -- Adjusts spacing to ensure icons are aligned
+        nerd_font_variant = 'mono',
+      },
+
+      completion = {
+        menu = {
+          border = 'single',
+          draw = {
+            align_to = 'cursor',
+            padding = 1,
+            gap = 1,
+            columns = { { 'source_name' }, { 'kind_icon' }, { 'label', 'label_description', gap = 1 } },
+            components = {
+              source_name = {
+                width = { max = 6 },
+                text = function(ctx)
+                  local name = ctx.source_name:lower()
+                  local renames = {
+                    cmdline = 'cmd',
+                    snippets = 'snip',
+                    buffer = 'buf',
+                  }
+                  local final = renames[name] or name
+                  return '[' .. final .. ']'
+                end,
+                highlight = 'BlinkCmpSource',
+              },
+              label = {
+                width = { fill = true, max = 40 },
+              },
+            },
           },
         },
-        formatting = {
-          format = require('lspkind').cmp_format({
-            mode = 'text_symbol',
-            menu = {
-              buffer = '[buf]',
-              nvim_lsp = '[lsp]',
-              luasnip = '[luaSnip]',
-              nvim_lua = '[lua]',
-              path = '[path]',
-            },
-          }),
+        documentation = {
+          auto_show = true,
+          window = {
+            border = 'single',
+          },
         },
-      }
-    end,
+      },
+
+      signature = {
+        enabled = true,
+        window = {
+          border = 'single',
+        },
+      },
+
+      snippets = { preset = 'luasnip' },
+
+      -- Default list of enabled providers defined so that you can extend it
+      -- elsewhere in your config, without redefining it, due to `opts_extend`
+      sources = {
+        default = { 'lsp', 'path', 'snippets', 'buffer' },
+        min_keyword_length = function(ctx)
+          -- only applies when typing a command, doesn't apply to arguments
+          if ctx.mode == 'cmdline' and string.find(ctx.line, ' ') == nil then
+            return 3
+          end
+          return 0
+        end,
+      },
+    },
+    opts_extend = { 'sources.default' },
   },
 
   -- surround

@@ -26,7 +26,9 @@ function M.get()
       end, desc = 'go to definition in a vertical split view' },
 
       { 'gr', require('telescope.builtin').lsp_references, desc = 'show references to the symbol' },
-      { 'K', vim.lsp.buf.hover, desc = 'display information about the symbol' },
+      { 'K', function()
+        vim.lsp.buf.hover { border = "single" }
+      end, desc = 'display information about the symbol' },
       { '<c-k>', vim.lsp.buf.signature_help, desc = 'display the signature help' },
 
       { 'ff', function()

@@ -8,10 +8,10 @@ return {
   -- toggle markdown preview
   {
     'iamcco/markdown-preview.nvim',
+    ft = 'markdown',
     build = function()
       vim.fn['mkdp#util#install']()
     end,
-    ft = 'markdown',
   },
 
   -- paste from macos clipboard to termnial

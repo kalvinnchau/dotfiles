@@ -16,7 +16,7 @@ return {
       },
       { 'folke/neodev.nvim', opts = { experimental = { pathStrict = true } } },
       'williamboman/mason.nvim',
-      'hrsh7th/cmp-nvim-lsp',
+      'saghen/blink.cmp',
     },
     ---@class PluginLspOpts
     opts = {
@@ -60,6 +60,7 @@ return {
           },
         },
         ruff = {},
+        yamlls = {},
       },
       -- you can do any additional lsp server setup here
       -- return true if you don't want this server to be  lspconfig
@@ -113,16 +114,11 @@ return {
       vim.diagnostic.config(opts.diagnostics)
 
       local servers = opts.servers
-      local capabilities = require('cmp_nvim_lsp').default_capabilities()
-      local handler = {
-        ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' }),
-        ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' }),
-      }
+      local capabilities = require('blink.cmp').get_lsp_capabilities()
 
       local function setup(server)
         local server_opts = servers[server] or {}
         server_opts.capabilities = capabilities
-        server_opts.handlers = handler
         if opts.setup[server] then
           if opts.setup[server](server, server_opts) then
             return
@@ -135,15 +131,9 @@ return {
         require('lspconfig')[server].setup(server_opts)
       end
 
-      --local mlsp = require('mason-lspconfig')
-      --local available = mlsp.get_available_servers()
-
       for server, server_opts in pairs(servers) do
         setup(server)
       end
-
-      --require('mason-lspconfig').setup({ ensure_installed = ensure_installed })
-      --require('mason-lspconfig').setup_handlers({ setup })
     end,
   },
 
