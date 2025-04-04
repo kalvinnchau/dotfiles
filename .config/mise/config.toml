@@ -3,7 +3,7 @@ go = "1.24"
 java = "21"
 node = "22"
 
-python = "3.11"
+python = "3.13"
 uv = "latest"
 
 "cargo:cargo-binstall" = "latest"
