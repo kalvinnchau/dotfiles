@@ -1,7 +1,7 @@
 [tools]
 go = "1.24"
 java = "21"
-node = "22"
+node = "23"
 
 python = "3.13"
 uv = "latest"

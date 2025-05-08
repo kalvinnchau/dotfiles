@@ -95,11 +95,11 @@ return {
       require('config.util').on_attach(function(client, buffer)
         require('plugins.lsp.format').on_attach(client, buffer)
         require('plugins.lsp.keymaps').on_attach(client, buffer)
-        vim.api.nvim_clear_autocmds({ group = init_lsp_on_attach_group, buffer = bufnr })
+        vim.api.nvim_clear_autocmds({ group = init_lsp_on_attach_group, buffer = buffer })
         vim.api.nvim_create_autocmd('CursorHold', {
           desc = 'show diagnostics when the cursor is over an error',
           group = init_lsp_on_attach_group,
-          buffer = bufnr,
+          buffer = buffer,
           callback = function()
             show_line_diagnostics()
           end,
@@ -169,7 +169,7 @@ return {
           nls.builtins.formatting.buildifier,
           nls.builtins.diagnostics.buildifier,
 
-          nls.builtins.diagnostics.vale,
+          --nls.builtins.diagnostics.vale,
         },
       }
     end,
@@ -184,7 +184,6 @@ return {
       ensure_installed = {
         -- python
         'ruff',
-        'ruff-lsp',
         --'python-lsp-server',
         'debugpy',
         'pyright',

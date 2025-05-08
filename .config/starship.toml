@@ -99,7 +99,8 @@ number_threshold = 0
 symbol_threshold = 0
 
 [kubernetes]
-format = "[$symbol$context(\\($namespace\\))]($style) "
+#format = "[$symbol$context(\\($namespace\\))]($style) "
+format = "[$symbol(\\($namespace\\))]($style) "
 symbol = "k8s:"
 style = "underline green"
 disabled = false

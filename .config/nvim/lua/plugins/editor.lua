@@ -72,7 +72,7 @@ return {
         end,
         desc = 'Neotree Git Status (cwd)',
       },
-      { '<leader>e', '<leader>fe', desc = 'Neotree Files (cwd)', remap = true },
+      { '<leader>e',    '<leader>fe', desc = 'Neotree Files (cwd)', remap = true },
       { '<leader>tree', '<leader>fe', desc = 'Neotree Files (cwd)', remap = true },
     },
     deactivate = function()
@@ -118,17 +118,17 @@ return {
       'nvim-telescope/telescope-dap.nvim',
     },
     keys = {
-      { '<leader>fg', [[<cmd>lua require('telescope.builtin').live_grep{}<CR>]], desc = 'grep files in cwd' },
+      { '<leader>fg', [[<cmd>lua require('telescope.builtin').live_grep{}<CR>]],  desc = 'grep files in cwd' },
       { '<leader>ff', [[<cmd>lua require('telescope.builtin').find_files{}<CR>]], desc = 'pick any files in cwd' },
-      { '<leader>ft', [[<cmd>lua require('telescope.builtin').git_files{}<CR>]], desc = 'pick git files in cwd' },
+      { '<leader>ft', [[<cmd>lua require('telescope.builtin').git_files{}<CR>]],  desc = 'pick git files in cwd' },
       {
         '<leader>fb',
         [[<cmd>lua require('telescope.builtin').buffers{show_all_buffers=true}<CR>]],
         desc = 'pick from all buffers',
       },
-      { '<leader>fv', [[<cmd>lua require('telescope.builtin').commands{}<CR>]], desc = 'pick any vim command' },
+      { '<leader>fv', [[<cmd>lua require('telescope.builtin').commands{}<CR>]],    desc = 'pick any vim command' },
       { '<leader>fc', [[<cmd>lua require('telescope.builtin').git_commits{}<CR>]], desc = 'pick from git commits' },
-      { '<leader>fk', [[<cmd>lua require('telescope.builtin').keymaps{}<CR>]], desc = 'pick any keymap' },
+      { '<leader>fk', [[<cmd>lua require('telescope.builtin').keymaps{}<CR>]],     desc = 'pick any keymap' },
       {
         '<leader>fr',
         [[<cmd>lua require('telescope.builtin').oldfiles{}<CR>]],
@@ -218,20 +218,20 @@ return {
         {
           mode = { 'n', 'v' },
           { '<leader><tab>', group = 'tabs' },
-          { '<leader>b', group = 'buffer' },
-          { '<leader>c', group = 'code' },
-          { '<leader>d', group = 'diagnostics' },
-          { '<leader>f', group = 'file/find' },
-          { '<leader>g', group = 'git' },
-          { '<leader>gh', group = 'hunks' },
-          { '<leader>q', group = 'quit/session' },
-          { '<leader>s', group = 'search' },
-          { '<leader>u', group = 'ui' },
-          { '<leader>w', group = 'windows' },
-          { '<leader>x', group = 'diagnostics/quickfix' },
-          { '[', group = 'prev' },
-          { ']', group = 'next' },
-          { 'g', group = 'goto' },
+          { '<leader>b',     group = 'buffer' },
+          { '<leader>c',     group = 'code' },
+          { '<leader>d',     group = 'diagnostics' },
+          { '<leader>f',     group = 'file/find' },
+          { '<leader>g',     group = 'git' },
+          { '<leader>gh',    group = 'hunks' },
+          { '<leader>q',     group = 'quit/session' },
+          { '<leader>s',     group = 'search' },
+          { '<leader>u',     group = 'ui' },
+          { '<leader>w',     group = 'windows' },
+          { '<leader>x',     group = 'diagnostics/quickfix' },
+          { '[',             group = 'prev' },
+          { ']',             group = 'next' },
+          { 'g',             group = 'goto' },
           {
             'fd',
             function()
@@ -269,7 +269,6 @@ return {
   -- diff views
   {
     'sindrets/diffview.nvim',
-    opts = {},
     keys = {
       {
         '<leader>dh',
@@ -282,6 +281,32 @@ return {
         desc = 'close diff view diff against HEAD',
       },
     },
+    opts = {
+      enhanced_diff_hl = true,
+      use_icons = true,
+      view = {
+        default = {
+          layout = 'diff2_horizontal',
+        },
+      },
+    },
+    config = function(_, opts)
+      require('diffview').setup(opts)
+
+      local function set_diff_highlights()
+        vim.api.nvim_set_hl(0, 'DiffAdd', { fg = 'none', bg = '#2e4b2e', bold = true })
+        vim.api.nvim_set_hl(0, 'DiffDelete', { fg = 'none', bg = '#4c1e15', bold = true })
+        vim.api.nvim_set_hl(0, 'DiffChange', { fg = 'none', bg = '#45565c', bold = true })
+        vim.api.nvim_set_hl(0, 'DiffText', { fg = 'none', bg = '#635417', bold = true })
+      end
+
+      set_diff_highlights()
+
+      vim.api.nvim_create_autocmd('ColorScheme', {
+        group = vim.api.nvim_create_augroup('DiffColors', { clear = true }),
+        callback = set_diff_highlights,
+      })
+    end,
   },
 
   -- git signs
@@ -355,18 +380,40 @@ return {
 
   -- better diagnostics list and others
   {
-    'folke/trouble.nvim',
+    "folke/trouble.nvim",
+    opts = {}, -- for default options, refer to the configuration section for custom setup.
+    cmd = "Trouble",
     keys = {
-      { '<leader>xx', '<cmd>Trouble diagnostics toggle<cr>', desc = 'Diagnostics (Trouble)' },
-      { '<leader>xX', '<cmd>Trouble diagnostics toggle filter.buf=0<cr>', desc = 'Buffer  Diagnostics (Trouble)' },
-      { '<leader>cs', '<cmd>Trouble symbols toggle focus=false<cr>', desc = 'Symbols (Trouble)' },
       {
-        '<leader>cl',
-        '<cmd>Trouble lsp toggle focus=false win.position=right<cr>',
-        desc = 'LSP Definitions / references / ... (Trouble)',
+        "<leader>xx",
+        "<cmd>Trouble diagnostics toggle<cr>",
+        desc = "Diagnostics (Trouble)",
       },
-      { '<leader>xL', '<cmd>Trouble loclist toggle<cr>', desc = 'Location List (Trouble)' },
-      { '<leader>xQ', '<cmd>Trouble qflist toggle<cr>', desc = 'Quickfix List (Trouble)' },
+      {
+        "<leader>xX",
+        "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+        desc = "Buffer Diagnostics (Trouble)",
+      },
+      {
+        "<leader>cs",
+        "<cmd>Trouble symbols toggle focus=false<cr>",
+        desc = "Symbols (Trouble)",
+      },
+      {
+        "<leader>cl",
+        "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+        desc = "LSP Definitions / references / ... (Trouble)",
+      },
+      {
+        "<leader>xL",
+        "<cmd>Trouble loclist toggle<cr>",
+        desc = "Location List (Trouble)",
+      },
+      {
+        "<leader>xQ",
+        "<cmd>Trouble qflist toggle<cr>",
+        desc = "Quickfix List (Trouble)",
+      },
     },
   },
 

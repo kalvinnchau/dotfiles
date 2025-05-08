@@ -17,6 +17,11 @@
 [merge]
   path = nvim
   conflictstyle = zdiff3
+  tool = nvimdiff
+
+[mergetool "nvimdiff"]
+  cmd = nvim -d "$LOCAL" "$MERGED" "$REMOTE"
+  trustExitCode = true
 
 [core]
   editor = nvim
@@ -55,6 +60,8 @@
   lg1 = "!sh -c 'git log --graph --abbrev-commit --decorate --format=\"%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)\" --all $(git show-ref --verify --quiet refs/remotes/origin/gh-pages && echo \"--not refs/remotes/origin/gh-pages\")' -"
   lg2 = "!sh -c 'git log --graph --abbrev-commit --decorate --format=\"%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n%C(white)%s%C(reset) %C(dim white)- %an%C(reset)\" --all $(git show-ref --verify --quiet refs/remotes/origin/gh-pages && echo \"--not refs/remotes/origin/gh-pages\")' -"
   lg = !"git lg1"
+  pr = "!f() { git diff $(git merge-base origin/main HEAD) HEAD; }; f"
+  prc = "!sh -c 'git fetch origin pull/$1/head:pr-$1 && git checkout pr-$1' -"
   # use this to convert an input into the properly quoted alias
   quote-string = "!read -r l; printf \\\"!; printf %s \"$l\" | sed 's/\\([\\\"]\\)/\\\\\\1/g'; printf \" #\\\"\\n\" #"
   recent = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format="%(refname:short)"

@@ -25,9 +25,8 @@ vim.g.rustaceanvim = function()
   }
   return cfg
 end
-return {
 
-  -- when using rustaceanvim, do not use the nvim-lspconfig setup above
+return {
   {
     'mrcjkb/rustaceanvim',
     version = '^6',
