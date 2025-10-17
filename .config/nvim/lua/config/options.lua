@@ -4,6 +4,9 @@
 vim.g.mapleader = ','
 vim.g.maplocalleader = ','
 
+-- disable python provider (not using python-based plugins)
+vim.g.loaded_python3_provider = 0
+
 -- enable reading of rc files in cwd
 vim.opt.exrc = true
 
@@ -14,8 +17,8 @@ vim.opt.wildignore = '*.o,*~,*.pyc,*/tmp/*,*.zip,*/.git/*,*/tmp/*,*.swp'
 -- set completeopt to have a better completion experience
 --  :help completeopt
 -- menuone: popup even when there's only one match
--- noinsert: Do not insert text until a selection is made
--- noselect: Do not select, force user to select one from the menu
+-- noinsert: do not insert text until a selection is made
+-- noselect: do not select, force user to select one from the menu
 vim.opt.completeopt = 'menuone,noinsert,noselect'
 -- avoid showing message extra message when using completion
 vim.opt.shortmess = vim.opt.shortmess + 'c'
@@ -40,6 +43,18 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 
 -- have fixed column for diagnostics to appear
 vim.opt.signcolumn = 'yes'
+
+-- faster CursorHold events (default is 4000ms)
+vim.opt.updatetime = 100
+
+-- diagnostic configuration
+vim.diagnostic.config({
+  virtual_text = false, -- disabled (using float on CursorHold instead)
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true,
+})
 
 -- show effects of a command in a preview window
 vim.opt.inccommand = 'split'
@@ -84,6 +99,6 @@ vim.g.loaded_netrwPlugin = 1
 vim.o.termguicolors = true
 vim.o.background = 'dark'
 
-vim.o.foldmethod = 'expr'
-vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
-vim.o.foldenable = false
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+vim.opt.foldenable = false

@@ -1,104 +1,62 @@
 return {
-  -- better vim.ui
+  -- colorscheme
   {
-    'stevearc/dressing.nvim',
-    init = function()
-      ---@diagnostic disable-next-line: duplicate-set-field
-      vim.ui.select = function(...)
-        require('lazy').load({ plugins = { 'dressing.nvim' } })
-        return vim.ui.select(...)
-      end
-      ---@diagnostic disable-next-line: duplicate-set-field
-      vim.ui.input = function(...)
-        require('lazy').load({ plugins = { 'dressing.nvim' } })
-        return vim.ui.input(...)
-      end
+    'ellisonleao/gruvbox.nvim',
+    lazy = false,
+    priority = 1000,
+    opts = { contrast = 'medium' },
+    config = function(_, opts)
+      require('gruvbox').setup(opts)
+      vim.cmd.colorscheme('gruvbox')
     end,
+  },
+
+  -- statusline
+  {
+    'nvim-lualine/lualine.nvim',
+    event = 'VeryLazy',
+    opts = { options = { theme = 'gruvbox' } },
   },
 
   -- bufferline
   {
     'akinsho/nvim-bufferline.lua',
     event = 'VeryLazy',
-    --lazy = false,
-    --priority = 900,
-    init = function()
-      vim.keymap.set('n', '[<tab>', ':BufferLineCycleNext<cr>')
-      vim.keymap.set('n', '[<s-tab>', ':BufferLineCyclePrev<cr>')
-    end,
-    config = true,
+    keys = {
+      { '[<tab>', '<cmd>BufferLineCycleNext<cr>', desc = 'Next buffer' },
+      { '[<s-tab>', '<cmd>BufferLineCyclePrev<cr>', desc = 'Prev buffer' },
+    },
     opts = {
       options = {
         numbers = 'buffer_id',
         diagnostics = 'nvim_lsp',
         offsets = {
-          {
-            --filetype = 'NvimTree',
-            filetype = 'neo-tree',
-            text_align = 'center',
-            text = 'Explorer',
-          },
+          { filetype = 'neo-tree', text = 'Explorer', text_align = 'center' },
         },
       },
-      -- remove italics
       highlights = {
-        --fill = {
-        --  bg = '#80a0ff',
-        --},
-        buffer_selected = {
-          bold = true,
-        },
-        diagnostic_selected = {
-          bold = true,
-        },
-        info_selected = {
-          bold = true,
-        },
-        info_diagnostic_selected = {
-          bold = true,
-        },
-        warning_selected = {
-          bold = true,
-        },
-        warning_diagnostic_selected = {
-          bold = true,
-        },
-        error_selected = {
-          bold = true,
-        },
-        error_diagnostic_selected = {
-          bold = true,
-        },
-        pick_selected = {
-          bold = true,
-        },
-        pick_visible = {
-          bold = true,
-        },
-        pick = {
-          bold = true,
-        },
+        buffer_selected = { bold = true },
+        diagnostic_selected = { bold = true },
+        info_selected = { bold = true },
+        info_diagnostic_selected = { bold = true },
+        warning_selected = { bold = true },
+        warning_diagnostic_selected = { bold = true },
+        error_selected = { bold = true },
+        error_diagnostic_selected = { bold = true },
+        pick_selected = { bold = true },
+        pick_visible = { bold = true },
+        pick = { bold = true },
       },
     },
   },
 
-  -- statusline plugins
-  {
-    'nvim-lualine/lualine.nvim',
-    opts = {
-      theme = 'gruvbox',
-    },
-  },
-
-  -- indent guides for Neovim
+  -- indent guides
   {
     'lukas-reineke/indent-blankline.nvim',
     event = { 'BufReadPost', 'BufNewFile' },
     main = 'ibl',
     opts = {
-      indent = {
-        char = '│',
-      },
+      indent = { char = '│' },
       exclude = {
         filetypes = { 'help', 'alpha', 'dashboard', 'neo-tree', 'Trouble', 'lazy' },
       },
@@ -109,63 +67,102 @@ return {
   {
     'karb94/neoscroll.nvim',
     event = 'VeryLazy',
-    init = function()
-      local t = {}
-      -- Syntax: t[keys] = {function, {function arguments}}
-      -- scroll(lines, move_cursor, time[, easing])
-      t['<C-u>'] = { 'scroll', { '-vim.wo.scroll', 'true', '150', [['sine']] } }
-      t['<C-d>'] = { 'scroll', { 'vim.wo.scroll', 'true', '150', [['sine']] } }
-      t['<C-b>'] = { 'scroll', { '-vim.api.nvim_win_get_height(0)', 'true', '150', [['sine']] } }
-      t['<C-f>'] = { 'scroll', { 'vim.api.nvim_win_get_height(0)', 'true', '150', [['sine']] } }
-      -- Pass "nil" to disable the easing animation (constant scrolling speed)
-      t['<C-y>'] = { 'scroll', { '-0.10', 'false', '100', nil } }
-      t['<C-e>'] = { 'scroll', { '0.10', 'false', '100', nil } }
-      -- When no easing function is provided the default easing function (in this case "quadratic") will be used
-      -- zX(half_win_time[, easing])
-      t['zt'] = { 'zt', { '100' } }
-      t['zz'] = { 'zz', { '100' } }
-      t['zb'] = { 'zb', { '100' } }
-
-      require('neoscroll.config').set_mappings(t)
-    end,
-    opts = {
-      easing_function = 'quadratic',
-    },
-  },
-
-  -- highlights trailing spaces
-  {
-    'echasnovski/mini.trailspace',
-    event = 'VeryLazy',
-    version = false,
-    opts = {
-      only_in_normal_buffers = true,
-    },
+    opts = { easing_function = 'quadratic' },
     config = function(_, opts)
-      require('mini.trailspace').setup(opts)
+      local neoscroll = require('neoscroll')
+      neoscroll.setup(opts)
+
+      -- custom mappings using helper functions (replaces deprecated set_mappings)
+      local modes = { 'n', 'v', 'x' }
+      local keymap = {
+        ['<C-u>'] = function()
+          neoscroll.ctrl_u({ duration = 150, easing = 'sine' })
+        end,
+        ['<C-d>'] = function()
+          neoscroll.ctrl_d({ duration = 150, easing = 'sine' })
+        end,
+        ['<C-b>'] = function()
+          neoscroll.ctrl_b({ duration = 150, easing = 'sine' })
+        end,
+        ['<C-f>'] = function()
+          neoscroll.ctrl_f({ duration = 150, easing = 'sine' })
+        end,
+        ['<C-y>'] = function()
+          neoscroll.scroll(-0.10, { move_cursor = false, duration = 100 })
+        end,
+        ['<C-e>'] = function()
+          neoscroll.scroll(0.10, { move_cursor = false, duration = 100 })
+        end,
+        ['zt'] = function()
+          neoscroll.zt({ half_win_duration = 100 })
+        end,
+        ['zz'] = function()
+          neoscroll.zz({ half_win_duration = 100 })
+        end,
+        ['zb'] = function()
+          neoscroll.zb({ half_win_duration = 100 })
+        end,
+      }
+      for key, func in pairs(keymap) do
+        vim.keymap.set(modes, key, func)
+      end
     end,
   },
 
-  -- render the colors
+  -- color highlighter
   {
-    'norcalli/nvim-colorizer.lua',
+    'nvim-mini/mini.hipatterns',
     event = 'VeryLazy',
-    config = true,
+    opts = function()
+      local hi = require('mini.hipatterns')
+      return {
+        highlighters = {
+          hex_color = hi.gen_highlighter.hex_color(),
+        },
+      }
+    end,
   },
 
-  -- nvim-progress
+  -- lsp progress ui
   {
     'j-hui/fidget.nvim',
-    event = 'VeryLazy',
-    config = true,
+    event = 'LspAttach',
+    opts = {
+      notification = {
+        window = {
+          winblend = 0,
+        },
+      },
+    },
   },
 
   -- icons
-  'nvim-tree/nvim-web-devicons',
+  {
+    'nvim-mini/mini.icons',
+    lazy = true,
+    opts = {},
+    init = function()
+      package.preload['nvim-web-devicons'] = function()
+        require('mini.icons').mock_nvim_web_devicons()
+        return package.loaded['nvim-web-devicons']
+      end
+    end,
+  },
 
-  -- ui components
+  -- better vim.ui
+  {
+    'folke/snacks.nvim',
+    priority = 1000,
+    lazy = false,
+    opts = {
+      input = { enabled = true },
+      picker = {
+        enabled = true,
+        ui_select = true,
+      },
+    },
+  },
+
+  -- ui components library
   'MunifTanjim/nui.nvim',
-
-  -- nvim-progress
-  'j-hui/fidget.nvim',
 }
