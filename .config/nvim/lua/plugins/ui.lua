@@ -1,171 +1,116 @@
 return {
-  -- better vim.ui
+  -- Colorscheme
   {
-    'stevearc/dressing.nvim',
-    init = function()
-      ---@diagnostic disable-next-line: duplicate-set-field
-      vim.ui.select = function(...)
-        require('lazy').load({ plugins = { 'dressing.nvim' } })
-        return vim.ui.select(...)
-      end
-      ---@diagnostic disable-next-line: duplicate-set-field
-      vim.ui.input = function(...)
-        require('lazy').load({ plugins = { 'dressing.nvim' } })
-        return vim.ui.input(...)
-      end
+    'ellisonleao/gruvbox.nvim',
+    lazy = false,
+    priority = 1000,
+    opts = { contrast = 'medium' },
+    config = function(_, opts)
+      require('gruvbox').setup(opts)
+      vim.cmd.colorscheme('gruvbox')
     end,
   },
 
-  -- bufferline
+  -- Statusline
+  {
+    'nvim-lualine/lualine.nvim',
+    event = 'VeryLazy',
+    opts = { options = { theme = 'gruvbox' } },
+  },
+
+  -- Bufferline
   {
     'akinsho/nvim-bufferline.lua',
     event = 'VeryLazy',
-    --lazy = false,
-    --priority = 900,
-    init = function()
-      vim.keymap.set('n', '[<tab>', ':BufferLineCycleNext<cr>')
-      vim.keymap.set('n', '[<s-tab>', ':BufferLineCyclePrev<cr>')
-    end,
-    config = true,
+    keys = {
+      { '[<tab>', '<cmd>BufferLineCycleNext<cr>', desc = 'Next buffer' },
+      { '[<s-tab>', '<cmd>BufferLineCyclePrev<cr>', desc = 'Prev buffer' },
+    },
     opts = {
       options = {
         numbers = 'buffer_id',
         diagnostics = 'nvim_lsp',
         offsets = {
-          {
-            --filetype = 'NvimTree',
-            filetype = 'neo-tree',
-            text_align = 'center',
-            text = 'Explorer',
-          },
+          { filetype = 'neo-tree', text = 'Explorer', text_align = 'center' },
         },
       },
-      -- remove italics
       highlights = {
-        --fill = {
-        --  bg = '#80a0ff',
-        --},
-        buffer_selected = {
-          bold = true,
-        },
-        diagnostic_selected = {
-          bold = true,
-        },
-        info_selected = {
-          bold = true,
-        },
-        info_diagnostic_selected = {
-          bold = true,
-        },
-        warning_selected = {
-          bold = true,
-        },
-        warning_diagnostic_selected = {
-          bold = true,
-        },
-        error_selected = {
-          bold = true,
-        },
-        error_diagnostic_selected = {
-          bold = true,
-        },
-        pick_selected = {
-          bold = true,
-        },
-        pick_visible = {
-          bold = true,
-        },
-        pick = {
-          bold = true,
-        },
+        buffer_selected = { bold = true },
+        diagnostic_selected = { bold = true },
+        info_selected = { bold = true },
+        info_diagnostic_selected = { bold = true },
+        warning_selected = { bold = true },
+        warning_diagnostic_selected = { bold = true },
+        error_selected = { bold = true },
+        error_diagnostic_selected = { bold = true },
+        pick_selected = { bold = true },
+        pick_visible = { bold = true },
+        pick = { bold = true },
       },
     },
   },
 
-  -- statusline plugins
-  {
-    'nvim-lualine/lualine.nvim',
-    opts = {
-      theme = 'gruvbox',
-    },
-  },
-
-  -- indent guides for Neovim
+  -- Indent guides
   {
     'lukas-reineke/indent-blankline.nvim',
     event = { 'BufReadPost', 'BufNewFile' },
     main = 'ibl',
     opts = {
-      indent = {
-        char = '│',
-      },
+      indent = { char = '│' },
       exclude = {
         filetypes = { 'help', 'alpha', 'dashboard', 'neo-tree', 'Trouble', 'lazy' },
       },
     },
   },
 
-  -- smooth scrolling
+  -- Smooth scrolling
   {
     'karb94/neoscroll.nvim',
     event = 'VeryLazy',
-    init = function()
+    opts = { easing_function = 'quadratic' },
+    config = function(_, opts)
+      require('neoscroll').setup(opts)
       local t = {}
-      -- Syntax: t[keys] = {function, {function arguments}}
-      -- scroll(lines, move_cursor, time[, easing])
       t['<C-u>'] = { 'scroll', { '-vim.wo.scroll', 'true', '150', [['sine']] } }
       t['<C-d>'] = { 'scroll', { 'vim.wo.scroll', 'true', '150', [['sine']] } }
       t['<C-b>'] = { 'scroll', { '-vim.api.nvim_win_get_height(0)', 'true', '150', [['sine']] } }
       t['<C-f>'] = { 'scroll', { 'vim.api.nvim_win_get_height(0)', 'true', '150', [['sine']] } }
-      -- Pass "nil" to disable the easing animation (constant scrolling speed)
       t['<C-y>'] = { 'scroll', { '-0.10', 'false', '100', nil } }
       t['<C-e>'] = { 'scroll', { '0.10', 'false', '100', nil } }
-      -- When no easing function is provided the default easing function (in this case "quadratic") will be used
-      -- zX(half_win_time[, easing])
       t['zt'] = { 'zt', { '100' } }
       t['zz'] = { 'zz', { '100' } }
       t['zb'] = { 'zb', { '100' } }
-
       require('neoscroll.config').set_mappings(t)
     end,
-    opts = {
-      easing_function = 'quadratic',
-    },
   },
 
-  -- highlights trailing spaces
-  {
-    'echasnovski/mini.trailspace',
-    event = 'VeryLazy',
-    version = false,
-    opts = {
-      only_in_normal_buffers = true,
-    },
-    config = function(_, opts)
-      require('mini.trailspace').setup(opts)
-    end,
-  },
-
-  -- render the colors
+  -- Color highlighter
   {
     'norcalli/nvim-colorizer.lua',
     event = 'VeryLazy',
     config = true,
   },
 
-  -- nvim-progress
+  -- LSP progress UI
   {
     'j-hui/fidget.nvim',
-    event = 'VeryLazy',
-    config = true,
+    event = 'LspAttach',
+    opts = {},
   },
 
-  -- icons
-  'nvim-tree/nvim-web-devicons',
+  -- Icons (MODERN: mini.icons instead of nvim-web-devicons)
+  {
+    'echasnovski/mini.icons',
+    lazy = true,
+    opts = {},
+    init = function()
+      package.preload['nvim-web-devicons'] = function()
+        require('mini.icons').mock_nvim_web_devicons()
+        return package.loaded['nvim-web-devicons']
+      end
+    end,
+  },
 
-  -- ui components
+  -- UI components library
   'MunifTanjim/nui.nvim',
-
-  -- nvim-progress
-  'j-hui/fidget.nvim',
 }
