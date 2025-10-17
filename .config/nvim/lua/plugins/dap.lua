@@ -3,12 +3,48 @@ return {
   {
     'mfussenegger/nvim-dap',
     keys = {
-      { '<leader>bb', function() require('dap').toggle_breakpoint() end, desc = 'Toggle breakpoint' },
-      { '<leader>bn', function() require('dap').continue() end, desc = 'Continue' },
-      { '<leader>bl', function() require('dap').step_over() end, desc = 'Step over' },
-      { '<leader>bj', function() require('dap').step_into() end, desc = 'Step into' },
-      { '<leader>bk', function() require('dap').step_out() end, desc = 'Step out' },
-      { '<leader>bh', function() require('dap').step_back() end, desc = 'Step back' },
+      {
+        '<leader>bb',
+        function()
+          require('dap').toggle_breakpoint()
+        end,
+        desc = 'Toggle breakpoint',
+      },
+      {
+        '<leader>bn',
+        function()
+          require('dap').continue()
+        end,
+        desc = 'Continue',
+      },
+      {
+        '<leader>bl',
+        function()
+          require('dap').step_over()
+        end,
+        desc = 'Step over',
+      },
+      {
+        '<leader>bj',
+        function()
+          require('dap').step_into()
+        end,
+        desc = 'Step into',
+      },
+      {
+        '<leader>bk',
+        function()
+          require('dap').step_out()
+        end,
+        desc = 'Step out',
+      },
+      {
+        '<leader>bh',
+        function()
+          require('dap').step_back()
+        end,
+        desc = 'Step back',
+      },
     },
   },
 
@@ -24,8 +60,20 @@ return {
     'rcarriga/nvim-dap-ui',
     dependencies = { 'mfussenegger/nvim-dap', 'nvim-neotest/nvim-nio' },
     keys = {
-      { '<leader>du', function() require('dapui').toggle() end, desc = 'Toggle DAP UI' },
-      { '<leader>df', function() require('dapui').float_element('scopes') end, desc = 'DAP float scopes' },
+      {
+        '<leader>du',
+        function()
+          require('dapui').toggle()
+        end,
+        desc = 'Toggle DAP UI',
+      },
+      {
+        '<leader>df',
+        function()
+          require('dapui').float_element('scopes')
+        end,
+        desc = 'DAP float scopes',
+      },
     },
     opts = {
       layouts = {

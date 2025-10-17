@@ -16,10 +16,26 @@ return {
       indent = { enable = false },
       auto_install = true,
       ensure_installed = {
-        'astro', 'bash', 'go', 'dockerfile', 'html', 'java',
-        'javascript', 'json', 'lua', 'markdown', 'markdown_inline',
-        'query', 'regex', 'rust', 'terraform', 'typescript',
-        'vim', 'vimdoc', 'vue', 'yaml',
+        'astro',
+        'bash',
+        'go',
+        'dockerfile',
+        'html',
+        'java',
+        'javascript',
+        'json',
+        'lua',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'regex',
+        'rust',
+        'terraform',
+        'typescript',
+        'vim',
+        'vimdoc',
+        'vue',
+        'yaml',
       },
       incremental_selection = {
         enable = true,
@@ -67,11 +83,46 @@ return {
     event = 'VeryLazy',
     opts = {},
     keys = {
-      { 's', mode = { 'n', 'x', 'o' }, function() require('flash').jump() end, desc = 'Flash' },
-      { 'S', mode = { 'n', 'x', 'o' }, function() require('flash').treesitter() end, desc = 'Flash Treesitter' },
-      { 'r', mode = 'o', function() require('flash').remote() end, desc = 'Remote Flash' },
-      { 'R', mode = { 'o', 'x' }, function() require('flash').treesitter_search() end, desc = 'Treesitter Search' },
-      { '<c-s>', mode = 'c', function() require('flash').toggle() end, desc = 'Toggle Flash Search' },
+      {
+        's',
+        mode = { 'n', 'x', 'o' },
+        function()
+          require('flash').jump()
+        end,
+        desc = 'Flash',
+      },
+      {
+        'S',
+        mode = { 'n', 'x', 'o' },
+        function()
+          require('flash').treesitter()
+        end,
+        desc = 'Flash Treesitter',
+      },
+      {
+        'r',
+        mode = 'o',
+        function()
+          require('flash').remote()
+        end,
+        desc = 'Remote Flash',
+      },
+      {
+        'R',
+        mode = { 'o', 'x' },
+        function()
+          require('flash').treesitter_search()
+        end,
+        desc = 'Treesitter Search',
+      },
+      {
+        '<c-s>',
+        mode = 'c',
+        function()
+          require('flash').toggle()
+        end,
+        desc = 'Toggle Flash Search',
+      },
     },
   },
 
@@ -84,23 +135,20 @@ return {
       require('illuminate').configure(opts)
     end,
     keys = {
-      { ']]', function() require('illuminate').goto_next_reference(false) end, desc = 'Next Reference' },
-      { '[[', function() require('illuminate').goto_prev_reference(false) end, desc = 'Prev Reference' },
-    },
-  },
-
-  -- http client
-  {
-    'mistweaverco/kulala.nvim',
-    ft = { 'http', 'rest' },
-    keys = {
-      { '<leader>Rs', desc = 'Send request' },
-      { '<leader>Ra', desc = 'Send all requests' },
-      { '<leader>Rb', desc = 'Open scratchpad' },
-    },
-    opts = {
-      global_keymaps = true,
-      global_keymaps_prefix = '<leader>R',
+      {
+        ']]',
+        function()
+          require('illuminate').goto_next_reference(false)
+        end,
+        desc = 'Next Reference',
+      },
+      {
+        '[[',
+        function()
+          require('illuminate').goto_prev_reference(false)
+        end,
+        desc = 'Prev Reference',
+      },
     },
   },
 

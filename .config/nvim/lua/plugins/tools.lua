@@ -234,7 +234,11 @@ return {
       { '<leader>xx', '<cmd>Trouble diagnostics toggle<cr>', desc = 'Diagnostics (Trouble)' },
       { '<leader>xX', '<cmd>Trouble diagnostics toggle filter.buf=0<cr>', desc = 'Buffer diagnostics' },
       { '<leader>cs', '<cmd>Trouble symbols toggle focus=true win={type=split, position=left}<cr>', desc = 'Symbols' },
-      { '<leader>cl', '<cmd>Trouble lsp toggle focus=true win={size=0.3, type=split, position=left}<cr>', desc = 'LSP defs/refs' },
+      {
+        '<leader>cl',
+        '<cmd>Trouble lsp toggle focus=true win={size=0.3, type=split, position=left}<cr>',
+        desc = 'LSP defs/refs',
+      },
       { '<leader>xL', '<cmd>Trouble loclist toggle<cr>', desc = 'Location list' },
       { '<leader>xQ', '<cmd>Trouble qflist toggle<cr>', desc = 'Quickfix list' },
     },
@@ -248,8 +252,20 @@ return {
     event = { 'BufReadPost', 'BufNewFile' },
     opts = {},
     keys = {
-      { ']t', function() require('todo-comments').jump_next() end, desc = 'Next todo' },
-      { '[t', function() require('todo-comments').jump_prev() end, desc = 'Prev todo' },
+      {
+        ']t',
+        function()
+          require('todo-comments').jump_next()
+        end,
+        desc = 'Next todo',
+      },
+      {
+        '[t',
+        function()
+          require('todo-comments').jump_prev()
+        end,
+        desc = 'Prev todo',
+      },
       { '<leader>xt', '<cmd>TodoTrouble<cr>', desc = 'Todo (Trouble)' },
       { '<leader>xT', '<cmd>TodoTelescope<cr>', desc = 'Todo (Telescope)' },
     },
