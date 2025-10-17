@@ -70,17 +70,24 @@ return {
     opts = { easing_function = 'quadratic' },
     config = function(_, opts)
       require('neoscroll').setup(opts)
-      local t = {}
-      t['<C-u>'] = { 'scroll', { '-vim.wo.scroll', 'true', '150', [['sine']] } }
-      t['<C-d>'] = { 'scroll', { 'vim.wo.scroll', 'true', '150', [['sine']] } }
-      t['<C-b>'] = { 'scroll', { '-vim.api.nvim_win_get_height(0)', 'true', '150', [['sine']] } }
-      t['<C-f>'] = { 'scroll', { 'vim.api.nvim_win_get_height(0)', 'true', '150', [['sine']] } }
-      t['<C-y>'] = { 'scroll', { '-0.10', 'false', '100', nil } }
-      t['<C-e>'] = { 'scroll', { '0.10', 'false', '100', nil } }
-      t['zt'] = { 'zt', { '100' } }
-      t['zz'] = { 'zz', { '100' } }
-      t['zb'] = { 'zb', { '100' } }
-      require('neoscroll.config').set_mappings(t)
+      local neoscroll = require('neoscroll')
+
+      -- custom mappings using helper functions (replaces deprecated set_mappings)
+      local keymap = {
+        ['<C-u>'] = function() neoscroll.ctrl_u({ duration = 150, easing = 'sine' }) end,
+        ['<C-d>'] = function() neoscroll.ctrl_d({ duration = 150, easing = 'sine' }) end,
+        ['<C-b>'] = function() neoscroll.ctrl_b({ duration = 150, easing = 'sine' }) end,
+        ['<C-f>'] = function() neoscroll.ctrl_f({ duration = 150, easing = 'sine' }) end,
+        ['<C-y>'] = function() neoscroll.scroll(-0.10, { move_cursor = false, duration = 100 }) end,
+        ['<C-e>'] = function() neoscroll.scroll(0.10, { move_cursor = false, duration = 100 }) end,
+        ['zt'] = function() neoscroll.zt({ half_win_duration = 100 }) end,
+        ['zz'] = function() neoscroll.zz({ half_win_duration = 100 }) end,
+        ['zb'] = function() neoscroll.zb({ half_win_duration = 100 }) end,
+      }
+      local modes = { 'n', 'v', 'x' }
+      for key, func in pairs(keymap) do
+        vim.keymap.set(modes, key, func)
+      end
     end,
   },
 
@@ -95,7 +102,13 @@ return {
   {
     'j-hui/fidget.nvim',
     event = 'LspAttach',
-    opts = {},
+    opts = {
+      notification = {
+        window = {
+          winblend = 0,
+        },
+      },
+    },
   },
 
   -- icons (MODERN: mini.icons instead of nvim-web-devicons)

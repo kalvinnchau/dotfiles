@@ -111,8 +111,18 @@ return {
       -- setup servers
       local capabilities = require('blink.cmp').get_lsp_capabilities()
       for server, server_opts in pairs(opts.servers) do
-        server_opts.capabilities = capabilities
-        vim.lsp.config(server, server_opts)
+        -- Merge capabilities into server opts
+        server_opts.capabilities = vim.tbl_deep_extend('force',
+          vim.lsp.protocol.make_client_capabilities(),
+          capabilities,
+          server_opts.capabilities or {}
+        )
+
+        -- Only call vim.lsp.config if we have custom settings
+        if next(server_opts) ~= nil then
+          vim.lsp.config(server, server_opts)
+        end
+
         vim.lsp.enable(server)
       end
     end,

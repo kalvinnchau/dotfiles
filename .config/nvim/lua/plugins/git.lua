@@ -5,12 +5,12 @@ return {
     event = { 'BufReadPre', 'BufNewFile' },
     opts = {
       signs = {
-        add = { text = '�' },
-        change = { text = '�' },
+        add = { text = '▎' },
+        change = { text = '▎' },
         delete = { text = '_' },
-        topdelete = { text = '>' },
+        topdelete = { text = '‾' },
         changedelete = { text = '~' },
-        untracked = { text = '' },
+        untracked = { text = '┆' },
       },
       current_line_blame = false,
       current_line_blame_opts = {
