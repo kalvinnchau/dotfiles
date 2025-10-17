@@ -1,12 +1,12 @@
 return {
-  -- Git signs
+  -- git signs
   {
     'lewis6991/gitsigns.nvim',
     event = { 'BufReadPre', 'BufNewFile' },
     opts = {
       signs = {
-        add = { text = 'Ž' },
-        change = { text = 'Ž' },
+        add = { text = 'ï¿½' },
+        change = { text = 'ï¿½' },
         delete = { text = '_' },
         topdelete = { text = '>' },
         changedelete = { text = '~' },
@@ -41,7 +41,7 @@ return {
     },
   },
 
-  -- Diff view
+  -- diff view
   {
     'sindrets/diffview.nvim',
     cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewFileHistory' },

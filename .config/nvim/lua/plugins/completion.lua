@@ -1,5 +1,5 @@
 return {
-  -- Snippets
+  -- snippets
   {
     'L3MON4D3/LuaSnip',
     version = 'v2.*',
@@ -15,7 +15,7 @@ return {
     },
   },
 
-  -- LSP kind icons
+  -- lsp kind icons
   {
     'onsails/lspkind-nvim',
     lazy = true,
@@ -25,7 +25,7 @@ return {
     },
   },
 
-  -- Completion engine
+  -- completion engine
   {
     'saghen/blink.cmp',
     version = '*',

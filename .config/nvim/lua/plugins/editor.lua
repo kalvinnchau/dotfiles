@@ -1,5 +1,5 @@
 return {
-  -- Treesitter
+  -- treesitter
   {
     'nvim-treesitter/nvim-treesitter',
     version = false,
@@ -36,7 +36,7 @@ return {
     end,
   },
 
-  -- Surround operations
+  -- surround operations
   {
     'echasnovski/mini.surround',
     keys = { 'gz' },
@@ -54,14 +54,14 @@ return {
     },
   },
 
-  -- Trailing whitespace
+  -- trailing whitespace
   {
     'echasnovski/mini.trailspace',
     event = 'VeryLazy',
     opts = { only_in_normal_buffers = true },
   },
 
-  -- Flash motion
+  -- flash motion
   {
     'folke/flash.nvim',
     event = 'VeryLazy',
@@ -75,7 +75,7 @@ return {
     },
   },
 
-  -- Reference highlighting
+  -- reference highlighting
   {
     'RRethy/vim-illuminate',
     event = { 'BufReadPost', 'BufNewFile' },
@@ -89,7 +89,7 @@ return {
     },
   },
 
-  -- HTTP client
+  -- http client
   {
     'mistweaverco/kulala.nvim',
     ft = { 'http', 'rest' },
@@ -104,7 +104,7 @@ return {
     },
   },
 
-  -- AI assistant
+  -- ai assistant
   {
     'azorng/goose.nvim',
     ft = { 'rust', 'python', 'typescript', 'markdown', 'sh', 'kotlin', 'typescriptreact' },
@@ -119,6 +119,6 @@ return {
     },
   },
 
-  -- Utility library
+  -- utility library
   { 'nvim-lua/plenary.nvim', lazy = true },
 }

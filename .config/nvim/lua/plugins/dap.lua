@@ -1,5 +1,5 @@
 return {
-  -- Core DAP
+  -- core dap
   {
     'mfussenegger/nvim-dap',
     keys = {
@@ -12,14 +12,14 @@ return {
     },
   },
 
-  -- Virtual text
+  -- virtual text
   {
     'theHamsta/nvim-dap-virtual-text',
     dependencies = { 'mfussenegger/nvim-dap' },
     opts = {},
   },
 
-  -- DAP UI
+  -- dap ui
   {
     'rcarriga/nvim-dap-ui',
     dependencies = { 'mfussenegger/nvim-dap', 'nvim-neotest/nvim-nio' },

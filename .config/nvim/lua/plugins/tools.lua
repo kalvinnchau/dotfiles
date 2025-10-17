@@ -1,5 +1,5 @@
 return {
-  -- File explorer
+  -- file explorer
   {
     'nvim-neo-tree/neo-tree.nvim',
     cmd = 'Neotree',
@@ -82,7 +82,7 @@ return {
     },
   },
 
-  -- Fuzzy finder
+  -- fuzzy finder
   {
     'nvim-telescope/telescope.nvim',
     cmd = 'Telescope',
@@ -176,7 +176,7 @@ return {
     end,
   },
 
-  -- Which-key
+  -- which-key
   {
     'folke/which-key.nvim',
     event = 'VeryLazy',
@@ -226,7 +226,7 @@ return {
     end,
   },
 
-  -- Trouble diagnostics
+  -- trouble diagnostics
   {
     'folke/trouble.nvim',
     cmd = 'Trouble',
@@ -241,7 +241,7 @@ return {
     opts = {},
   },
 
-  -- TODO comments
+  -- todo comments
   {
     'folke/todo-comments.nvim',
     cmd = { 'TodoTrouble', 'TodoTelescope' },

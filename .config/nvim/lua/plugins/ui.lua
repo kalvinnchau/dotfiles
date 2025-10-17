@@ -1,5 +1,5 @@
 return {
-  -- Colorscheme
+  -- colorscheme
   {
     'ellisonleao/gruvbox.nvim',
     lazy = false,
@@ -11,14 +11,14 @@ return {
     end,
   },
 
-  -- Statusline
+  -- statusline
   {
     'nvim-lualine/lualine.nvim',
     event = 'VeryLazy',
     opts = { options = { theme = 'gruvbox' } },
   },
 
-  -- Bufferline
+  -- bufferline
   {
     'akinsho/nvim-bufferline.lua',
     event = 'VeryLazy',
@@ -50,7 +50,7 @@ return {
     },
   },
 
-  -- Indent guides
+  -- indent guides
   {
     'lukas-reineke/indent-blankline.nvim',
     event = { 'BufReadPost', 'BufNewFile' },
@@ -63,7 +63,7 @@ return {
     },
   },
 
-  -- Smooth scrolling
+  -- smooth scrolling
   {
     'karb94/neoscroll.nvim',
     event = 'VeryLazy',
@@ -84,21 +84,21 @@ return {
     end,
   },
 
-  -- Color highlighter
+  -- color highlighter
   {
     'norcalli/nvim-colorizer.lua',
     event = 'VeryLazy',
     config = true,
   },
 
-  -- LSP progress UI
+  -- lsp progress ui
   {
     'j-hui/fidget.nvim',
     event = 'LspAttach',
     opts = {},
   },
 
-  -- Icons (MODERN: mini.icons instead of nvim-web-devicons)
+  -- icons (MODERN: mini.icons instead of nvim-web-devicons)
   {
     'echasnovski/mini.icons',
     lazy = true,
@@ -111,6 +111,6 @@ return {
     end,
   },
 
-  -- UI components library
+  -- ui components library
   'MunifTanjim/nui.nvim',
 }
