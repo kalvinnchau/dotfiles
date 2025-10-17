@@ -54,7 +54,7 @@ return {
 
   -- surround operations
   {
-    'echasnovski/mini.surround',
+    'nvim-mini/mini.surround',
     keys = { 'gz' },
     opts = {
       mappings = {
@@ -72,7 +72,7 @@ return {
 
   -- trailing whitespace
   {
-    'echasnovski/mini.trailspace',
+    'nvim-mini/mini.trailspace',
     event = 'VeryLazy',
     opts = { only_in_normal_buffers = true },
   },

@@ -44,6 +44,15 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 -- have fixed column for diagnostics to appear
 vim.opt.signcolumn = 'yes'
 
+-- diagnostic configuration (MODERN: Neovim 0.11 changed virtual_text to opt-in)
+vim.diagnostic.config({
+  virtual_text = false, -- Disabled (using float on CursorHold instead)
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true,
+})
+
 -- show effects of a command in a preview window
 vim.opt.inccommand = 'split'
 

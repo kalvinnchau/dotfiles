@@ -15,7 +15,7 @@ vim.api.nvim_create_autocmd('TermOpen', {
 -- auto remove trailing whitespace on write
 vim.api.nvim_create_autocmd('BufWritePre', {
   pattern = '*',
-  command = ':%s/s+$//e',
+  command = [[:%s/\s\+$//e]],
 })
 
 local view_group = vim.api.nvim_create_augroup('auto_view', { clear = true })
@@ -58,13 +58,3 @@ vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
   end,
 })
 
-vim.api.nvim_create_augroup('DiffHighlights', { clear = false })
-vim.api.nvim_create_autocmd({ 'WinEnter', 'OptionSet' }, {
-  group = 'DiffHighlights',
-  pattern = '*',
-  callback = function()
-    vim.api.nvim_set_hl(0, 'DiffAdd', { fg = 'none', bg = '#2e4b2e', bold = true })
-    vim.api.nvim_set_hl(0, 'DiffChange', { fg = 'none', bg = '#45565c', bold = true })
-    vim.api.nvim_set_hl(0, 'DiffText', { fg = 'none', bg = '#635417', bold = true })
-  end,
-})

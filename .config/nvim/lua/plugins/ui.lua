@@ -109,11 +109,18 @@ return {
     end,
   },
 
-  -- color highlighter
+  -- color highlighter (MODERN: mini.hipatterns instead of nvim-colorizer)
   {
-    'norcalli/nvim-colorizer.lua',
+    'nvim-mini/mini.hipatterns',
     event = 'VeryLazy',
-    config = true,
+    opts = function()
+      local hi = require('mini.hipatterns')
+      return {
+        highlighters = {
+          hex_color = hi.gen_highlighter.hex_color(),
+        },
+      }
+    end,
   },
 
   -- lsp progress ui
@@ -131,7 +138,7 @@ return {
 
   -- icons
   {
-    'echasnovski/mini.icons',
+    'nvim-mini/mini.icons',
     lazy = true,
     opts = {},
     init = function()
