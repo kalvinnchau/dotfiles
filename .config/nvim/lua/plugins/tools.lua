@@ -33,6 +33,9 @@ return {
       {
         '<leader>fe',
         function()
+          if vim.bo.filetype == 'snacks_dashboard' then
+            vim.cmd('bd')
+          end
           require('neo-tree.command').execute({ toggle = true, dir = vim.uv.cwd() })
         end,
         desc = 'Neotree (cwd)',
@@ -40,6 +43,9 @@ return {
       {
         '<leader>fB',
         function()
+          if vim.bo.filetype == 'snacks_dashboard' then
+            vim.cmd('bd')
+          end
           require('neo-tree.command').execute({ toggle = true, source = 'buffers' })
         end,
         desc = 'Neotree buffers',
@@ -47,6 +53,9 @@ return {
       {
         '<leader>fG',
         function()
+          if vim.bo.filetype == 'snacks_dashboard' then
+            vim.cmd('bd')
+          end
           require('neo-tree.command').execute({ toggle = true, source = 'git_status' })
         end,
         desc = 'Neotree git status',

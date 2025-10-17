@@ -6,10 +6,25 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
--- start terminal in insert mode
+-- start terminal in insert mode (but not in dashboard)
 vim.api.nvim_create_autocmd('TermOpen', {
   pattern = '*',
-  command = 'startinsert | set winfixheight',
+  callback = function()
+    -- Check if any window in current tab has snacks_dashboard filetype
+    local in_dashboard = false
+    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+      local buf = vim.api.nvim_win_get_buf(win)
+      local ft = vim.api.nvim_get_option_value('filetype', { buf = buf })
+      if ft == 'snacks_dashboard' then
+        in_dashboard = true
+        break
+      end
+    end
+
+    if not in_dashboard then
+      vim.cmd('startinsert | set winfixheight')
+    end
+  end,
 })
 
 -- auto remove trailing whitespace on write

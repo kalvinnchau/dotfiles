@@ -160,6 +160,44 @@ return {
         enabled = true,
         ui_select = true,
       },
+      dashboard = {
+        enabled = true,
+        preset = {
+          keys = {
+            { icon = '󰈞', key = 'f', desc = 'find file', action = ':Telescope find_files' },
+            { icon = '󰈔', key = 'n', desc = 'new file', action = ':ene | startinsert' },
+            { icon = ' ', key = 'g', desc = 'find text', action = ':Telescope live_grep' },
+            { icon = ' ', key = 'r', desc = 'recent files', action = ':Telescope oldfiles' },
+            { icon = '󰊢 ', key = 'c', desc = 'git commits', action = ':Telescope git_commits' },
+            { icon = '󰘬 ', key = 's', desc = 'git status', action = ':Telescope git_status' },
+            { icon = ' ', key = 'C', desc = 'config', action = ':e ~/.config/nvim/init.lua | :cd %:p:h' },
+            { icon = '󰒲 ', key = 'L', desc = 'lazy', action = ':Lazy' },
+            { icon = ' ', key = 'q', desc = 'quit', action = ':qa' },
+          },
+        },
+        sections = {
+          { section = 'header' },
+          { section = 'keys', gap = 1, padding = 1 },
+          { pane = 2, icon = ' ', title = 'recent files', section = 'recent_files', indent = 2, padding = 1 },
+          { pane = 2, icon = ' ', title = 'projects', section = 'projects', indent = 2, padding = 1 },
+          {
+            pane = 2,
+            icon = ' ',
+            title = 'git status',
+            section = 'terminal',
+            enabled = function()
+              ---@diagnostic disable-next-line: undefined-global
+              return Snacks.git.get_root() ~= nil
+            end,
+            cmd = 'git status --short --branch --renames',
+            height = 12,
+            padding = 1,
+            ttl = 5 * 60,
+            indent = 3,
+          },
+          { section = 'startup' },
+        },
+      },
     },
   },
 
