@@ -1,8 +1,10 @@
 return {
   -- markdown table of contents generator
   {
-    'mzlogin/vim-markdown-toc',
+    'hedyhli/markdown-toc.nvim',
     ft = 'markdown',
+    cmd = { 'Mtoc' },
+    opts = {},
   },
 
   -- markdown preview

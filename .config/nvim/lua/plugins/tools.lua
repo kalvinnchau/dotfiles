@@ -106,69 +106,74 @@ return {
       { '<leader>fr', '<cmd>Telescope oldfiles<cr>', desc = 'Recent files' },
       { '<leader>fh', '<cmd>Telescope search_history<cr>', desc = 'Search history' },
     },
-    opts = {
-      defaults = {
-        path_display = {
-          filename_first = { reverse_directories = true },
-          shorten = { len = 2, exclude = { -1, -2, -3, -4 } },
-        },
-        layout_config = {
-          horizontal = {
-            width = { padding = 0 },
-            height = { padding = 0 },
-            preview_width = 0.5,
+    opts = function()
+      local actions = require('telescope.actions')
+      local actions_state = require('telescope.actions.state')
+
+      return {
+        defaults = {
+          path_display = {
+            filename_first = { reverse_directories = true },
+            shorten = { len = 2, exclude = { -1, -2, -3, -4 } },
           },
-        },
-        vimgrep_arguments = {
-          'rg',
-          '--color=never',
-          '--no-heading',
-          '--with-filename',
-          '--line-number',
-          '--column',
-          '--smart-case',
-        },
-        mappings = {
-          i = {
-            ['<C-j>'] = function(...)
-              require('telescope.actions').move_selection_next(...)
-            end,
-            ['<C-k>'] = function(...)
-              require('telescope.actions').move_selection_previous(...)
-            end,
-            ['<CR>'] = function(...)
-              require('telescope.actions').select_default(...)
-              require('telescope.actions').center(...)
-            end,
-            ['<C-x>'] = function(...)
-              require('telescope.actions').select_horizontal(...)
-            end,
-            ['<C-v>'] = function(...)
-              require('telescope.actions').select_vertical(...)
-            end,
-            ['<C-t>'] = function(...)
-              require('telescope.actions').select_tab(...)
-            end,
+          layout_config = {
+            horizontal = {
+              width = { padding = 0 },
+              height = { padding = 0 },
+              preview_width = 0.5,
+            },
           },
-        },
-      },
-      pickers = {
-        git_commits = {
+          vimgrep_arguments = {
+            'rg',
+            '--color=never',
+            '--no-heading',
+            '--with-filename',
+            '--line-number',
+            '--column',
+            '--smart-case',
+          },
           mappings = {
             i = {
-              ['<C-d>'] = function()
-                local selected = require('telescope.actions.state').get_selected_entry()
-                vim.api.nvim_win_close(0, true)
-                vim.cmd('stopinsert')
-                vim.schedule(function()
-                  vim.cmd(('DiffviewOpen %s^!'):format(selected.value))
-                end)
+              ['<C-j>'] = function(...)
+                actions.move_selection_next(...)
+              end,
+              ['<C-k>'] = function(...)
+                actions.move_selection_previous(...)
+              end,
+              ['<CR>'] = function(...)
+                actions.select_default(...)
+                actions.center(...)
+              end,
+              ['<C-x>'] = function(...)
+                actions.select_horizontal(...)
+              end,
+              ['<C-v>'] = function(...)
+                actions.select_vertical(...)
+              end,
+              ['<C-t>'] = function(...)
+                actions.select_tab(...)
               end,
             },
           },
         },
-      },
-    },
+        pickers = {
+          git_commits = {
+            mappings = {
+              i = {
+                ['<C-d>'] = function()
+                  local selected = actions_state.get_selected_entry()
+                  vim.api.nvim_win_close(0, true)
+                  vim.cmd('stopinsert')
+                  vim.schedule(function()
+                    vim.cmd(('DiffviewOpen %s^!'):format(selected.value))
+                  end)
+                end,
+              },
+            },
+          },
+        },
+      }
+    end,
     config = function(_, opts)
       local telescope = require('telescope')
       telescope.setup(opts)

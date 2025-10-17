@@ -50,18 +50,20 @@ return {
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('lsp_attach', { clear = true }),
         callback = function(event)
-          local map = function(keys, func, desc)
+          local telescope = require('telescope.builtin')
+
+          local function map(keys, func, desc)
             vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'lsp: ' .. desc })
           end
 
-          map('gd', require('telescope.builtin').lsp_definitions, 'go to definition')
-          map('gi', require('telescope.builtin').lsp_implementations, 'show implementations')
-          map('gr', require('telescope.builtin').lsp_references, 'show references')
+          map('gd', telescope.lsp_definitions, 'go to definition')
+          map('gi', telescope.lsp_implementations, 'show implementations')
+          map('gr', telescope.lsp_references, 'show references')
           map('gsd', function()
-            require('telescope.builtin').lsp_definitions({ jump_type = 'split' })
+            telescope.lsp_definitions({ jump_type = 'split' })
           end, 'go to def (split)')
           map('gsv', function()
-            require('telescope.builtin').lsp_definitions({ jump_type = 'vsplit' })
+            telescope.lsp_definitions({ jump_type = 'vsplit' })
           end, 'go to def (vsplit)')
           map('K', function()
             if vim.bo.filetype == 'rust' then
@@ -80,11 +82,9 @@ return {
 
           -- diagnostics
           map('<leader>da', function()
-            require('telescope.builtin').diagnostics({ bufnr = 0 })
+            telescope.diagnostics({ bufnr = 0 })
           end, 'buffer diagnostics')
-          map('<leader>dw', function()
-            require('telescope.builtin').diagnostics()
-          end, 'workspace diagnostics')
+          map('<leader>dw', telescope.diagnostics, 'workspace diagnostics')
           map('<leader>dn', function()
             vim.diagnostic.jump({ count = 1, float = true })
           end, 'next diagnostic')
@@ -93,30 +93,33 @@ return {
           end, 'prev diagnostic')
 
           -- show diagnostics on cursor hold
+          local diagnostic_opts = {
+            focusable = false,
+            close_events = { 'BufLeave', 'CursorMoved', 'InsertEnter', 'FocusLost' },
+            border = 'single',
+            source = 'always',
+            prefix = ' ',
+          }
+
           vim.api.nvim_create_autocmd('CursorHold', {
             buffer = event.buf,
             callback = function()
-              local opts = {
-                focusable = false,
-                close_events = { 'BufLeave', 'CursorMoved', 'InsertEnter', 'FocusLost' },
-                border = 'single',
-                source = 'always',
-                prefix = ' ',
-              }
-              vim.diagnostic.open_float(nil, opts)
+              vim.diagnostic.open_float(nil, diagnostic_opts)
             end,
           })
         end,
       })
 
       -- setup servers
-      local capabilities = require('blink.cmp').get_lsp_capabilities()
+      local base_capabilities = vim.lsp.protocol.make_client_capabilities()
+      local blink_capabilities = require('blink.cmp').get_lsp_capabilities()
+
       for server, server_opts in pairs(opts.servers) do
         -- merge capabilities into server opts
         server_opts.capabilities = vim.tbl_deep_extend(
           'force',
-          vim.lsp.protocol.make_client_capabilities(),
-          capabilities,
+          base_capabilities,
+          blink_capabilities,
           server_opts.capabilities or {}
         )
 
@@ -150,13 +153,10 @@ return {
       {
         '<leader>tf',
         function()
-          if vim.g.autoformat then
-            vim.g.autoformat = false
-            vim.notify('Disabled format on save', vim.log.levels.WARN)
-          else
-            vim.g.autoformat = true
-            vim.notify('Enabled format on save', vim.log.levels.INFO)
-          end
+          vim.g.autoformat = not vim.g.autoformat
+          local level = vim.g.autoformat and vim.log.levels.INFO or vim.log.levels.WARN
+          local status = vim.g.autoformat and 'Enabled' or 'Disabled'
+          vim.notify(status .. ' format on save', level)
         end,
         desc = 'toggle format on save',
       },

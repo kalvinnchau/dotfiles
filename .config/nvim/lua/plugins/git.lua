@@ -19,7 +19,7 @@ return {
       },
       on_attach = function(buffer)
         local gs = package.loaded.gitsigns
-        local map = function(mode, l, r, desc)
+        local function map(mode, l, r, desc)
           vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
         end
 

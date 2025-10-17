@@ -15,16 +15,6 @@ return {
     },
   },
 
-  -- lsp kind icons
-  {
-    'onsails/lspkind-nvim',
-    lazy = true,
-    opts = {
-      mode = 'text_symbol',
-      preset = 'default',
-    },
-  },
-
   -- completion engine
   {
     'saghen/blink.cmp',

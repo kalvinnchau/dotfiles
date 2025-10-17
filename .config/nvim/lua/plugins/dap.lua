@@ -3,49 +3,23 @@ return {
   {
     'mfussenegger/nvim-dap',
     keys = {
-      {
-        '<leader>bb',
-        function()
-          require('dap').toggle_breakpoint()
-        end,
-        desc = 'Toggle breakpoint',
-      },
-      {
-        '<leader>bn',
-        function()
-          require('dap').continue()
-        end,
-        desc = 'Continue',
-      },
-      {
-        '<leader>bl',
-        function()
-          require('dap').step_over()
-        end,
-        desc = 'Step over',
-      },
-      {
-        '<leader>bj',
-        function()
-          require('dap').step_into()
-        end,
-        desc = 'Step into',
-      },
-      {
-        '<leader>bk',
-        function()
-          require('dap').step_out()
-        end,
-        desc = 'Step out',
-      },
-      {
-        '<leader>bh',
-        function()
-          require('dap').step_back()
-        end,
-        desc = 'Step back',
-      },
+      { '<leader>bb', desc = 'Toggle breakpoint' },
+      { '<leader>bn', desc = 'Continue' },
+      { '<leader>bl', desc = 'Step over' },
+      { '<leader>bj', desc = 'Step into' },
+      { '<leader>bk', desc = 'Step out' },
+      { '<leader>bh', desc = 'Step back' },
     },
+    config = function()
+      local dap = require('dap')
+
+      vim.keymap.set('n', '<leader>bb', dap.toggle_breakpoint, { desc = 'Toggle breakpoint' })
+      vim.keymap.set('n', '<leader>bn', dap.continue, { desc = 'Continue' })
+      vim.keymap.set('n', '<leader>bl', dap.step_over, { desc = 'Step over' })
+      vim.keymap.set('n', '<leader>bj', dap.step_into, { desc = 'Step into' })
+      vim.keymap.set('n', '<leader>bk', dap.step_out, { desc = 'Step out' })
+      vim.keymap.set('n', '<leader>bh', dap.step_back, { desc = 'Step back' })
+    end,
   },
 
   -- virtual text
@@ -60,41 +34,38 @@ return {
     'rcarriga/nvim-dap-ui',
     dependencies = { 'mfussenegger/nvim-dap', 'nvim-neotest/nvim-nio' },
     keys = {
-      {
-        '<leader>du',
-        function()
-          require('dapui').toggle()
-        end,
-        desc = 'Toggle DAP UI',
-      },
-      {
-        '<leader>df',
-        function()
-          require('dapui').float_element('scopes')
-        end,
-        desc = 'DAP float scopes',
-      },
+      { '<leader>du', desc = 'Toggle DAP UI' },
+      { '<leader>df', desc = 'DAP float scopes' },
     },
-    opts = {
-      layouts = {
-        {
-          elements = {
-            { id = 'scopes', size = 0.50 },
-            { id = 'stacks', size = 0.25 },
-            { id = 'breakpoints', size = 0.25 },
+    config = function()
+      local dapui = require('dapui')
+
+      dapui.setup({
+        layouts = {
+          {
+            elements = {
+              { id = 'scopes', size = 0.50 },
+              { id = 'stacks', size = 0.25 },
+              { id = 'breakpoints', size = 0.25 },
+            },
+            position = 'left',
+            size = 50,
           },
-          position = 'left',
-          size = 50,
-        },
-        {
-          elements = {
-            { id = 'repl', size = 0.5 },
-            { id = 'console', size = 0.5 },
+          {
+            elements = {
+              { id = 'repl', size = 0.5 },
+              { id = 'console', size = 0.5 },
+            },
+            position = 'bottom',
+            size = 10,
           },
-          position = 'bottom',
-          size = 10,
         },
-      },
-    },
+      })
+
+      vim.keymap.set('n', '<leader>du', dapui.toggle, { desc = 'Toggle DAP UI' })
+      vim.keymap.set('n', '<leader>df', function()
+        dapui.float_element('scopes')
+      end, { desc = 'DAP float scopes' })
+    end,
   },
 }

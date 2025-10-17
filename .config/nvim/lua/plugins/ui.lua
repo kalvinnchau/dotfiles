@@ -69,10 +69,11 @@ return {
     event = 'VeryLazy',
     opts = { easing_function = 'quadratic' },
     config = function(_, opts)
-      require('neoscroll').setup(opts)
       local neoscroll = require('neoscroll')
+      neoscroll.setup(opts)
 
       -- custom mappings using helper functions (replaces deprecated set_mappings)
+      local modes = { 'n', 'v', 'x' }
       local keymap = {
         ['<C-u>'] = function()
           neoscroll.ctrl_u({ duration = 150, easing = 'sine' })
@@ -102,7 +103,6 @@ return {
           neoscroll.zb({ half_win_duration = 100 })
         end,
       }
-      local modes = { 'n', 'v', 'x' }
       for key, func in pairs(keymap) do
         vim.keymap.set(modes, key, func)
       end
