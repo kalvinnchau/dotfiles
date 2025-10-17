@@ -72,7 +72,7 @@ return {
         end,
         desc = 'Neotree Git Status (cwd)',
       },
-      { '<leader>e',    '<leader>fe', desc = 'Neotree Files (cwd)', remap = true },
+      { '<leader>e', '<leader>fe', desc = 'Neotree Files (cwd)', remap = true },
       { '<leader>tree', '<leader>fe', desc = 'Neotree Files (cwd)', remap = true },
     },
     deactivate = function()
@@ -118,26 +118,47 @@ return {
       'nvim-telescope/telescope-dap.nvim',
     },
     keys = {
-      { '<leader>fg', [[<cmd>lua require('telescope.builtin').live_grep{}<CR>]],  desc = 'grep files in cwd' },
+      { '<leader>fg', [[<cmd>lua require('telescope.builtin').live_grep{}<CR>]], desc = 'grep files in cwd' },
+      {
+        '<leader>fw',
+        [[<cmd>lua require('telescope.builtin').live_grep{default_text = vim.fn.expand('<cword>')}<CR>]],
+        desc = 'grep cwd (prefill <cword>)',
+      },
       { '<leader>ff', [[<cmd>lua require('telescope.builtin').find_files{}<CR>]], desc = 'pick any files in cwd' },
-      { '<leader>ft', [[<cmd>lua require('telescope.builtin').git_files{}<CR>]],  desc = 'pick git files in cwd' },
+      { '<leader>ft', [[<cmd>lua require('telescope.builtin').git_files{}<CR>]], desc = 'pick git files in cwd' },
+      {
+        '<leader>fs',
+        [[<cmd>lua require('telescope.builtin').git_status{}<CR>]],
+        desc = 'pick git changed files in cwd',
+      },
       {
         '<leader>fb',
         [[<cmd>lua require('telescope.builtin').buffers{show_all_buffers=true}<CR>]],
         desc = 'pick from all buffers',
       },
-      { '<leader>fv', [[<cmd>lua require('telescope.builtin').commands{}<CR>]],    desc = 'pick any vim command' },
+      { '<leader>fv', [[<cmd>lua require('telescope.builtin').commands{}<CR>]], desc = 'pick any vim command' },
       { '<leader>fc', [[<cmd>lua require('telescope.builtin').git_commits{}<CR>]], desc = 'pick from git commits' },
-      { '<leader>fk', [[<cmd>lua require('telescope.builtin').keymaps{}<CR>]],     desc = 'pick any keymap' },
+      { '<leader>fk', [[<cmd>lua require('telescope.builtin').keymaps{}<CR>]], desc = 'pick any keymap' },
       {
         '<leader>fr',
         [[<cmd>lua require('telescope.builtin').oldfiles{}<CR>]],
         desc = 'pick recently opened files',
       },
-      { '<leader>fs', [[<cmd>lua require('telescope.builtin').search_history{}<CR>]], desc = 'pick recent searches' },
+      { '<leader>fh', [[<cmd>lua require('telescope.builtin').search_history{}<CR>]], desc = 'pick recent searches' },
     },
     opts = {
       defaults = {
+        path_display = {
+          filename_first = { reverse_directories = true },
+          shorten = { len = 2, exclude = { -1, -2, -3, -4 } },
+        },
+        layout_config = {
+          horizontal = {
+            width = { padding = 0 },
+            height = { padding = 0 },
+            preview_width = 0.5,
+          },
+        },
         vimgrep_arguments = {
           'rg',
           '--color=never',
@@ -218,20 +239,20 @@ return {
         {
           mode = { 'n', 'v' },
           { '<leader><tab>', group = 'tabs' },
-          { '<leader>b',     group = 'buffer' },
-          { '<leader>c',     group = 'code' },
-          { '<leader>d',     group = 'diagnostics' },
-          { '<leader>f',     group = 'file/find' },
-          { '<leader>g',     group = 'git' },
-          { '<leader>gh',    group = 'hunks' },
-          { '<leader>q',     group = 'quit/session' },
-          { '<leader>s',     group = 'search' },
-          { '<leader>u',     group = 'ui' },
-          { '<leader>w',     group = 'windows' },
-          { '<leader>x',     group = 'diagnostics/quickfix' },
-          { '[',             group = 'prev' },
-          { ']',             group = 'next' },
-          { 'g',             group = 'goto' },
+          { '<leader>b', group = 'buffer' },
+          { '<leader>c', group = 'code' },
+          { '<leader>d', group = 'diagnostics' },
+          { '<leader>f', group = 'file/find' },
+          { '<leader>g', group = 'git' },
+          { '<leader>gh', group = 'hunks' },
+          { '<leader>q', group = 'quit/session' },
+          { '<leader>s', group = 'search' },
+          { '<leader>u', group = 'ui' },
+          { '<leader>w', group = 'windows' },
+          { '<leader>x', group = 'diagnostics/quickfix' },
+          { '[', group = 'prev' },
+          { ']', group = 'next' },
+          { 'g', group = 'goto' },
           {
             'fd',
             function()
@@ -380,39 +401,39 @@ return {
 
   -- better diagnostics list and others
   {
-    "folke/trouble.nvim",
+    'folke/trouble.nvim',
     opts = {}, -- for default options, refer to the configuration section for custom setup.
-    cmd = "Trouble",
+    cmd = 'Trouble',
     keys = {
       {
-        "<leader>xx",
-        "<cmd>Trouble diagnostics toggle<cr>",
-        desc = "Diagnostics (Trouble)",
+        '<leader>xx',
+        '<cmd>Trouble diagnostics toggle<cr>',
+        desc = 'Diagnostics (Trouble)',
       },
       {
-        "<leader>xX",
-        "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
-        desc = "Buffer Diagnostics (Trouble)",
+        '<leader>xX',
+        '<cmd>Trouble diagnostics toggle filter.buf=0<cr>',
+        desc = 'Buffer Diagnostics (Trouble)',
       },
       {
-        "<leader>cs",
-        "<cmd>Trouble symbols toggle focus=false<cr>",
-        desc = "Symbols (Trouble)",
+        '<leader>cs',
+        '<cmd>Trouble symbols toggle focus=true win={type = split, position=left}<cr>',
+        desc = 'Symbols (Trouble)',
       },
       {
-        "<leader>cl",
-        "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
-        desc = "LSP Definitions / references / ... (Trouble)",
+        '<leader>cl',
+        '<cmd>Trouble lsp toggle focus=true win={size = 0.3, type = split, position=left}<cr>',
+        desc = 'LSP Definitions / references / ... (Trouble)',
       },
       {
-        "<leader>xL",
-        "<cmd>Trouble loclist toggle<cr>",
-        desc = "Location List (Trouble)",
+        '<leader>xL',
+        '<cmd>Trouble loclist toggle<cr>',
+        desc = 'Location List (Trouble)',
       },
       {
-        "<leader>xQ",
-        "<cmd>Trouble qflist toggle<cr>",
-        desc = "Quickfix List (Trouble)",
+        '<leader>xQ',
+        '<cmd>Trouble qflist toggle<cr>',
+        desc = 'Quickfix List (Trouble)',
       },
     },
   },
@@ -442,6 +463,61 @@ return {
       { '<leader>xt', '<cmd>TodoTrouble<cr>',   desc = 'Todo Trouble' },
       --{ '<leader>xtt', '<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>', desc = 'Todo Trouble' },
       { '<leader>xT', '<cmd>TodoTelescope<cr>', desc = 'Todo Telescope' },
+    },
+  },
+
+  {
+    'folke/flash.nvim',
+    event = 'VeryLazy',
+    ---@type Flash.Config
+    opts = {},
+    -- stylua: ignore
+    keys = {
+      { "s",     mode = { "n", "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
+      { "S",     mode = { "n", "x", "o" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
+      { "r",     mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
+      { "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
+    },
+  },
+
+  {
+    'mistweaverco/kulala.nvim',
+    keys = {
+      { '<leader>Rs', desc = 'Send request' },
+      { '<leader>Ra', desc = 'Send all requests' },
+      { '<leader>Rb', desc = 'Open scratchpad' },
+    },
+    ft = { 'http', 'rest' },
+    opts = {
+      global_keymaps = true,
+      global_keymaps_prefix = '<leader>R',
+      kulala_keymaps_prefix = '',
+    },
+  },
+
+  {
+    'azorng/goose.nvim',
+    branch = 'main',
+    ft = { 'rust', 'python', 'typscript', 'markdown', 'sh', 'kotlin', 'typescriptreact' },
+    config = function()
+      require('goose').setup({
+        providers = {
+          databricks = {
+            'goose-claude-4-sonnet',
+            'goose-claude-4-opus',
+          },
+        },
+      })
+    end,
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      {
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {
+          anti_conceal = { enabled = false },
+        },
+      },
     },
   },
 }

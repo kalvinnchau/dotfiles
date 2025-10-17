@@ -44,7 +44,7 @@ return {
         bashls = {},
         metals = {},
         ts_ls = {},
-        vuels = {},
+        biome = {},
         terraformls = {},
         lemminx = {},
         lua_ls = {
@@ -128,7 +128,9 @@ return {
             return
           end
         end
-        require('lspconfig')[server].setup(server_opts)
+        --require('lspconfig')[server].setup(server_opts)
+        vim.lsp.config(server, server_opts)
+        vim.lsp.enable(server)
       end
 
       for server, server_opts in pairs(servers) do
@@ -157,9 +159,22 @@ return {
           --}),
           --nls.builtins.formatting.cmake_format,
 
-          nls.builtins.formatting.prettier.with({
-            extra_args = { '--ignore-path', vim.fn.expand('~/.prettierignore') },
-          }),
+          --nls.builtins.formatting.prettier.with({
+          --  extra_args = { '--ignore-path', vim.fn.expand('~/.prettierignore') },
+          --  -- use biome
+          --  disabled_filetypes = {
+          --    'javascript',
+          --    'typescript',
+          --    'javascriptreact',
+          --    'typescriptreact',
+          --    'json',
+          --    'jsonc',
+          --    'css',
+          --    'graphql',
+          --  },
+          --}),
+
+          nls.builtins.formatting.biome,
 
           nls.builtins.formatting.terraform_fmt,
 
@@ -181,6 +196,10 @@ return {
     keys = { { '<leader>cm', '<cmd>Mason<cr>', desc = 'Mason' } },
     build = ':MasonUpdate',
     opts = {
+      registries = {
+        'github:mason-org/mason-registry',
+        'github:mistweaverco/zana-registry',
+      },
       ensure_installed = {
         -- python
         'ruff',
