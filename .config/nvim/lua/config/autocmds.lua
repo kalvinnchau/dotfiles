@@ -58,3 +58,18 @@ vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
   end,
 })
 
+-- show diagnostics on hover
+vim.api.nvim_create_autocmd('CursorHold', {
+  desc = 'Show diagnostics when cursor is held over code',
+  callback = function()
+    local opts = {
+      focusable = false,
+      close_events = { 'BufLeave', 'CursorMoved', 'InsertEnter', 'FocusLost' },
+      border = 'single',
+      source = 'always',
+      prefix = ' ',
+    }
+    vim.diagnostic.open_float(nil, opts)
+  end,
+})
+

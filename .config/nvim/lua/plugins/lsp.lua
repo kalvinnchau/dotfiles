@@ -4,7 +4,6 @@ return {
     'neovim/nvim-lspconfig',
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
-      { 'folke/neoconf.nvim', cmd = 'Neoconf', opts = { import = { vscode = false } } },
       { 'saghen/blink.cmp' },
     },
     opts = {
@@ -35,17 +34,19 @@ return {
       },
     },
     config = function(_, opts)
-      -- diagnostics config
-      vim.diagnostic.config(opts.diagnostics)
+      -- diagnostics config with signs
+      vim.diagnostic.config(vim.tbl_deep_extend('force', opts.diagnostics, {
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = 'E',
+            [vim.diagnostic.severity.WARN] = 'W',
+            [vim.diagnostic.severity.HINT] = 'H',
+            [vim.diagnostic.severity.INFO] = 'I',
+          },
+        },
+      }))
 
-      -- diagnostic signs
-      local signs = { Error = '', Warn = '', Hint = '', Info = '' }
-      for name, icon in pairs(signs) do
-        local hl = 'DiagnosticSign' .. name
-        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
-      end
-
-      -- MODERN: LspAttach autocmd for keymaps
+      -- LspAttach autocmd for keymaps
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('lsp_attach', { clear = true }),
         callback = function(event)
@@ -111,7 +112,7 @@ return {
       -- setup servers
       local capabilities = require('blink.cmp').get_lsp_capabilities()
       for server, server_opts in pairs(opts.servers) do
-        -- Merge capabilities into server opts
+        -- merge capabilities into server opts
         server_opts.capabilities = vim.tbl_deep_extend(
           'force',
           vim.lsp.protocol.make_client_capabilities(),
@@ -119,7 +120,7 @@ return {
           server_opts.capabilities or {}
         )
 
-        -- Only call vim.lsp.config if we have custom settings
+        -- only call vim.lsp.config if we have custom settings
         if next(server_opts) ~= nil then
           vim.lsp.config(server, server_opts)
         end
@@ -129,7 +130,7 @@ return {
     end,
   },
 
-  -- MODERN: lazydev.nvim (replaces neodev.nvim)
+  -- lazydev.nvim
   {
     'folke/lazydev.nvim',
     ft = 'lua',
@@ -140,7 +141,7 @@ return {
     },
   },
 
-  -- MODERN: conform.nvim (replaces none-ls.nvim for formatting)
+  -- conform.nvim
   {
     'stevearc/conform.nvim',
     event = { 'BufWritePre' },
@@ -191,7 +192,7 @@ return {
     end,
   },
 
-  -- MODERN: nvim-lint (replaces none-ls.nvim for linting)
+  -- nvim-lint
   {
     'mfussenegger/nvim-lint',
     event = { 'BufReadPre', 'BufNewFile' },
@@ -210,7 +211,7 @@ return {
     end,
   },
 
-  -- mason
+  -- mason - package manager
   {
     'williamboman/mason.nvim',
     cmd = 'Mason',

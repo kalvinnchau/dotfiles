@@ -56,7 +56,7 @@ return {
     },
     init = function()
       if vim.fn.argc() == 1 then
-        local stat = vim.uv.fs_stat(vim.fn.argv(0))
+        local stat = vim.uv.fs_stat(vim.fn.argv(0) --[[@as string]])
         if stat and stat.type == 'directory' then
           require('neo-tree')
         end

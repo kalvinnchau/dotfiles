@@ -109,7 +109,7 @@ return {
     end,
   },
 
-  -- color highlighter (MODERN: mini.hipatterns instead of nvim-colorizer)
+  -- color highlighter
   {
     'nvim-mini/mini.hipatterns',
     event = 'VeryLazy',

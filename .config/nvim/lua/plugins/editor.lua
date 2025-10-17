@@ -152,7 +152,6 @@ return {
     },
   },
 
-  -- ai assistant
   {
     'azorng/goose.nvim',
     ft = { 'rust', 'python', 'typescript', 'markdown', 'sh', 'kotlin', 'typescriptreact' },
