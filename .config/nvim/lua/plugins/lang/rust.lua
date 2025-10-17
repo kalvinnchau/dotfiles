@@ -1,58 +1,33 @@
 vim.g.rustaceanvim = function()
-  local cfg = {
-    -- Plugin configuration
+  return {
     tools = {
-      float_win_config = {
-        border = 'rounded',
-      },
+      float_win_config = { border = 'rounded' },
       test_executor = 'background',
     },
-    -- LSP configuration
     server = {
       on_attach = function(client, bufnr) end,
       default_settings = {
         ['rust-analyzer'] = {
           settings = {
-            diagnostic = {
-              refreshSupport = false,
-            },
+            diagnostic = { refreshSupport = false },
           },
         },
       },
     },
-    -- DAP configuration
     dap = {},
   }
-  return cfg
 end
 
 return {
+  -- rust tooling (modern, replaces rust-tools.nvim)
   {
     'mrcjkb/rustaceanvim',
     version = '^6',
-    lazy = false, -- This plugin is already lazy
+    lazy = false,
     keys = {
-      {
-        '<leader>rd',
-        function()
-          vim.cmd.RustLsp('debuggables')
-        end,
-        desc = 'show all debuggables',
-      },
-      {
-        '<leader>rr',
-        function()
-          vim.cmd.RustLsp('runnables')
-        end,
-        desc = 'show all runnables',
-      },
-      {
-        '<leader>rt',
-        function()
-          vim.cmd.RustLsp('testables')
-        end,
-        desc = 'show all testables',
-      },
+      { '<leader>rd', function() vim.cmd.RustLsp('debuggables') end, desc = 'show debuggables' },
+      { '<leader>rr', function() vim.cmd.RustLsp('runnables') end, desc = 'show runnables' },
+      { '<leader>rt', function() vim.cmd.RustLsp('testables') end, desc = 'show testables' },
     },
   },
 }
