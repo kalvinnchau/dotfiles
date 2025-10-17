@@ -4,6 +4,9 @@
 vim.g.mapleader = ','
 vim.g.maplocalleader = ','
 
+-- disable python provider (not using python-based plugins)
+vim.g.loaded_python3_provider = 0
+
 -- enable reading of rc files in cwd
 vim.opt.exrc = true
 

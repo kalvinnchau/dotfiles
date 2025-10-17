@@ -1,19 +1,24 @@
--- Load core configuration
+-- load core configuration
 require('core.options')
 require('core.keymaps')
 require('core.autocmds')
 
--- Bootstrap lazy.nvim
+-- add mason bin to PATH
+vim.env.PATH = vim.fn.stdpath('data') .. '/mason/bin:' .. vim.env.PATH
+
+-- bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not vim.uv.fs_stat(lazypath) then
-  local out = vim.system({
-    'git',
-    'clone',
-    '--filter=blob:none',
-    'https://github.com/folke/lazy.nvim.git',
-    '--branch=stable',
-    lazypath,
-  }):wait()
+  local out = vim
+    .system({
+      'git',
+      'clone',
+      '--filter=blob:none',
+      'https://github.com/folke/lazy.nvim.git',
+      '--branch=stable',
+      lazypath,
+    })
+    :wait()
 
   if out.code ~= 0 then
     vim.api.nvim_echo({
@@ -27,7 +32,7 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Setup plugins
+-- setup plugins
 require('lazy').setup('plugins', {
   defaults = {
     lazy = true,
