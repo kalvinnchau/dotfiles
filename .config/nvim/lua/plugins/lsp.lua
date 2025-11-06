@@ -29,6 +29,7 @@ return {
             },
           },
         },
+        ty = {},
         ruff = {},
         yamlls = {},
       },
@@ -116,12 +117,8 @@ return {
 
       for server, server_opts in pairs(opts.servers) do
         -- merge capabilities into server opts
-        server_opts.capabilities = vim.tbl_deep_extend(
-          'force',
-          base_capabilities,
-          blink_capabilities,
-          server_opts.capabilities or {}
-        )
+        server_opts.capabilities =
+          vim.tbl_deep_extend('force', base_capabilities, blink_capabilities, server_opts.capabilities or {})
 
         -- only call vim.lsp.config if we have custom settings
         if next(server_opts) ~= nil then

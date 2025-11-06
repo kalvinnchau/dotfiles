@@ -38,7 +38,11 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- setup plugins
-require('lazy').setup('plugins', {
+require('lazy').setup({
+  spec = {
+    { import = 'plugins' },
+    { import = 'plugins.lang' },
+  },
   defaults = {
     lazy = true,
   },
