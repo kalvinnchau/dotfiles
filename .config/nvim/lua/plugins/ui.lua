@@ -52,13 +52,28 @@ return {
 
   -- indent guides
   {
-    'lukas-reineke/indent-blankline.nvim',
+    'saghen/blink.indent',
     event = { 'BufReadPost', 'BufNewFile' },
-    main = 'ibl',
+    ---@module 'blink.indent'
     opts = {
-      indent = { char = '│' },
-      exclude = {
-        filetypes = { 'help', 'alpha', 'dashboard', 'neo-tree', 'Trouble', 'lazy' },
+      blocked = {
+        filetypes = {
+          include_defaults = true,
+          'alpha',
+          'neo-tree',
+          'Trouble',
+          'lazy',
+        },
+      },
+      static = {
+        char = '┊',
+      },
+      scope = {
+        enabled = true,
+        char = '│',
+        underline = {
+          enabled = true,
+        },
       },
     },
   },
