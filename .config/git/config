@@ -70,3 +70,20 @@
   search = "!f(){ git branch -a | sed -e 's/[ \\*]*//' | grep -v -e '\\->' | xargs git grep $@; };f "
   cleanbranches =!"git fetch -p && for branch in $(git branch -vv | grep ': gone]' | awk '{print $1}'); do git branch -D $branch; done"
   opener = "!open $(git remote get-url origin | sed -E 's|.*@([[:alnum:]\\\\.-]*):([[:alnum:]-]*)/([[:alnum:]-]*)(.)git?|https://\\1\\/\\2\\/\\3|')/$(git branch --show-current | sed -E 's|(.*)|tree/\\1|') #"
+  openweb = "!f() { \
+    r=$(git remote get-url origin) || exit 1; \
+    r=${r%.git}; r=${r#ssh://}; r=${r#git://}; r=${r#https://}; r=${r#http://}; r=${r#*@}; \
+    case \"$r\" in *:*) h=${r%%:*}; p=${r#*:}; base=\"https://$h/$p\" ;; *) base=\"https://$r\" ;; esac; \
+    a=\"$1\"; d=main; \
+    prefix=\"${GIT_PREFIX%/}\"; \
+    if [ -z \"$a\" ]; then \
+      [ -n \"$prefix\" ] && url=\"$base/tree/$d/$prefix\" || url=\"$base/tree/$d\"; \
+    elif [ -d \"${GIT_PREFIX}$a\" ]; then \
+      rel=\"${prefix:+$prefix/}$a\"; \
+      url=\"$base/tree/$d/$rel\"; \
+    else \
+      [ -n \"$prefix\" ] && rel=\"$prefix/$a\" || rel=\"$a\"; \
+      url=\"$base/blob/$d/$rel\"; \
+    fi; \
+    if command -v open >/dev/null 2>&1; then open \"$url\"; else xdg-open \"$url\"; fi; \
+  }; f"
