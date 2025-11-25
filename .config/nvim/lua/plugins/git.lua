@@ -46,34 +46,87 @@ return {
   },
 
   -- diff view
+  --{
+  --  'sindrets/diffview.nvim',
+  --  cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewFileHistory' },
+  --  keys = {
+  --    { '<leader>dh', '<cmd>DiffviewOpen<cr>', desc = 'Diff view (HEAD)' },
+  --    { '<leader>dc', '<cmd>DiffviewClose<cr>', desc = 'Close diff view' },
+  --  },
+  --  opts = {
+  --    enhanced_diff_hl = true,
+  --    use_icons = true,
+  --    view = {
+  --      default = { layout = 'diff2_horizontal' },
+  --    },
+  --  },
+  --  config = function(_, opts)
+  --    require('diffview').setup(opts)
+
+  --    local function set_diff_highlights()
+  --      vim.api.nvim_set_hl(0, 'DiffAdd', { fg = 'none', bg = '#2e4b2e', bold = true })
+  --      vim.api.nvim_set_hl(0, 'DiffDelete', { fg = 'none', bg = '#4c1e15', bold = true })
+  --      vim.api.nvim_set_hl(0, 'DiffChange', { fg = 'none', bg = '#45565c', bold = true })
+  --      vim.api.nvim_set_hl(0, 'DiffText', { fg = 'none', bg = '#635417', bold = true })
+  --    end
+
+  --    set_diff_highlights()
+  --    vim.api.nvim_create_autocmd('ColorScheme', {
+  --      group = vim.api.nvim_create_augroup('DiffColors', { clear = true }),
+  --      callback = set_diff_highlights,
+  --    })
+  --  end,
+  --},
+
+  -- vscode-diff.nvim
   {
-    'sindrets/diffview.nvim',
-    cmd = { 'DiffviewOpen', 'DiffviewClose', 'DiffviewFileHistory' },
+    'esmuellert/vscode-diff.nvim',
+    dependencies = { 'MunifTanjim/nui.nvim' },
+    cmd = { 'CodeDiff' },
     keys = {
-      { '<leader>dh', '<cmd>DiffviewOpen<cr>', desc = 'Diff view (HEAD)' },
-      { '<leader>dc', '<cmd>DiffviewClose<cr>', desc = 'Close diff view' },
+      { '<leader>dfh', '<cmd>CodeDiff file HEAD<cr>', desc = 'Diff file against HEAD' },
+      { '<leader>dfm', '<cmd>CodeDiff file main<cr>', desc = 'Diff file against main' },
+      { '<leader>dh', '<cmd>CodeDiff HEAD<cr>', desc = 'Open diff explorer against HEAD' },
+      { '<leader>dm', '<cmd>CodeDiff main<cr>', desc = 'Open diff explorer against main' },
     },
-    opts = {
-      enhanced_diff_hl = true,
-      use_icons = true,
-      view = {
-        default = { layout = 'diff2_horizontal' },
-      },
-    },
-    config = function(_, opts)
-      require('diffview').setup(opts)
+    config = function()
+      require('vscode-diff').setup({
+        -- Highlight configuration
+        highlights = {
+          -- Line-level: accepts highlight group names or hex colors (e.g., "#2ea043")
+          line_insert = '#2e4b2e', -- Line-level insertions
+          line_delete = '#4c1e15', -- Line-level deletions
 
-      local function set_diff_highlights()
-        vim.api.nvim_set_hl(0, 'DiffAdd', { fg = 'none', bg = '#2e4b2e', bold = true })
-        vim.api.nvim_set_hl(0, 'DiffDelete', { fg = 'none', bg = '#4c1e15', bold = true })
-        vim.api.nvim_set_hl(0, 'DiffChange', { fg = 'none', bg = '#45565c', bold = true })
-        vim.api.nvim_set_hl(0, 'DiffText', { fg = 'none', bg = '#635417', bold = true })
-      end
+          -- Character-level: accepts highlight group names or hex colors
+          -- If specified, these override char_brightness calculation
+          char_insert = '#635417', -- Character-level insertions
+          char_delete = '#635417', -- Character-level deletions
 
-      set_diff_highlights()
-      vim.api.nvim_create_autocmd('ColorScheme', {
-        group = vim.api.nvim_create_augroup('DiffColors', { clear = true }),
-        callback = set_diff_highlights,
+          -- Brightness multiplier (only used when char_insert/char_delete are nil)
+          -- nil = auto-detect based on background (1.4 for dark, 0.92 for light)
+          char_brightness = nil, -- Auto-adjust based on your colorscheme
+        },
+
+        -- Diff view behavior
+        diff = {
+          disable_inlay_hints = true, -- Disable inlay hints in diff windows for cleaner view
+          max_computation_time_ms = 5000, -- Maximum time for diff computation (VSCode default)
+        },
+
+        -- Keymaps in diff view
+        keymaps = {
+          view = {
+            next_hunk = ']c', -- Jump to next change
+            prev_hunk = '[c', -- Jump to previous change
+            next_file = ']f', -- Next file in explorer mode
+            prev_file = '[f', -- Previous file in explorer mode
+          },
+          explorer = {
+            select = '<CR>', -- Open diff for selected file
+            hover = 'K', -- Show file diff preview
+            refresh = 'R', -- Refresh git status
+          },
+        },
       })
     end,
   },

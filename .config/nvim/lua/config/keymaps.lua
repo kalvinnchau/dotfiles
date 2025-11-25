@@ -30,3 +30,7 @@ vim.keymap.set(
   ':let @+=expand("%:p:.")<CR>',
   { silent = true, desc = 'Copy relative file path to clipboard' }
 )
+vim.keymap.set('n', '<leader>pg', function()
+  local file = vim.fn.expand('%:p:.')
+  vim.cmd('silent !git openweb ' .. vim.fn.shellescape(file))
+end, { silent = true, desc = 'Open file in GitHub' })
