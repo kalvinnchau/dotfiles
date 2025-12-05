@@ -4,6 +4,9 @@ return {
     'hedyhli/markdown-toc.nvim',
     ft = 'markdown',
     cmd = { 'Mtoc' },
+    keys = {
+      { '<leader>mtoc', '<cmd>Mtoc<cr>', desc = 'Generate markdown table of contents' },
+    },
     opts = {},
   },
 

@@ -46,6 +46,7 @@ require('lazy').setup({
   defaults = {
     lazy = true,
   },
+  change_detection = { notify = false },
   install = { colorscheme = { 'gruvbox' } },
   checker = { enabled = false },
   performance = {

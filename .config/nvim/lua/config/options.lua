@@ -102,3 +102,5 @@ vim.o.background = 'dark'
 vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.opt.foldenable = false
+
+vim.o.iskeyword = '@,48-57,_,192-255,-' -- Treat dash as `word` textobject part

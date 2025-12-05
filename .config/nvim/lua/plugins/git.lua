@@ -85,9 +85,23 @@ return {
     cmd = { 'CodeDiff' },
     keys = {
       { '<leader>dfh', '<cmd>CodeDiff file HEAD<cr>', desc = 'Diff file against HEAD' },
-      { '<leader>dfm', '<cmd>CodeDiff file main<cr>', desc = 'Diff file against main' },
+      {
+        '<leader>dfm',
+        function()
+          local base = vim.fn.trim(vim.fn.system('git merge-base origin/main HEAD'))
+          vim.cmd.CodeDiff('file', base)
+        end,
+        desc = 'Diff file against merge-base',
+      },
       { '<leader>dh', '<cmd>CodeDiff HEAD<cr>', desc = 'Open diff explorer against HEAD' },
-      { '<leader>dm', '<cmd>CodeDiff main<cr>', desc = 'Open diff explorer against main' },
+      {
+        '<leader>dm',
+        function()
+          local base = vim.fn.trim(vim.fn.system('git merge-base origin/main HEAD'))
+          vim.cmd.CodeDiff(base)
+        end,
+        desc = 'Open diff explorer against merge-base',
+      },
     },
     config = function()
       require('vscode-diff').setup({
@@ -116,8 +130,8 @@ return {
         -- Keymaps in diff view
         keymaps = {
           view = {
-            next_hunk = ']c', -- Jump to next change
-            prev_hunk = '[c', -- Jump to previous change
+            next_hunk = '<leader><tab>', -- Jump to next change
+            prev_hunk = '<leader><s-tab>', -- Jump to previous change
             next_file = ']f', -- Next file in explorer mode
             prev_file = '[f', -- Previous file in explorer mode
           },
