@@ -2,11 +2,11 @@
 
 ## init
 
-1. intall some packages
+1. install some packages
 
 ```bash
-# install zinit plugin manager
-bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)"
+# install antidote plugin manager
+git clone --depth=1 https://github.com/mattmc3/antidote.git ${ZDOTDIR:-~}/.antidote
 
 # install homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
@@ -19,7 +19,8 @@ brew install neovim
 2. install `dotbare`
 
 ```bash
-zinit light kazhala/dotbare
+# dotbare is loaded via .zsh_plugins.txt (antidote plugin manager)
+# just start a new shell after step 3
 ```
 
 3. initalize the dotfiles
