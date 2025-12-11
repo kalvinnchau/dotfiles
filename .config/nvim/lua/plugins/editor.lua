@@ -157,7 +157,7 @@ return {
     ft = { 'rust', 'python', 'typescript', 'markdown', 'sh', 'kotlin', 'typescriptreact' },
     dependencies = {
       'nvim-lua/plenary.nvim',
-      { 'MeanderingProgrammer/render-markdown.nvim', opts = { anti_conceal = { enabled = false } } },
+      --{ 'MeanderingProgrammer/render-markdown.nvim', opts = { anti_conceal = { enabled = false } } },
     },
     opts = {
       providers = {
