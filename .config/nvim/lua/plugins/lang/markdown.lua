@@ -15,7 +15,7 @@ return {
     'iamcco/markdown-preview.nvim',
     ft = 'markdown',
     cmd = { 'MarkdownPreview', 'MarkdownPreviewToggle', 'MarkdownPreviewStop' },
-    build = 'cd app && npm install',
+    build = ':call mkdp#util#install()',
   },
 
   -- paste images from clipboard
