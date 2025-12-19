@@ -17,11 +17,9 @@ end
 function module.contract_path(path)
   local clean_path = strip_home(path)
   local path_parts = {}
-  local idx = 1
 
   for part in string.gmatch(clean_path, '[^/]+') do
-    path_parts[idx] = part
-    idx = idx + 1
+    table.insert(path_parts, part)
   end
 
   local short_cwd = ''

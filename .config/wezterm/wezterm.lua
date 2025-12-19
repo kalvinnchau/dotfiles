@@ -11,6 +11,7 @@ local SOLID_RIGHT_ARROW = utf8.char(0xe0b0)
 wezterm.on('format-tab-title', function(tab, tabs, _, _, hover, _)
   local background = scheme.tab_bar.inactive_tab.bg_color
   local foreground = scheme.tab_bar.inactive_tab.fg_color
+  local italic = false
 
   local is_first = tab.tab_id == tabs[1].tab_id
   local is_last = tab.tab_id == tabs[#tabs].tab_id
@@ -18,6 +19,11 @@ wezterm.on('format-tab-title', function(tab, tabs, _, _, hover, _)
   if tab.is_active then
     background = scheme.tab_bar.active_tab.bg_color
     foreground = scheme.tab_bar.active_tab.fg_color
+  elseif tab.is_last_active then
+    -- Subtle indicator for previously active tab
+    background = scheme.colors.lightgray
+    foreground = scheme.colors.white
+    italic = true
   elseif hover then
     background = scheme.tab_bar.new_tab_hover.bg_color
     foreground = scheme.tab_bar.new_tab_hover.fg_color
@@ -45,7 +51,7 @@ wezterm.on('format-tab-title', function(tab, tabs, _, _, hover, _)
   local title = tab.active_pane.title
 
   return {
-    { Attribute = { Italic = false } },
+    { Attribute = { Italic = italic } },
     { Attribute = { Intensity = hover and 'Bold' or 'Normal' } },
     { Background = { Color = leading_bg } },
     { Foreground = { Color = leading_fg } },
@@ -63,6 +69,12 @@ end)
 wezterm.on('update-status', function(window, pane)
   -- Each element holds the text for a cell in a "powerline" style << fade
   local cells = {}
+
+  -- Show progress if available (ConEmu-style progress sequences)
+  local progress = pane:get_progress()
+  if progress and progress.current then
+    table.insert(cells, string.format('%d%%', progress.current))
+  end
 
   -- Figure out the cwd and host of the current pane.
   -- This will pick up the hostname for the remote host if your
@@ -119,11 +131,13 @@ wezterm.on('update-status', function(window, pane)
   -- Translate a cell into elements
   local function push(text, is_last)
     local cell_no = num_cells + 1
+    local bg_color = colors[math.min(cell_no, #colors)]
     table.insert(elements, { Foreground = { Color = text_fg } })
-    table.insert(elements, { Background = { Color = colors[cell_no] } })
+    table.insert(elements, { Background = { Color = bg_color } })
     table.insert(elements, { Text = ' ' .. text .. ' ' })
     if not is_last then
-      table.insert(elements, { Foreground = { Color = colors[cell_no + 1] } })
+      local next_color = colors[math.min(cell_no + 1, #colors)]
+      table.insert(elements, { Foreground = { Color = next_color } })
       table.insert(elements, { Text = SOLID_LEFT_ARROW })
     end
     num_cells = num_cells + 1
@@ -161,11 +175,29 @@ return {
     font = wezterm.font(font, { weight = 'Bold' }),
   },
 
+  -- Use Iosevka for PaneSelect overlay
+  pane_select_font = wezterm.font(font, { stretch = 'Expanded', weight = 'Regular' }),
+
+  -- Center content when window isn't a perfect cell multiple
+  window_content_alignment = { horizontal = 'Center', vertical = 'Center' },
+
+  -- Pixel-perfect box drawing, git symbols, progress bars
+  custom_block_glyphs = true,
+
+  foreground_text_hsb = {
+    hue = 1.0,
+    saturation = 1.1,
+    brightness = 1.1,
+  },
+
   tab_max_width = 64,
   use_fancy_tab_bar = false,
   enable_tab_bar = true,
 
   max_fps = 240,
+
+  -- Strip colors during QuickSelect for better match visibility
+  quick_select_remove_styling = true,
 
   default_prog = { '/bin/zsh', '-l' },
 
@@ -179,6 +211,13 @@ return {
 
   -- key mappings
   keys = {
+
+    -- Confirm before closing tab
+    {
+      mods = 'CMD',
+      key = 'w',
+      action = action.CloseCurrentTab({ confirm = true }),
+    },
 
     {
       mods = 'OPT',
