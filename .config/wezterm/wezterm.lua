@@ -191,6 +191,12 @@ return {
     brightness = 1.1,
   },
 
+  -- Dim inactive panes for visual distinction
+  inactive_pane_hsb = {
+    saturation = 0.8,
+    brightness = 0.7,
+  },
+
   tab_max_width = 64,
   use_fancy_tab_bar = false,
   enable_tab_bar = true,
@@ -200,7 +206,13 @@ return {
   -- Strip colors during QuickSelect for better match visibility
   quick_select_remove_styling = true,
 
+  -- Auto-copy text to clipboard on selection
+  copy_on_select = true,
+
   default_prog = { '/bin/zsh', '-l' },
+
+  -- Multiplexer domain for session persistence (connect with: wezterm connect unix)
+  unix_domains = { { name = 'unix' } },
 
   -- leader option CMD + ,
   -- similar to my neovim config of ,
@@ -288,10 +300,70 @@ return {
       action = action.ActivatePaneDirection('Down'),
     },
 
+    -- Zoom/maximize current pane (toggle)
+    {
+      mods = 'LEADER',
+      key = 'z',
+      action = action.TogglePaneZoomState,
+    },
+
+    -- Pane resize bindings
+    {
+      mods = 'CMD|SHIFT',
+      key = 'h',
+      action = action.AdjustPaneSize({ 'Left', 5 }),
+    },
+    {
+      mods = 'CMD|SHIFT',
+      key = 'l',
+      action = action.AdjustPaneSize({ 'Right', 5 }),
+    },
+    {
+      mods = 'CMD|SHIFT',
+      key = 'k',
+      action = action.AdjustPaneSize({ 'Up', 5 }),
+    },
+    {
+      mods = 'CMD|SHIFT',
+      key = 'j',
+      action = action.AdjustPaneSize({ 'Down', 5 }),
+    },
+
     {
       mods = 'LEADER|SHIFT',
       key = 't',
       action = action.ShowTabNavigator,
+    },
+
+    -- Workspaces (like tmux sessions)
+    {
+      mods = 'LEADER',
+      key = 's',
+      action = action.ShowLauncherArgs({ flags = 'FUZZY|WORKSPACES' }),
+    },
+    {
+      mods = 'LEADER',
+      key = 'n',
+      action = action.PromptInputLine({
+        description = 'Enter new workspace name',
+        action = wezterm.action_callback(function(window, pane, line)
+          if line then
+            window:perform_action(action.SwitchToWorkspace({ name = line }), pane)
+          end
+        end),
+      }),
+    },
+
+    -- Jump between command prompts in scrollback (requires OSC 133)
+    {
+      mods = 'CMD|SHIFT',
+      key = 'UpArrow',
+      action = action.ScrollToPrompt(-1),
+    },
+    {
+      mods = 'CMD|SHIFT',
+      key = 'DownArrow',
+      action = action.ScrollToPrompt(1),
     },
 
     -- Copy mode remapping
