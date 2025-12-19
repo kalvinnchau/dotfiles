@@ -3,6 +3,115 @@ local action = wezterm.action
 local scheme = require('colors').colorscheme
 local helpers = require('helpers')
 
+-- Define keybindings with descriptions (single source of truth)
+-- Format: { mods=, key=, action=, desc= } or { group = 'name' } or omit desc for hidden
+local keybinding_defs = {
+  { group = 'layout' },
+  { mods = 'CMD', key = 'w', action = action.CloseCurrentTab({ confirm = true }), desc = 'close current tab' },
+  { mods = 'LEADER|SHIFT', key = 't', action = action.ShowTabNavigator, desc = 'switch tabs (fuzzy)' },
+  { mods = 'LEADER', key = 'v', action = action.SplitHorizontal, desc = 'split pane right' },
+  { mods = 'LEADER', key = 'x', action = action.SplitVertical, desc = 'split pane down' },
+  { mods = 'LEADER', key = 'w', action = action.PaneSelect, desc = 'pick pane by label' },
+  { mods = 'LEADER', key = 'z', action = action.TogglePaneZoomState, desc = 'toggle pane fullscreen' },
+  { mods = 'CMD', key = 'h', action = action.ActivatePaneDirection('Left'), desc = 'focus pane left' },
+  { mods = 'CMD', key = 'l', action = action.ActivatePaneDirection('Right'), desc = 'focus pane right' },
+  { mods = 'CMD', key = 'k', action = action.ActivatePaneDirection('Up'), desc = 'focus pane up' },
+  { mods = 'CMD', key = 'j', action = action.ActivatePaneDirection('Down'), desc = 'focus pane down' },
+  { mods = 'CMD|SHIFT', key = 'h', action = action.AdjustPaneSize({ 'Left', 5 }), desc = 'grow pane left' },
+  { mods = 'CMD|SHIFT', key = 'l', action = action.AdjustPaneSize({ 'Right', 5 }), desc = 'grow pane right' },
+  { mods = 'CMD|SHIFT', key = 'k', action = action.AdjustPaneSize({ 'Up', 5 }), desc = 'grow pane up' },
+  { mods = 'CMD|SHIFT', key = 'j', action = action.AdjustPaneSize({ 'Down', 5 }), desc = 'grow pane down' },
+
+  { group = 'navigation' },
+  { mods = 'OPT', key = 'LeftArrow', action = action.SendString('\x1bb'), desc = 'jump word backward' },
+  { mods = 'OPT', key = 'RightArrow', action = action.SendString('\x1bf'), desc = 'jump word forward' },
+  { mods = 'CMD', key = 'Backspace', action = action.SendString('\x15'), desc = 'delete to line start' },
+  { mods = 'CMD|SHIFT', key = 'UpArrow', action = action.ScrollToPrompt(-1), desc = 'jump to prev prompt' },
+  { mods = 'CMD|SHIFT', key = 'DownArrow', action = action.ScrollToPrompt(1), desc = 'jump to next prompt' },
+
+  { group = 'workspaces' },
+  { mods = 'LEADER', key = 's', action = action.ShowLauncherArgs({ flags = 'FUZZY|WORKSPACES' }), desc = 'switch workspace (fuzzy)' },
+  { mods = 'LEADER', key = 'n', action = action.PromptInputLine({
+    description = 'Enter new workspace name',
+    action = wezterm.action_callback(function(window, pane, line)
+      if line then
+        window:perform_action(action.SwitchToWorkspace({ name = line }), pane)
+      end
+    end),
+  }), desc = 'create named workspace' },
+
+  { group = 'selection & copy' },
+  { mods = 'CMD|SHIFT', key = 'x', action = action.ActivateCopyMode, desc = 'enter vim-style selection' },
+  { mods = 'LEADER', key = 'Space', action = action.ActivateCopyMode, desc = 'enter vim-style selection' },
+  { mods = 'CTRL', key = 'Space', action = action.QuickSelect, desc = 'select visible text hints' },
+  { mods = 'CTRL', key = 'O', action = action.QuickSelectArgs({
+    label = 'open url',
+    patterns = { 'https?://\\S+' },
+    action = wezterm.action_callback(function(window, pane)
+      local url = window:get_selection_text_for_pane(pane)
+      wezterm.log_info('opening: ' .. url)
+      wezterm.open_with(url)
+    end),
+  }), desc = 'select & open url' },
+
+  -- Hidden (no desc = not shown in help)
+  { mods = 'CMD', key = 'm', action = 'DisableDefaultAssignment' },
+}
+
+-- Build keys table from definitions (skip group markers and display-only entries)
+local function build_keys(defs)
+  local keys = {}
+  for _, def in ipairs(defs) do
+    if not def.group and def.mods and def.action then
+      table.insert(keys, { mods = def.mods, key = def.key, action = def.action })
+    end
+  end
+  return keys
+end
+
+local keys = build_keys(keybinding_defs)
+
+-- Build help text for display
+local keybindings_help = helpers.build_help(keybinding_defs, {
+  { binding = 'LEADER + ?', desc = 'show this cheatsheet' },
+})
+
+-- Add help keybinding - opens in tab, centered, press any key to close
+table.insert(keys, {
+  mods = 'LEADER',
+  key = '?',
+  action = action.SpawnCommandInNewTab({
+    args = {
+      'bash', '-c', [[
+        clear
+        text=]] .. wezterm.shell_quote_arg(keybindings_help) .. [[
+
+        # Get terminal dimensions
+        cols=$(tput cols)
+        lines=$(tput lines)
+
+        # Count text lines and max width
+        text_lines=$(printf '%s' "$text" | wc -l)
+        max_width=$(printf '%s\n' "$text" | while IFS= read -r line; do printf '%d\n' "${#line}"; done | sort -rn | head -1)
+
+        # Calculate padding
+        pad_top=$(( (lines - text_lines) / 2 ))
+        pad_left=$(( (cols - max_width) / 2 ))
+
+        # Print vertical padding
+        for ((i=0; i<pad_top; i++)); do echo; done
+
+        # Print each line with horizontal padding
+        printf '%s\n' "$text" | while IFS= read -r line; do
+          printf "%${pad_left}s%s\n" "" "$line"
+        done
+
+        read -rsn1
+      ]],
+    },
+  }),
+})
+
 -- The filled in variant of the < symbol
 local SOLID_LEFT_ARROW = utf8.char(0xe0b2)
 -- The filled in variant of the > symbol
@@ -222,186 +331,7 @@ return {
     timeout_milliseconds = 1000,
   },
 
-  -- key mappings
-  keys = {
-
-    -- Confirm before closing tab
-    {
-      mods = 'CMD',
-      key = 'w',
-      action = action.CloseCurrentTab({ confirm = true }),
-    },
-
-    {
-      mods = 'OPT',
-      key = 'LeftArrow',
-      action = action.SendString('\x1bb'),
-    },
-
-    {
-      mods = 'OPT',
-      key = 'RightArrow',
-      action = action.SendString('\x1bf'),
-    },
-
-    {
-      mods = 'CMD',
-      key = 'Backspace',
-      action = action.SendString('\x15'),
-    },
-
-    -- Turn off the default CMD-m Hide action, since we don't use it
-    -- timeout_milliseconds defaults to 1000 and can be omitted
-    {
-      mods = 'CMD',
-      key = 'm',
-      action = 'DisableDefaultAssignment',
-    },
-
-    -- CMD + ',' + v to split SplitHorizontal
-    {
-      mods = 'LEADER',
-      key = 'v',
-      action = action.SplitHorizontal,
-    },
-
-    -- CMD + ',' + x to split SplitVertical
-    {
-      mods = 'LEADER',
-      key = 'x',
-      action = action.SplitVertical,
-    },
-
-    {
-      mods = 'LEADER',
-      key = 'w',
-      action = action.PaneSelect,
-    },
-
-    -- move between panes with hlkj vim style
-    {
-      mods = 'CMD',
-      key = 'h',
-      action = action.ActivatePaneDirection('Left'),
-    },
-    {
-      mods = 'CMD',
-      key = 'l',
-      action = action.ActivatePaneDirection('Right'),
-    },
-    {
-      mods = 'CMD',
-      key = 'k',
-      action = action.ActivatePaneDirection('Up'),
-    },
-    {
-      mods = 'CMD',
-      key = 'j',
-      action = action.ActivatePaneDirection('Down'),
-    },
-
-    -- Zoom/maximize current pane (toggle)
-    {
-      mods = 'LEADER',
-      key = 'z',
-      action = action.TogglePaneZoomState,
-    },
-
-    -- Pane resize bindings
-    {
-      mods = 'CMD|SHIFT',
-      key = 'h',
-      action = action.AdjustPaneSize({ 'Left', 5 }),
-    },
-    {
-      mods = 'CMD|SHIFT',
-      key = 'l',
-      action = action.AdjustPaneSize({ 'Right', 5 }),
-    },
-    {
-      mods = 'CMD|SHIFT',
-      key = 'k',
-      action = action.AdjustPaneSize({ 'Up', 5 }),
-    },
-    {
-      mods = 'CMD|SHIFT',
-      key = 'j',
-      action = action.AdjustPaneSize({ 'Down', 5 }),
-    },
-
-    {
-      mods = 'LEADER|SHIFT',
-      key = 't',
-      action = action.ShowTabNavigator,
-    },
-
-    -- Workspaces (like tmux sessions)
-    {
-      mods = 'LEADER',
-      key = 's',
-      action = action.ShowLauncherArgs({ flags = 'FUZZY|WORKSPACES' }),
-    },
-    {
-      mods = 'LEADER',
-      key = 'n',
-      action = action.PromptInputLine({
-        description = 'Enter new workspace name',
-        action = wezterm.action_callback(function(window, pane, line)
-          if line then
-            window:perform_action(action.SwitchToWorkspace({ name = line }), pane)
-          end
-        end),
-      }),
-    },
-
-    -- Jump between command prompts in scrollback (requires OSC 133)
-    {
-      mods = 'CMD|SHIFT',
-      key = 'UpArrow',
-      action = action.ScrollToPrompt(-1),
-    },
-    {
-      mods = 'CMD|SHIFT',
-      key = 'DownArrow',
-      action = action.ScrollToPrompt(1),
-    },
-
-    -- Copy mode remapping
-    -- https://wezfurlong.org/wezterm/copymode.html
-    {
-      mods = 'CMD|SHIFT',
-      key = 'x',
-      action = action.ActivateCopyMode,
-    },
-
-    {
-      mods = 'LEADER',
-      key = 'Space',
-      action = action.ActivateCopyMode,
-    },
-
-    {
-      mods = 'CTRL',
-      key = 'Space',
-      action = action.QuickSelect,
-    },
-
-    {
-      mods = 'CTRL',
-      key = 'O',
-      action = wezterm.action.QuickSelectArgs({
-        label = 'open url',
-        patterns = {
-          'https?://\\S+',
-        },
-        action = wezterm.action_callback(function(window, pane)
-          local url = window:get_selection_text_for_pane(pane)
-          wezterm.log_info('opening: ' .. url)
-          wezterm.open_with(url)
-        end),
-      }),
-    },
-  },
+  keys = keys,
 
   mouse_bindings = {
     -- CMD-click will open the link under the mouse cursor

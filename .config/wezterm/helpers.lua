@@ -116,4 +116,115 @@ function module.get_process(tab)
   })
 end
 
+-- Pretty key name mappings
+local key_display = {
+  LeftArrow = '←', RightArrow = '→', UpArrow = '↑', DownArrow = '↓',
+  Space = 'Space', Backspace = 'Backspace', Return = 'Return', Tab = 'Tab',
+}
+
+-- Calculate display width (handles multi-byte UTF-8 chars like arrows)
+local function display_width(str)
+  return utf8.len(str) or #str
+end
+
+-- Pad string to target display width
+local function pad_right(str, width)
+  local current = display_width(str)
+  local padding = width - current
+  if padding > 0 then
+    return str .. string.rep(' ', padding)
+  end
+  return str
+end
+
+-- Build help text from keybinding definitions
+-- Format: { mods=, key=, action=, desc= } or { group = 'Group Name' }
+function module.build_help(defs, extra_lines)
+  extra_lines = extra_lines or {}
+
+  -- First pass: calculate max widths and build entries
+  local max_key_width = 3   -- "Key"
+  local max_desc_width = 6  -- "Action"
+
+  local entries = {}
+  for _, def in ipairs(defs) do
+    if def.group then
+      -- Group header
+      table.insert(entries, { group = def.group })
+      max_key_width = math.max(max_key_width, display_width(def.group))
+    elseif def.desc then
+      -- Keybinding with description
+      local mods = def.mods:gsub('|', '+')
+      local key = key_display[def.key] or def.key
+      local binding = mods .. ' + ' .. key
+      table.insert(entries, { binding = binding, desc = def.desc })
+      max_key_width = math.max(max_key_width, display_width(binding))
+      max_desc_width = math.max(max_desc_width, display_width(def.desc))
+    end
+  end
+
+  -- Add extra lines to width calculation
+  for _, line in ipairs(extra_lines) do
+    if line.group then
+      max_key_width = math.max(max_key_width, display_width(line.group))
+    else
+      max_key_width = math.max(max_key_width, display_width(line.binding))
+      max_desc_width = math.max(max_desc_width, display_width(line.desc))
+    end
+  end
+
+  -- Build table with dynamic widths
+  local key_w = max_key_width + 2   -- padding
+  local desc_w = max_desc_width + 2
+  local total_w = key_w + desc_w + 3  -- borders
+
+  local h_line = string.rep('─', key_w)
+  local d_line = string.rep('─', desc_w)
+
+  local lines = {
+    '┌' .. h_line .. '┬' .. d_line .. '┐',
+    '│ ' .. pad_right('key', key_w - 2) .. ' │ ' .. pad_right('action', desc_w - 2) .. ' │',
+  }
+
+  local first_group = true
+  for _, entry in ipairs(entries) do
+    if entry.group then
+      table.insert(lines, '├' .. h_line .. '┼' .. d_line .. '┤')
+      table.insert(lines, '│ ' .. pad_right(entry.group, key_w - 2) .. ' │ ' .. pad_right('', desc_w - 2) .. ' │')
+      table.insert(lines, '├' .. h_line .. '┼' .. d_line .. '┤')
+      first_group = false
+    else
+      if first_group then
+        table.insert(lines, '├' .. h_line .. '┼' .. d_line .. '┤')
+        first_group = false
+      end
+      local line = '│ ' .. pad_right(entry.binding, key_w - 2) .. ' │ ' .. pad_right(entry.desc, desc_w - 2) .. ' │'
+      table.insert(lines, line)
+    end
+  end
+
+  -- Add extra lines
+  if #extra_lines > 0 then
+    for _, entry in ipairs(extra_lines) do
+      if entry.group then
+        table.insert(lines, '├' .. h_line .. '┼' .. d_line .. '┤')
+        table.insert(lines, '│ ' .. pad_right(entry.group, key_w - 2) .. ' │ ' .. pad_right('', desc_w - 2) .. ' │')
+        table.insert(lines, '├' .. h_line .. '┼' .. d_line .. '┤')
+      else
+        local line = '│ ' .. pad_right(entry.binding, key_w - 2) .. ' │ ' .. pad_right(entry.desc, desc_w - 2) .. ' │'
+        table.insert(lines, line)
+      end
+    end
+  end
+
+  table.insert(lines, '└' .. h_line .. '┴' .. d_line .. '┘')
+  table.insert(lines, '')
+  local leader_text = 'leader = CMD + ,'
+  local close_text = 'press any key to close'
+  table.insert(lines, string.rep(' ', math.max(0, math.floor((total_w - #leader_text) / 2))) .. leader_text)
+  table.insert(lines, string.rep(' ', math.max(0, math.floor((total_w - #close_text) / 2))) .. close_text)
+
+  return table.concat(lines, '\n') .. '\n'
+end
+
 return module
