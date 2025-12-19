@@ -2,7 +2,7 @@ return {
   -- treesitter
   {
     'nvim-treesitter/nvim-treesitter',
-    version = false,
+    branch = 'master',
     build = ':TSUpdate',
     event = { 'BufReadPost', 'BufNewFile' },
     dependencies = { 'nvim-treesitter/nvim-treesitter-textobjects' },

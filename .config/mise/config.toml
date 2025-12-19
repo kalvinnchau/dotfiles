@@ -9,8 +9,9 @@ uv = "latest"
 "cargo:cargo-binstall" = "latest"
 "cargo:rustic-rs" = "latest"
 
-"ubi:ajeetdsouza/zoxide" = "latest"
-"ubi:jdx/usage" = "latest"
+"github:ajeetdsouza/zoxide" = "latest"
+"github:jdx/usage" = "latest"
+"github:steveyegge/beads" = "latest"
 
 [env]
 MISE_DATA_DIR = "{{env.HOME}}/.local/share/mise"

@@ -5,6 +5,7 @@ return {
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
       { 'saghen/blink.cmp' },
+      { 'williamboman/mason.nvim' },
     },
     opts = {
       diagnostics = {
@@ -120,10 +121,10 @@ return {
         server_opts.capabilities =
           vim.tbl_deep_extend('force', base_capabilities, blink_capabilities, server_opts.capabilities or {})
 
-        -- only call vim.lsp.config if we have custom settings
-        if next(server_opts) ~= nil then
-          vim.lsp.config(server, server_opts)
-        end
+        -- get existing defaults and deep merge to preserve filetypes, cmd, root_markers
+        local defaults = vim.lsp.config[server] or {}
+        local merged = vim.tbl_deep_extend('force', defaults, server_opts)
+        vim.lsp.config(server, merged)
 
         vim.lsp.enable(server)
       end
