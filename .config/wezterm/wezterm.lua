@@ -7,6 +7,19 @@ local helpers = require('helpers')
 -- Format: { mods=, key=, action=, desc= } or { group = 'name' } or omit desc for hidden
 local keybinding_defs = {
   { group = 'layout' },
+  { mods = 'CMD', key = 't', action = wezterm.action_callback(function(window, pane)
+    local tab = window:active_tab()
+    local tabs = window:mux_window():tabs()
+    local current_idx = 0
+    for i, t in ipairs(tabs) do
+      if t:tab_id() == tab:tab_id() then
+        current_idx = i - 1  -- 0-indexed
+        break
+      end
+    end
+    window:perform_action(action.SpawnTab('CurrentPaneDomain'), pane)
+    window:perform_action(action.MoveTab(current_idx + 1), pane)
+  end) },
   { mods = 'CMD', key = 'w', action = action.CloseCurrentTab({ confirm = true }), desc = 'close current tab' },
   { mods = 'LEADER|SHIFT', key = 't', action = action.ShowTabNavigator, desc = 'switch tabs (fuzzy)' },
   { mods = 'LEADER', key = 'v', action = action.SplitHorizontal, desc = 'split pane right' },
