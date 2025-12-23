@@ -68,6 +68,10 @@ vim.opt.scrolljump = -10
 -- allow resizing splits with mouse
 vim.opt.mouse = vim.opt.mouse + 'a'
 
+-- splits open to right and below
+vim.opt.splitright = true
+vim.opt.splitbelow = true
+
 -- tab config
 vim.opt.expandtab = true
 vim.opt.smarttab = true

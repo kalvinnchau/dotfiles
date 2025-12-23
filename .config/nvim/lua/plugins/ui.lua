@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 return {
   -- colorscheme
   {
@@ -164,27 +165,170 @@ return {
     end,
   },
 
-  -- better vim.ui
+  -- better vim.ui + picker
   {
     'folke/snacks.nvim',
     priority = 1000,
     lazy = false,
+    keys = {
+      {
+        '<leader>ff',
+        function()
+          Snacks.picker.files()
+        end,
+        desc = 'Find files',
+      },
+      {
+        '<leader>fg',
+        function()
+          Snacks.picker.grep()
+        end,
+        desc = 'Grep files',
+      },
+      {
+        '<leader>fw',
+        function()
+          Snacks.picker.grep_word()
+        end,
+        desc = 'Grep word under cursor',
+      },
+      {
+        '<leader>ft',
+        function()
+          Snacks.picker.git_files()
+        end,
+        desc = 'Find git files',
+      },
+      {
+        '<leader>fs',
+        function()
+          Snacks.picker.git_status()
+        end,
+        desc = 'Git status files',
+      },
+      {
+        '<leader>fb',
+        function()
+          Snacks.picker.buffers()
+        end,
+        desc = 'Buffers',
+      },
+      {
+        '<leader>fv',
+        function()
+          Snacks.picker.commands()
+        end,
+        desc = 'Commands',
+      },
+      {
+        '<leader>fc',
+        function()
+          Snacks.picker.git_log()
+        end,
+        desc = 'Git commits',
+      },
+      {
+        '<leader>fk',
+        function()
+          Snacks.picker.keymaps()
+        end,
+        desc = 'Keymaps',
+      },
+      {
+        '<leader>fr',
+        function()
+          Snacks.picker.recent()
+        end,
+        desc = 'Recent files',
+      },
+      {
+        '<leader>fh',
+        function()
+          Snacks.picker.command_history()
+        end,
+        desc = 'Command history',
+      },
+    },
     opts = {
       input = { enabled = true },
       picker = {
         enabled = true,
         ui_select = true,
+        layout = {
+          reverse = true,
+          layout = {
+            box = 'horizontal',
+            width = 0.95,
+            height = 0.9,
+            {
+              box = 'vertical',
+              border = 'rounded',
+              { win = 'list', border = 'none' },
+              { win = 'input', height = 1, border = 'top' },
+            },
+            { win = 'preview', width = 0.5, border = 'rounded' },
+          },
+        },
+        win = {
+          input = {
+            keys = {
+              ['<C-x>'] = { 'edit_split', mode = { 'i', 'n' } },
+              ['<C-v>'] = { 'edit_vsplit', mode = { 'i', 'n' } },
+              ['<C-t>'] = { 'edit_tab', mode = { 'i', 'n' } },
+            },
+          },
+        },
+        formatters = {
+          file = {
+            filename_first = true,
+          },
+        },
       },
       dashboard = {
         enabled = true,
         preset = {
           keys = {
-            { icon = '󰈞', key = 'f', desc = 'find file', action = ':Telescope find_files' },
+            {
+              icon = '󰈞',
+              key = 'f',
+              desc = 'find file',
+              action = function()
+                Snacks.picker.files()
+              end,
+            },
             { icon = '󰈔', key = 'n', desc = 'new file', action = ':ene | startinsert' },
-            { icon = ' ', key = 'g', desc = 'find text', action = ':Telescope live_grep' },
-            { icon = ' ', key = 'r', desc = 'recent files', action = ':Telescope oldfiles' },
-            { icon = '󰊢 ', key = 'c', desc = 'git commits', action = ':Telescope git_commits' },
-            { icon = '󰘬 ', key = 's', desc = 'git status', action = ':Telescope git_status' },
+            {
+              icon = ' ',
+              key = 'g',
+              desc = 'find text',
+              action = function()
+                Snacks.picker.grep()
+              end,
+            },
+            {
+              icon = ' ',
+              key = 'r',
+              desc = 'recent files',
+              action = function()
+                Snacks.picker.recent()
+              end,
+            },
+            {
+              icon = '󰊢 ',
+              key = 'c',
+              desc = 'git commits',
+              action = function()
+                Snacks.picker.git_log()
+              end,
+            },
+            {
+              icon = '󰘬 ',
+              key = 's',
+              desc = 'git status',
+              action = function()
+                Snacks.picker.git_status()
+              end,
+            },
             { icon = ' ', key = 'C', desc = 'config', action = ':e ~/.config/nvim/init.lua | :cd %:p:h' },
             { icon = '󰒲 ', key = 'L', desc = 'lazy', action = ':Lazy' },
             { icon = ' ', key = 'q', desc = 'quit', action = ':qa' },

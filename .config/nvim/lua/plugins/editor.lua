@@ -152,19 +152,19 @@ return {
     },
   },
 
-  {
-    'azorng/goose.nvim',
-    ft = { 'rust', 'python', 'typescript', 'markdown', 'sh', 'kotlin', 'typescriptreact' },
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      --{ 'MeanderingProgrammer/render-markdown.nvim', opts = { anti_conceal = { enabled = false } } },
-    },
-    opts = {
-      providers = {
-        databricks = { 'goose-claude-4-sonnet', 'goose-claude-4-opus' },
-      },
-    },
-  },
+  --{
+  --  'azorng/goose.nvim',
+  --  ft = { 'rust', 'python', 'typescript', 'markdown', 'sh', 'kotlin', 'typescriptreact' },
+  --  dependencies = {
+  --    'nvim-lua/plenary.nvim',
+  --    --{ 'MeanderingProgrammer/render-markdown.nvim', opts = { anti_conceal = { enabled = false } } },
+  --  },
+  --  opts = {
+  --    providers = {
+  --      databricks = { 'goose-claude-4-sonnet', 'goose-claude-4-opus' },
+  --    },
+  --  },
+  --},
 
   -- utility library
   { 'nvim-lua/plenary.nvim', lazy = true },

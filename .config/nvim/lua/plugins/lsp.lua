@@ -33,6 +33,7 @@ return {
         ty = {},
         ruff = {},
         yamlls = {},
+        -- kotlin: managed by plugins/lang/kotlin.lua (kotlin.nvim)
       },
     },
     config = function(_, opts)
@@ -52,20 +53,32 @@ return {
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('lsp_attach', { clear = true }),
         callback = function(event)
-          local telescope = require('telescope.builtin')
-
           local function map(keys, func, desc)
             vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'lsp: ' .. desc })
           end
 
-          map('gd', telescope.lsp_definitions, 'go to definition')
-          map('gi', telescope.lsp_implementations, 'show implementations')
-          map('gr', telescope.lsp_references, 'show references')
+          map('gd', function()
+            Snacks.picker.lsp_definitions()
+          end, 'go to definition')
+          map('gi', function()
+            Snacks.picker.lsp_implementations()
+          end, 'show implementations')
+
+          -- override neovim 0.11 gr* defaults with snacks.picker
+          map('grr', function()
+            Snacks.picker.lsp_references()
+          end, 'references')
+          map('gri', function()
+            Snacks.picker.lsp_implementations()
+          end, 'implementations')
+          map('gO', function()
+            Snacks.picker.lsp_symbols()
+          end, 'document symbols')
           map('gsd', function()
-            telescope.lsp_definitions({ jump_type = 'split' })
+            Snacks.picker.lsp_definitions({ confirm = { 'edit_split' } })
           end, 'go to def (split)')
           map('gsv', function()
-            telescope.lsp_definitions({ jump_type = 'vsplit' })
+            Snacks.picker.lsp_definitions({ confirm = { 'edit_vsplit' } })
           end, 'go to def (vsplit)')
           map('K', function()
             if vim.bo.filetype == 'rust' then
@@ -84,9 +97,11 @@ return {
 
           -- diagnostics
           map('<leader>da', function()
-            telescope.diagnostics({ bufnr = 0 })
+            Snacks.picker.diagnostics({ filter = { buf = 0 } })
           end, 'buffer diagnostics')
-          map('<leader>dw', telescope.diagnostics, 'workspace diagnostics')
+          map('<leader>dw', function()
+            Snacks.picker.diagnostics()
+          end, 'workspace diagnostics')
           map('<leader>dn', function()
             vim.diagnostic.jump({ count = 1, float = true })
           end, 'next diagnostic')

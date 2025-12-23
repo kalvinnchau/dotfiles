@@ -34,8 +34,8 @@ return {
     'rcarriga/nvim-dap-ui',
     dependencies = { 'mfussenegger/nvim-dap', 'nvim-neotest/nvim-nio' },
     keys = {
-      { '<leader>du', desc = 'Toggle DAP UI' },
-      { '<leader>df', desc = 'DAP float scopes' },
+      { '<leader>Du', desc = 'Toggle DAP UI' },
+      { '<leader>Df', desc = 'DAP float scopes' },
     },
     config = function()
       local dapui = require('dapui')
@@ -62,8 +62,8 @@ return {
         },
       })
 
-      vim.keymap.set('n', '<leader>du', dapui.toggle, { desc = 'Toggle DAP UI' })
-      vim.keymap.set('n', '<leader>df', function()
+      vim.keymap.set('n', '<leader>Du', dapui.toggle, { desc = 'Toggle DAP UI' })
+      vim.keymap.set('n', '<leader>Df', function()
         dapui.float_element('scopes')
       end, { desc = 'DAP float scopes' })
     end,

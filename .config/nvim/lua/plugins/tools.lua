@@ -91,105 +91,6 @@ return {
     },
   },
 
-  -- fuzzy finder
-  {
-    'nvim-telescope/telescope.nvim',
-    cmd = 'Telescope',
-    dependencies = { 'nvim-telescope/telescope-dap.nvim' },
-    keys = {
-      { '<leader>fg', '<cmd>Telescope live_grep<cr>', desc = 'Grep files (cwd)' },
-      {
-        '<leader>fw',
-        function()
-          require('telescope.builtin').live_grep({ default_text = vim.fn.expand('<cword>') })
-        end,
-        desc = 'Grep word under cursor',
-      },
-      { '<leader>ff', '<cmd>Telescope find_files<cr>', desc = 'Find files (cwd)' },
-      { '<leader>ft', '<cmd>Telescope git_files<cr>', desc = 'Find git files' },
-      { '<leader>fs', '<cmd>Telescope git_status<cr>', desc = 'Git status files' },
-      { '<leader>fb', '<cmd>Telescope buffers show_all_buffers=true<cr>', desc = 'Buffers' },
-      { '<leader>fv', '<cmd>Telescope commands<cr>', desc = 'Commands' },
-      { '<leader>fc', '<cmd>Telescope git_commits<cr>', desc = 'Git commits' },
-      { '<leader>fk', '<cmd>Telescope keymaps<cr>', desc = 'Keymaps' },
-      { '<leader>fr', '<cmd>Telescope oldfiles<cr>', desc = 'Recent files' },
-      { '<leader>fh', '<cmd>Telescope search_history<cr>', desc = 'Search history' },
-    },
-    opts = function()
-      local actions = require('telescope.actions')
-      local actions_state = require('telescope.actions.state')
-
-      return {
-        defaults = {
-          path_display = {
-            filename_first = { reverse_directories = true },
-            shorten = { len = 2, exclude = { -1, -2, -3, -4 } },
-          },
-          layout_config = {
-            horizontal = {
-              width = { padding = 0 },
-              height = { padding = 0 },
-              preview_width = 0.5,
-            },
-          },
-          vimgrep_arguments = {
-            'rg',
-            '--color=never',
-            '--no-heading',
-            '--with-filename',
-            '--line-number',
-            '--column',
-            '--smart-case',
-          },
-          mappings = {
-            i = {
-              ['<C-j>'] = function(...)
-                actions.move_selection_next(...)
-              end,
-              ['<C-k>'] = function(...)
-                actions.move_selection_previous(...)
-              end,
-              ['<CR>'] = function(...)
-                actions.select_default(...)
-                actions.center(...)
-              end,
-              ['<C-x>'] = function(...)
-                actions.select_horizontal(...)
-              end,
-              ['<C-v>'] = function(...)
-                actions.select_vertical(...)
-              end,
-              ['<C-t>'] = function(...)
-                actions.select_tab(...)
-              end,
-            },
-          },
-        },
-        pickers = {
-          git_commits = {
-            mappings = {
-              i = {
-                ['<C-d>'] = function()
-                  local selected = actions_state.get_selected_entry()
-                  vim.api.nvim_win_close(0, true)
-                  vim.cmd('stopinsert')
-                  vim.schedule(function()
-                    vim.cmd(('DiffviewOpen %s^!'):format(selected.value))
-                  end)
-                end,
-              },
-            },
-          },
-        },
-      }
-    end,
-    config = function(_, opts)
-      local telescope = require('telescope')
-      telescope.setup(opts)
-      telescope.load_extension('dap')
-    end,
-  },
-
   -- which-key
   {
     'folke/which-key.nvim',
@@ -208,7 +109,8 @@ return {
         { '<leader><tab>', group = 'tabs' },
         { '<leader>b', group = 'buffer' },
         { '<leader>c', group = 'code' },
-        { '<leader>d', group = 'diagnostics' },
+        { '<leader>d', group = 'diagnostics/diff' },
+        { '<leader>D', group = 'DAP' },
         { '<leader>f', group = 'file/find' },
         { '<leader>g', group = 'git' },
         { '<leader>gh', group = 'hunks' },
@@ -262,7 +164,7 @@ return {
   -- todo comments
   {
     'folke/todo-comments.nvim',
-    cmd = { 'TodoTrouble', 'TodoTelescope' },
+    cmd = { 'TodoTrouble' },
     event = { 'BufReadPost', 'BufNewFile' },
     opts = {},
     keys = {
@@ -281,7 +183,6 @@ return {
         desc = 'Prev todo',
       },
       { '<leader>xt', '<cmd>TodoTrouble<cr>', desc = 'Todo (Trouble)' },
-      { '<leader>xT', '<cmd>TodoTelescope<cr>', desc = 'Todo (Telescope)' },
     },
   },
 }
