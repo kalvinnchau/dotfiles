@@ -1,5 +1,4 @@
 add_newline = true
-#command_timeout = 20000
 
 format = """\
     $username\
@@ -18,6 +17,7 @@ format = """\
     $golang\
     $haskell\
     $java\
+    $kotlin\
     $julia\
     $nodejs\
     $php\
@@ -34,14 +34,15 @@ format = """\
     $cmd_duration\
     $custom\
     $jobs\
-    $line_break\
-    $battery\
+    $status\
     $time\
+    $line_break\
     $character\
     """
 
 [aws]
 style = "bold blue"
+format = "[$symbol($profile)(\\($region\\))(\\[$duration\\])]($style) "
 
 [cmd_duration]
 min_time = 1000
@@ -57,16 +58,17 @@ style = "blue"
 disabled = true
 
 [git_branch]
-format = "[$symbol$branch]($style)"
+format = "[$symbol$branch]($style) "
 
 [git_commit]
-format = "[\\($hash\\)]($style)"
+format = "[\\($hash\\)]($style) "
 
 [git_status]
 ahead = "⇡${count}"
-diverged = "⇕⇡${ahead_count}⇣${behind_count}"
 behind = "⇣${count}"
-format = "$ahead_behind "
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+staged = "+${count}"
+format = "[$ahead_behind]($style)"
 
 [golang]
 symbol = "go:"
@@ -77,6 +79,11 @@ style = "underline blue"
 symbol = "java:"
 format = "[${symbol}${version}]($style) "
 style = "underline red"
+
+[kotlin]
+symbol = "kt:"
+format = "[$symbol$version]($style) "
+style = "underline purple"
 
 [python]
 symbol = "py:"
@@ -100,8 +107,12 @@ number_threshold = 0
 symbol_threshold = 0
 
 [kubernetes]
-#format = "[$symbol$context(\\($namespace\\))]($style) "
 format = "[$symbol(\\($namespace\\))]($style) "
 symbol = "k8s:"
 style = "underline green"
 disabled = false
+
+[status]
+disabled = false
+symbol = "x "
+format = "[$symbol$status]($style) "
