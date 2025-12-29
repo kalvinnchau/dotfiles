@@ -8,31 +8,20 @@ format = """\
     $git_branch\
     $git_commit\
     $git_status\
-    $hg_branch\
     $docker_context\
     $package\
     $dotnet\
-    $elixir\
-    $elm\
     $golang\
-    $haskell\
     $java\
     $kotlin\
-    $julia\
     $nodejs\
-    $php\
     $python\
-    $ruby\
     $rust\
     $terraform\
-    $nix_shell\
-    $conda\
     $memory_usage\
     $aws\
     $env_var\
-    $crystal\
     $cmd_duration\
-    $custom\
     $jobs\
     $status\
     $time\
@@ -58,7 +47,7 @@ style = "blue"
 disabled = true
 
 [git_branch]
-format = "[$symbol$branch]($style) "
+format = "[$symbol$branch]($style)"
 
 [git_commit]
 format = "[\\($hash\\)]($style) "
@@ -68,7 +57,7 @@ ahead = "⇡${count}"
 behind = "⇣${count}"
 diverged = "⇕⇡${ahead_count}⇣${behind_count}"
 staged = "+${count}"
-format = "[$ahead_behind]($style)"
+format = "[$ahead_behind]($style) "
 
 [golang]
 symbol = "go:"
