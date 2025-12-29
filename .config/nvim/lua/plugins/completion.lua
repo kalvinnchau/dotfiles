@@ -23,11 +23,11 @@ return {
     event = 'InsertEnter',
     opts = {
       keymap = {
-        preset = 'enter',
+        preset = 'default',
         ['<C-d>'] = { 'scroll_documentation_up', 'fallback' },
         ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
-        ['<C-e>'] = { 'hide', 'fallback' },
-        ['<CR>'] = { 'accept', 'fallback' },
+        ['<C-k>'] = { 'scroll_signature_up', 'fallback' },
+        ['<C-j>'] = { 'scroll_signature_down', 'fallback' },
         ['<Tab>'] = { 'select_next', 'fallback' },
         ['<S-Tab>'] = { 'select_prev', 'fallback' },
       },
@@ -76,6 +76,7 @@ return {
           auto_show = true,
           window = { border = 'single' },
         },
+        ghost_text = { enabled = true },
       },
       signature = {
         enabled = true,
