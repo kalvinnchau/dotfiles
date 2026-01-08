@@ -108,7 +108,7 @@ return {
       { '<leader>gL', desc = 'Git log repo' },
     },
     config = function()
-      require('vscode-diff').setup({
+      require('codediff').setup({
         -- Highlight configuration
         highlights = {
           -- Line-level: accepts highlight group names or hex colors (e.g., "#2ea043")
