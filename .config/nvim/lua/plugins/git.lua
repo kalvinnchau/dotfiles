@@ -251,4 +251,11 @@ return {
       end, { desc = 'Git log repo' })
     end,
   },
+
+  {
+    'kalvinnchau/staged.nvim',
+    dependencies = { 'esmuellert/codediff.nvim' },
+    event = 'TabNew',
+    opts = {},
+  },
 }
