@@ -233,7 +233,6 @@ return {
     opts = {
       registries = {
         'github:mason-org/mason-registry',
-        'github:mistweaverco/zana-registry',
       },
       ensure_installed = {
         -- python

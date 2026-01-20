@@ -78,9 +78,9 @@ return {
   --  end,
   --},
 
-  -- vscode-diff.nvim
+  -- codediff.nvim
   {
-    'esmuellert/vscode-diff.nvim',
+    'esmuellert/codediff.nvim',
     dependencies = { 'MunifTanjim/nui.nvim' },
     cmd = { 'CodeDiff' },
     keys = {

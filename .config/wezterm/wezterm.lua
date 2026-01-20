@@ -7,19 +7,23 @@ local helpers = require('helpers')
 -- Format: { mods=, key=, action=, desc= } or { group = 'name' } or omit desc for hidden
 local keybinding_defs = {
   { group = 'layout' },
-  { mods = 'CMD', key = 't', action = wezterm.action_callback(function(window, pane)
-    local tab = window:active_tab()
-    local tabs = window:mux_window():tabs()
-    local current_idx = 0
-    for i, t in ipairs(tabs) do
-      if t:tab_id() == tab:tab_id() then
-        current_idx = i - 1  -- 0-indexed
-        break
+  {
+    mods = 'CMD',
+    key = 't',
+    action = wezterm.action_callback(function(window, pane)
+      local tab = window:active_tab()
+      local tabs = window:mux_window():tabs()
+      local current_idx = 0
+      for i, t in ipairs(tabs) do
+        if t:tab_id() == tab:tab_id() then
+          current_idx = i - 1 -- 0-indexed
+          break
+        end
       end
-    end
-    window:perform_action(action.SpawnTab('CurrentPaneDomain'), pane)
-    window:perform_action(action.MoveTab(current_idx + 1), pane)
-  end) },
+      window:perform_action(action.SpawnTab('CurrentPaneDomain'), pane)
+      window:perform_action(action.MoveTab(current_idx + 1), pane)
+    end),
+  },
   { mods = 'CMD', key = 'w', action = action.CloseCurrentTab({ confirm = true }), desc = 'close current tab' },
   { mods = 'LEADER|SHIFT', key = 't', action = action.ShowTabNavigator, desc = 'switch tabs (fuzzy)' },
   { mods = 'LEADER', key = 'v', action = action.SplitHorizontal, desc = 'split pane right' },
@@ -43,29 +47,44 @@ local keybinding_defs = {
   { mods = 'CMD|SHIFT', key = 'DownArrow', action = action.ScrollToPrompt(1), desc = 'jump to next prompt' },
 
   { group = 'workspaces' },
-  { mods = 'LEADER', key = 's', action = action.ShowLauncherArgs({ flags = 'FUZZY|WORKSPACES' }), desc = 'switch workspace (fuzzy)' },
-  { mods = 'LEADER', key = 'n', action = action.PromptInputLine({
-    description = 'Enter new workspace name',
-    action = wezterm.action_callback(function(window, pane, line)
-      if line then
-        window:perform_action(action.SwitchToWorkspace({ name = line }), pane)
-      end
-    end),
-  }), desc = 'create named workspace' },
+  {
+    mods = 'LEADER',
+    key = 's',
+    action = action.ShowLauncherArgs({ flags = 'FUZZY|WORKSPACES' }),
+    desc = 'switch workspace (fuzzy)',
+  },
+  {
+    mods = 'LEADER',
+    key = 'n',
+    action = action.PromptInputLine({
+      description = 'Enter new workspace name',
+      action = wezterm.action_callback(function(window, pane, line)
+        if line then
+          window:perform_action(action.SwitchToWorkspace({ name = line }), pane)
+        end
+      end),
+    }),
+    desc = 'create named workspace',
+  },
 
   { group = 'selection & copy' },
   { mods = 'CMD|SHIFT', key = 'x', action = action.ActivateCopyMode, desc = 'enter vim-style selection' },
   { mods = 'LEADER', key = 'Space', action = action.ActivateCopyMode, desc = 'enter vim-style selection' },
   { mods = 'CTRL', key = 'Space', action = action.QuickSelect, desc = 'select visible text hints' },
-  { mods = 'CTRL', key = 'O', action = action.QuickSelectArgs({
-    label = 'open url',
-    patterns = { 'https?://\\S+' },
-    action = wezterm.action_callback(function(window, pane)
-      local url = window:get_selection_text_for_pane(pane)
-      wezterm.log_info('opening: ' .. url)
-      wezterm.open_with(url)
-    end),
-  }), desc = 'select & open url' },
+  {
+    mods = 'CTRL',
+    key = 'O',
+    action = action.QuickSelectArgs({
+      label = 'open url',
+      patterns = { 'https?://\\S+' },
+      action = wezterm.action_callback(function(window, pane)
+        local url = window:get_selection_text_for_pane(pane)
+        wezterm.log_info('opening: ' .. url)
+        wezterm.open_with(url)
+      end),
+    }),
+    desc = 'select & open url',
+  },
 
   -- Hidden (no desc = not shown in help)
   { mods = 'CMD', key = 'm', action = 'DisableDefaultAssignment' },
@@ -95,9 +114,13 @@ table.insert(keys, {
   key = '?',
   action = action.SpawnCommandInNewTab({
     args = {
-      'bash', '-c', [[
+      'bash',
+      '-c',
+      [[
         clear
-        text=]] .. wezterm.shell_quote_arg(keybindings_help) .. [[
+        text=]]
+        .. wezterm.shell_quote_arg(keybindings_help)
+        .. [[
 
         # Get terminal dimensions
         cols=$(tput cols)
@@ -327,9 +350,6 @@ return {
 
   -- Strip colors during QuickSelect for better match visibility
   quick_select_remove_styling = true,
-
-  -- Auto-copy text to clipboard on selection
-  copy_on_select = true,
 
   default_prog = { '/bin/zsh', '-l' },
 
