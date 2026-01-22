@@ -248,9 +248,42 @@ return {
         end,
         desc = 'Command history',
       },
+      {
+        '<leader>tg',
+        function()
+          local todo_dir = vim.fn.expand('~/.local/share/todo')
+          if vim.fn.isdirectory(todo_dir) == 0 then
+            vim.fn.mkdir(todo_dir, 'p')
+          end
+          Snacks.scratch.open({
+            file = todo_dir .. '/global-todo.md',
+            ft = 'markdown',
+            name = 'Global Todo',
+          })
+        end,
+        desc = 'Open global todo',
+      },
+      {
+        '<leader>tp',
+        function()
+          local todo_dir = vim.fn.expand('~/.local/share/todo')
+          if vim.fn.isdirectory(todo_dir) == 0 then
+            vim.fn.mkdir(todo_dir, 'p')
+          end
+          local git_root = Snacks.git.get_root()
+          local name = git_root and vim.fn.fnamemodify(git_root, ':t') or 'local'
+          Snacks.scratch.open({
+            file = todo_dir .. '/' .. name .. '-todo.md',
+            ft = 'markdown',
+            name = name .. ' Todo',
+          })
+        end,
+        desc = 'Open project todo',
+      },
     },
     opts = {
       input = { enabled = true },
+      scratch = { enabled = true },
       picker = {
         enabled = true,
         ui_select = true,
@@ -329,7 +362,23 @@ return {
                 Snacks.picker.git_status()
               end,
             },
-            { icon = ' ', key = 'C', desc = 'config', action = ':e ~/.config/nvim/init.lua | :cd %:p:h' },
+            {
+              icon = '󰄬 ',
+              key = 't',
+              desc = 'todo',
+              action = function()
+                local todo_dir = vim.fn.expand('~/.local/share/todo')
+                if vim.fn.isdirectory(todo_dir) == 0 then
+                  vim.fn.mkdir(todo_dir, 'p')
+                end
+                Snacks.scratch.open({
+                  file = todo_dir .. '/global-todo.md',
+                  ft = 'markdown',
+                  name = 'Global Todo',
+                })
+              end,
+            },
+            { icon = '', key = 'C', desc = 'config', action = ':e ~/.config/nvim/init.lua | :cd %:p:h' },
             { icon = '󰒲 ', key = 'L', desc = 'lazy', action = ':Lazy' },
             { icon = ' ', key = 'q', desc = 'quit', action = ':qa' },
           },

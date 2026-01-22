@@ -2,7 +2,7 @@ return {
   -- file explorer
   {
     'nvim-neo-tree/neo-tree.nvim',
-    cmd = 'Neotree',
+    event = 'VeryLazy',
     dependencies = {
       {
         's1n7ax/nvim-window-picker',

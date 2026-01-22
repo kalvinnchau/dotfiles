@@ -1,0 +1,27 @@
+return {}
+--  {
+--    'AlexandrosAlexiou/kotlin.nvim',
+--    ft = 'kotlin',
+--    dependencies = {
+--      'williamboman/mason.nvim',
+--      'williamboman/mason-lspconfig.nvim',
+--    },
+--    opts = {
+--      jvm_args = { '-Xmx8g' },
+--
+--      inlay_hints = {
+--        enabled = true,
+--        type_hints = true,
+--        parameter_hints = true,
+--      },
+--    },
+--  },
+--
+--  {
+--    'williamboman/mason.nvim',
+--    opts = function(_, opts)
+--      opts.ensure_installed = opts.ensure_installed or {}
+--      vim.list_extend(opts.ensure_installed, { 'kotlin-lsp' })
+--    end,
+--  },
+--}
