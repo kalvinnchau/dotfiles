@@ -1,7 +1,7 @@
 -- random helper functions
 local module = {}
 local wezterm = require('wezterm')
-local scheme = require('colors').colorscheme
+local colors = require('colors').colors
 
 local function strip_home(path)
   local username = os.getenv("USER")
@@ -51,59 +51,59 @@ get_process
 function module.get_process(tab)
   local process_icons = {
     ['docker'] = {
-      { Foreground = { Color = scheme.colors.blue } },
+      { Foreground = { Color = colors.blue } },
       { Text = wezterm.nerdfonts.linux_docker },
     },
     ['docker-compose'] = {
-      { Foreground = { Color = scheme.colors.blue } },
+      { Foreground = { Color = colors.blue } },
       { Text = wezterm.nerdfonts.linux_docker },
     },
     ['nvim'] = {
-      { Foreground = { Color = scheme.colors.green } },
+      { Foreground = { Color = colors.green } },
       { Text = wezterm.nerdfonts.custom_vim },
     },
     ['vim'] = {
-      { Foreground = { Color = scheme.colors.green } },
+      { Foreground = { Color = colors.green } },
       { Text = wezterm.nerdfonts.dev_vim },
     },
     ['node'] = {
-      { Foreground = { Color = scheme.colors.green } },
+      { Foreground = { Color = colors.green } },
       { Text = wezterm.nerdfonts.mdi_hexagon },
     },
     ['zsh'] = {
-      { Foreground = { Color = scheme.colors.orange } },
+      { Foreground = { Color = colors.orange } },
       { Text = wezterm.nerdfonts.dev_terminal },
     },
     ['bash'] = {
-      { Foreground = { Color = scheme.colors.gray } },
+      { Foreground = { Color = colors.gray } },
       { Text = wezterm.nerdfonts.cod_terminal_bash },
     },
     ['cargo'] = {
-      { Foreground = { Color = scheme.colors.red } },
+      { Foreground = { Color = colors.red } },
       { Text = wezterm.nerdfonts.dev_rust },
     },
     ['go'] = {
-      { Foreground = { Color = scheme.colors.blue } },
+      { Foreground = { Color = colors.blue } },
       { Text = wezterm.nerdfonts.mdi_language_go },
     },
     ['git'] = {
-      { Foreground = { Color = scheme.colors.green } },
+      { Foreground = { Color = colors.green } },
       { Text = wezterm.nerdfonts.dev_git },
     },
     ['lua'] = {
-      { Foreground = { Color = scheme.colors.blue } },
+      { Foreground = { Color = colors.blue } },
       { Text = wezterm.nerdfonts.seti_lua },
     },
     ['curl'] = {
-      { Foreground = { Color = scheme.colors.yellow } },
+      { Foreground = { Color = colors.yellow } },
       { Text = wezterm.nerdfonts.mdi_flattr },
     },
     ['kubectl'] = {
-      { Foreground = { Color = scheme.colors.yellow } },
+      { Foreground = { Color = colors.yellow } },
       { Text = '\u{f10fe}' }, -- k8s symbol
     },
     ['aws'] = {
-      { Foreground = { Color = scheme.colors.yellow } },
+      { Foreground = { Color = colors.yellow } },
       { Text = wezterm.nerdfonts.dev_aws },
     },
   }
@@ -111,7 +111,7 @@ function module.get_process(tab)
   local process_name = string.gsub(tab.active_pane.foreground_process_name, '(.*[/\\])(.*)', '%2')
 
   return wezterm.format(process_icons[process_name] or {
-    { Foreground = { Color = scheme.colors.blue } },
+    { Foreground = { Color = colors.blue } },
     { Text = string.format('[%s]', process_name) },
   })
 end

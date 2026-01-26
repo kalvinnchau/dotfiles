@@ -1,6 +1,8 @@
 local wezterm = require('wezterm')
 local action = wezterm.action
-local scheme = require('colors').colorscheme
+local colors_module = require('colors')
+local scheme = colors_module.colorscheme
+local colors = colors_module.colors
 local helpers = require('helpers')
 
 -- Define keybindings with descriptions (single source of truth)
@@ -166,8 +168,8 @@ wezterm.on('format-tab-title', function(tab, tabs, _, _, hover, _)
     foreground = scheme.tab_bar.active_tab.fg_color
   elseif tab.is_last_active then
     -- Subtle indicator for previously active tab
-    background = scheme.colors.lightgray
-    foreground = scheme.colors.white
+    background = colors.lightgray
+    foreground = colors.white
     italic = true
   elseif hover then
     background = scheme.tab_bar.new_tab_hover.bg_color
@@ -258,15 +260,15 @@ wezterm.on('update-status', function(window, pane)
   end
 
   -- Color palette for the backgrounds of each cell
-  local colors = {
-    scheme.colors.black,
-    scheme.colors.darkgray,
-    scheme.colors.lightgray,
-    scheme.colors.inactivegray,
+  local bg_colors = {
+    colors.black,
+    colors.darkgray,
+    colors.lightgray,
+    colors.inactivegray,
   }
 
   -- Foreground color for the text across the fade
-  local text_fg = scheme.colors.white
+  local text_fg = colors.white
 
   -- The elements to be formatted
   local elements = {}
@@ -276,12 +278,12 @@ wezterm.on('update-status', function(window, pane)
   -- Translate a cell into elements
   local function push(text, is_last)
     local cell_no = num_cells + 1
-    local bg_color = colors[math.min(cell_no, #colors)]
+    local bg_color = bg_colors[math.min(cell_no, #bg_colors)]
     table.insert(elements, { Foreground = { Color = text_fg } })
     table.insert(elements, { Background = { Color = bg_color } })
     table.insert(elements, { Text = ' ' .. text .. ' ' })
     if not is_last then
-      local next_color = colors[math.min(cell_no + 1, #colors)]
+      local next_color = bg_colors[math.min(cell_no + 1, #bg_colors)]
       table.insert(elements, { Foreground = { Color = next_color } })
       table.insert(elements, { Text = SOLID_LEFT_ARROW })
     end

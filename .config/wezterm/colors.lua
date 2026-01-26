@@ -314,4 +314,6 @@ module.colorscheme = {
   },
 }
 
+module.colors = gruvbox_colors
+
 return module
