@@ -2,20 +2,14 @@ return {
   -- treesitter
   {
     'nvim-treesitter/nvim-treesitter',
-    branch = 'master',
+    branch = 'main',
     build = ':TSUpdate',
     event = { 'BufReadPost', 'BufNewFile' },
-    dependencies = { 'nvim-treesitter/nvim-treesitter-textobjects' },
     cmd = { 'TSUpdateSync', 'TSUpdate' },
-    keys = {
-      { '<C-space>', desc = 'Increment selection' },
-      { '<bs>', desc = 'Shrink selection', mode = 'x' },
-    },
-    opts = {
-      highlight = { enable = true },
-      indent = { enable = false },
-      auto_install = true,
-      ensure_installed = {
+    main = 'nvim-treesitter',
+    opts = {},
+    init = function()
+      local ensure_installed = {
         'astro',
         'bash',
         'go',
@@ -36,20 +30,27 @@ return {
         'vimdoc',
         'vue',
         'yaml',
-      },
-      incremental_selection = {
-        enable = true,
-        keymaps = {
-          init_selection = '<C-space>',
-          node_incremental = '<C-space>',
-          scope_incremental = '<nop>',
-          node_decremental = '<bs>',
-        },
-      },
-    },
-    config = function(_, opts)
-      require('nvim-treesitter.configs').setup(opts)
+        'gitcommit',
+      }
+      local installed = require('nvim-treesitter.config').get_installed()
+      local to_install = vim.iter(ensure_installed)
+        :filter(function(p) return not vim.tbl_contains(installed, p) end)
+        :totable()
+      if #to_install > 0 then
+        require('nvim-treesitter').install(to_install)
+      end
+
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function(args)
+          pcall(vim.treesitter.start, args.buf)
+        end,
+      })
     end,
+  },
+
+  {
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
   },
 
   -- surround operations
@@ -125,46 +126,6 @@ return {
       },
     },
   },
-
-  -- reference highlighting
-  {
-    'RRethy/vim-illuminate',
-    event = { 'BufReadPost', 'BufNewFile' },
-    opts = { delay = 200 },
-    config = function(_, opts)
-      require('illuminate').configure(opts)
-    end,
-    keys = {
-      {
-        ']]',
-        function()
-          require('illuminate').goto_next_reference(false)
-        end,
-        desc = 'Next Reference',
-      },
-      {
-        '[[',
-        function()
-          require('illuminate').goto_prev_reference(false)
-        end,
-        desc = 'Prev Reference',
-      },
-    },
-  },
-
-  --{
-  --  'azorng/goose.nvim',
-  --  ft = { 'rust', 'python', 'typescript', 'markdown', 'sh', 'kotlin', 'typescriptreact' },
-  --  dependencies = {
-  --    'nvim-lua/plenary.nvim',
-  --    --{ 'MeanderingProgrammer/render-markdown.nvim', opts = { anti_conceal = { enabled = false } } },
-  --  },
-  --  opts = {
-  --    providers = {
-  --      databricks = { 'goose-claude-4-sonnet', 'goose-claude-4-opus' },
-  --    },
-  --  },
-  --},
 
   -- utility library
   { 'nvim-lua/plenary.nvim', lazy = true },

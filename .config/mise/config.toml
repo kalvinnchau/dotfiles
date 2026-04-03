@@ -13,6 +13,8 @@ uv = "latest"
 "github:jdx/usage" = "latest"
 "github:steveyegge/beads" = "latest"
 
+"go:github.com/evilmartians/lefthook" = "latest"
+
 [env]
 MISE_DATA_DIR = "{{env.HOME}}/.local/share/mise"
 

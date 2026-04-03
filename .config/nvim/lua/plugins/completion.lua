@@ -47,7 +47,7 @@ return {
   -- completion engine
   {
     'saghen/blink.cmp',
-    version = '*',
+    version = '1.*',
     dependencies = { 'L3MON4D3/LuaSnip' },
     event = 'InsertEnter',
     opts = {

@@ -305,7 +305,7 @@ return {
         win = {
           input = {
             keys = {
-              ['<C-x>'] = { 'edit_split', mode = { 'i', 'n' } },
+              ['<C-s>'] = { 'edit_split', mode = { 'i', 'n' } },
               ['<C-v>'] = { 'edit_vsplit', mode = { 'i', 'n' } },
               ['<C-t>'] = { 'edit_tab', mode = { 'i', 'n' } },
             },

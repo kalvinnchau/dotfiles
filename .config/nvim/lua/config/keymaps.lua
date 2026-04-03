@@ -34,3 +34,7 @@ vim.keymap.set('n', '<leader>pg', function()
   local file = vim.fn.expand('%:p:.')
   vim.cmd('silent !git openweb ' .. vim.fn.shellescape(file))
 end, { silent = true, desc = 'Open file in GitHub' })
+
+-- nvim.undotree
+vim.cmd('packadd nvim.undotree')
+vim.keymap.set('n', '<leader>u', require('undotree').open, { silent = true, desc = 'open the undotree' })
