@@ -37,6 +37,8 @@ return {
       },
     },
     config = function(_, opts)
+      local snacks = require('snacks')
+
       -- diagnostics config with signs
       vim.diagnostic.config(vim.tbl_deep_extend('force', opts.diagnostics, {
         signs = {
@@ -58,27 +60,27 @@ return {
           end
 
           map('gd', function()
-            Snacks.picker.lsp_definitions()
+            snacks.picker.lsp_definitions()
           end, 'go to definition')
           map('gi', function()
-            Snacks.picker.lsp_implementations()
+            snacks.picker.lsp_implementations()
           end, 'show implementations')
 
           -- override neovim 0.11 gr* defaults with snacks.picker
           map('grr', function()
-            Snacks.picker.lsp_references()
+            snacks.picker.lsp_references()
           end, 'references')
           map('gri', function()
-            Snacks.picker.lsp_implementations()
+            snacks.picker.lsp_implementations()
           end, 'implementations')
           map('gO', function()
-            Snacks.picker.lsp_symbols()
+            snacks.picker.lsp_symbols()
           end, 'document symbols')
           map('gsd', function()
-            Snacks.picker.lsp_definitions({ confirm = { 'edit_split' } })
+            snacks.picker.lsp_definitions({ confirm = { 'edit_split' } })
           end, 'go to def (split)')
           map('gsv', function()
-            Snacks.picker.lsp_definitions({ confirm = { 'edit_vsplit' } })
+            snacks.picker.lsp_definitions({ confirm = { 'edit_vsplit' } })
           end, 'go to def (vsplit)')
           map('K', function()
             if vim.bo.filetype == 'rust' then
@@ -97,10 +99,10 @@ return {
 
           -- diagnostics
           map('<leader>da', function()
-            Snacks.picker.diagnostics({ filter = { buf = 0 } })
+            snacks.picker.diagnostics({ filter = { buf = 0 } })
           end, 'buffer diagnostics')
           map('<leader>dw', function()
-            Snacks.picker.diagnostics()
+            snacks.picker.diagnostics()
           end, 'workspace diagnostics')
           map('<leader>dn', function()
             vim.diagnostic.jump({ count = 1, float = true })
