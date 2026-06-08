@@ -1,5 +1,7 @@
 #zmodload zsh/zprof
 
+[[ -f "$HOME/.localenvs" ]] && source "$HOME/.localenvs"
+
 ### Antidote Plugin Manager ###
 source ${ZDOTDIR:-~}/.antidote/antidote.zsh
 
@@ -29,18 +31,42 @@ _fzf_compgen_dir() {
 }
 
 # rg --generate complete-zsh > "$HOME/.zsh-complete/_rg"
-fpath=($HOME/.zsh-complete $fpath)
+_zsh_complete_dir="$HOME/.zsh-complete"
+[[ -d "$_zsh_complete_dir" ]] || mkdir -p "$_zsh_complete_dir"
 
-autoload -U compinit && compinit
+if [[ ! -s "$_zsh_complete_dir/_uv" ]]; then
+  if command -v uv >/dev/null 2>&1; then
+    uv generate-shell-completion zsh >| "$_zsh_complete_dir/_uv"
+  elif [[ -x "$HOME/.local/bin/uv" ]]; then
+    "$HOME/.local/bin/uv" generate-shell-completion zsh >| "$_zsh_complete_dir/_uv"
+  elif [[ -x "/opt/homebrew/bin/uv" ]]; then
+    "/opt/homebrew/bin/uv" generate-shell-completion zsh >| "$_zsh_complete_dir/_uv"
+  fi
+fi
+
+fpath=("$_zsh_complete_dir" $fpath)
+
+autoload -Uz compinit
+
+_zcompdump="${ZDOTDIR:-$HOME}/.zcompdump"
+_zcompdump_stale=( "$_zcompdump"(Nm+1) )
+
+if [[ ! -s "$_zcompdump" || ${#_zcompdump_stale[@]} -gt 0 ]]; then
+  compinit -d "$_zcompdump"
+else
+  compinit -C -d "$_zcompdump"
+fi
+
 {
   # Compile the completion dump to increase startup speed. Run in background.
-  zcompdump="${ZDOTDIR:-$HOME}/.zcompdump"
-  if [[ -s "$zcompdump" && (! -s "${zcompdump}.zwc" || "$zcompdump" -nt "${zcompdump}.zwc") ]]; then
+  if [[ -s "$_zcompdump" && (! -s "${_zcompdump}.zwc" || "$_zcompdump" -nt "${_zcompdump}.zwc") ]]; then
     # if zcompdump file exists, and we don't have a compiled version or the
     # dump file is newer than the compiled file
-    zcompile "$zcompdump"
+    zcompile "$_zcompdump"
   fi
 } &!
+
+unset _zcompdump _zcompdump_stale _zsh_complete_dir
 
 ##
 # zsh settings
@@ -105,6 +131,9 @@ alias ll='ls -lha'
 alias ls="command ls ${colorflag}"
 export LS_COLORS='no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:'
 
+[[ -f "$HOME/.aliases" ]] && source "$HOME/.aliases"
+[[ -f "$HOME/.localaliases" ]] && source "$HOME/.localaliases"
+
 
 ##
 # export environment variables
@@ -135,22 +164,31 @@ export DOTBARE_FZF_DEFAULT_OPTS="--preview-window=right:70%"
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+# WezTerm shell integration (OSC 7 for CWD, OSC 133 for semantic zones)
+if [[ -n "$WEZTERM_EXECUTABLE" ]]; then
+  _wezterm_sh="${WEZTERM_EXECUTABLE%/MacOS/*}/Resources/wezterm.sh"
+  [[ -f "$_wezterm_sh" ]] && source "$_wezterm_sh"
+  unset _wezterm_sh
+fi
+
 # path configuration
+export PATH="$HOME/.local/bin":$PATH
 export PATH=$PATH:/usr/local/bin:$HOME/.cargo/bin
 export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
-export PATH=$PATH:"$HOME/.local/bin"
 
 command -v starship &> /dev/null && eval "$(starship init zsh)"
 
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-[ -s "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+if [[ -z "$HOMEBREW_PREFIX" && -s "/opt/homebrew/bin/brew" ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
 
 # mise config
 eval "$($HOME/.local/bin/mise activate zsh)"
 eval "$(mise completion zsh)"
 
 # uv config, must be after mise
-eval "$(uv generate-shell-completion zsh)"
+# Generated once above into ~/.zsh-complete/_uv before compinit.
 
 # zoxide config, must be after mise
 export _ZO_DATA_DIR="$HOME/.local/share"
