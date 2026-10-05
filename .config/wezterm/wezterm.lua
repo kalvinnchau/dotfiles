@@ -313,6 +313,8 @@ local font = 'Iosevka Term'
 return {
   -- appearance
   adjust_window_size_when_changing_font_size = false,
+  -- match the macOS title bar to the terminal background to avoid transparency.
+  window_decorations = 'TITLE|RESIZE|MACOS_USE_BACKGROUND_COLOR_AS_TITLEBAR_COLOR',
   --color_scheme = 'GruvboxDark (Gogh)',
   color_scheme = 'GruvboxDark',
   font = wezterm.font(font, { stretch = 'Expanded', weight = 'Regular' }),

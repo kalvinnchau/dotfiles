@@ -1,7 +1,7 @@
 [tools]
 go = "1.24"
 java = "21"
-node = "23"
+node = "24"
 
 python = "3.13"
 uv = "latest"
@@ -13,7 +13,6 @@ uv = "latest"
 "github:jdx/usage" = "latest"
 "github:steveyegge/beads" = "latest"
 
-"go:github.com/evilmartians/lefthook" = "latest"
 
 [env]
 MISE_DATA_DIR = "{{env.HOME}}/.local/share/mise"

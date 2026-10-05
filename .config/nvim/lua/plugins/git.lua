@@ -254,8 +254,11 @@ return {
 
   {
     'kalvinnchau/staged.nvim',
+    dir = vim.fn.expand('~/Development/github.com/kalvinnchau/staged.nvim-worktrees/stable-upstream-integration'),
     dependencies = { 'esmuellert/codediff.nvim' },
     event = 'TabNew',
-    opts = {},
+    opts = {
+      inline = { style = 'virtual_text' },
+    },
   },
 }
