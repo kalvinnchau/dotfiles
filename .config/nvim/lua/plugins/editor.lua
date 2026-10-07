@@ -9,40 +9,12 @@ return {
     main = 'nvim-treesitter',
     opts = {},
     init = function()
-      local ensure_installed = {
-        'astro',
-        'bash',
-        'go',
-        'dockerfile',
-        'html',
-        'java',
-        'javascript',
-        'json',
-        'lua',
-        'markdown',
-        'markdown_inline',
-        'query',
-        'regex',
-        'rust',
-        'terraform',
-        'typescript',
-        'vim',
-        'vimdoc',
-        'vue',
-        'yaml',
-        'gitcommit',
-      }
-      local installed = require('nvim-treesitter.config').get_installed()
-      local to_install = vim.iter(ensure_installed)
-        :filter(function(p) return not vim.tbl_contains(installed, p) end)
-        :totable()
-      if #to_install > 0 then
-        require('nvim-treesitter').install(to_install)
-      end
-
       vim.api.nvim_create_autocmd('FileType', {
         callback = function(args)
+          -- Enable treesitter highlighting and disable regex syntax
           pcall(vim.treesitter.start, args.buf)
+          -- Enable treesitter-based indentation
+          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
         end,
       })
     end,
@@ -51,6 +23,7 @@ return {
   {
     'nvim-treesitter/nvim-treesitter-textobjects',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    branch = 'main',
   },
 
   -- surround operations
